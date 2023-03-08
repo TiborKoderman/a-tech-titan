@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "../devel/lib/exercise1/hello_world"
-  "../devel/lib/exercise1/hello_world.pdb"
+  "/home/tibor/Documents/RINS/a-tech-titan/devel/lib/exercise1/hello_world"
+  "/home/tibor/Documents/RINS/a-tech-titan/devel/lib/exercise1/hello_world.pdb"
   "CMakeFiles/hello_world.dir/src/hello_world_node.cpp.o"
   "CMakeFiles/hello_world.dir/src/hello_world_node.cpp.o.d"
 )

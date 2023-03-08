@@ -68,13 +68,13 @@ set(exercise1_CONFIG_INCLUDED TRUE)
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
   set(exercise1_SOURCE_PREFIX /home/tibor/Documents/RINS/a-tech-titan/src/exercise1)
-  set(exercise1_DEVEL_PREFIX /home/tibor/Documents/RINS/a-tech-titan/build/devel)
+  set(exercise1_DEVEL_PREFIX /home/tibor/Documents/RINS/a-tech-titan/devel)
   set(exercise1_INSTALL_PREFIX "")
   set(exercise1_PREFIX ${exercise1_DEVEL_PREFIX})
 else()
   set(exercise1_SOURCE_PREFIX "")
   set(exercise1_DEVEL_PREFIX "")
-  set(exercise1_INSTALL_PREFIX /usr/local)
+  set(exercise1_INSTALL_PREFIX /home/tibor/Documents/RINS/a-tech-titan/install)
   set(exercise1_PREFIX ${exercise1_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /usr/local/lib;/home/tibor/Documents/RINS/a-tech-titan/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/tibor/Documents/RINS/a-tech-titan/install/lib;/home/tibor/Documents/RINS/a-tech-titan/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

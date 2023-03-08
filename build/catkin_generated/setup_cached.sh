@@ -7,8 +7,5 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/tibor/Documents/RINS/a-tech-titan/build/devel:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/home/tibor/Documents/RINS/a-tech-titan/build/devel/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH='/opt/ros/noetic/lib'
 export PWD='/home/tibor/Documents/RINS/a-tech-titan/build'
-export ROSLISP_PACKAGE_DIRECTORIES="/home/tibor/Documents/RINS/a-tech-titan/build/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/tibor/Documents/RINS/a-tech-titan/src:$ROS_PACKAGE_PATH"

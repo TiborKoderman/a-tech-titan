@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "/home/tibor/Documents/RINS/a-tech-titan/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -54,38 +54,38 @@ endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/local/_setup_util.py")
+   "/home/tibor/Documents/RINS/a-tech-titan/install/_setup_util.py")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/local" TYPE PROGRAM FILES "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/_setup_util.py")
+  file(INSTALL DESTINATION "/home/tibor/Documents/RINS/a-tech-titan/install" TYPE PROGRAM FILES "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/_setup_util.py")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/local/env.sh")
+   "/home/tibor/Documents/RINS/a-tech-titan/install/env.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/local" TYPE PROGRAM FILES "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/env.sh")
+  file(INSTALL DESTINATION "/home/tibor/Documents/RINS/a-tech-titan/install" TYPE PROGRAM FILES "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/env.sh")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/local/setup.bash;/usr/local/local_setup.bash")
+   "/home/tibor/Documents/RINS/a-tech-titan/install/setup.bash;/home/tibor/Documents/RINS/a-tech-titan/install/local_setup.bash")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES
+  file(INSTALL DESTINATION "/home/tibor/Documents/RINS/a-tech-titan/install" TYPE FILE FILES
     "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/setup.bash"
     "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/local_setup.bash"
     )
@@ -93,14 +93,14 @@ endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/local/setup.sh;/usr/local/local_setup.sh")
+   "/home/tibor/Documents/RINS/a-tech-titan/install/setup.sh;/home/tibor/Documents/RINS/a-tech-titan/install/local_setup.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES
+  file(INSTALL DESTINATION "/home/tibor/Documents/RINS/a-tech-titan/install" TYPE FILE FILES
     "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/setup.sh"
     "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/local_setup.sh"
     )
@@ -108,14 +108,14 @@ endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/local/setup.zsh;/usr/local/local_setup.zsh")
+   "/home/tibor/Documents/RINS/a-tech-titan/install/setup.zsh;/home/tibor/Documents/RINS/a-tech-titan/install/local_setup.zsh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES
+  file(INSTALL DESTINATION "/home/tibor/Documents/RINS/a-tech-titan/install" TYPE FILE FILES
     "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/setup.zsh"
     "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/local_setup.zsh"
     )
@@ -123,19 +123,20 @@ endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/usr/local/.rosinstall")
+   "/home/tibor/Documents/RINS/a-tech-titan/install/.rosinstall")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/.rosinstall")
+  file(INSTALL DESTINATION "/home/tibor/Documents/RINS/a-tech-titan/install" TYPE FILE FILES "/home/tibor/Documents/RINS/a-tech-titan/build/catkin_generated/installspace/.rosinstall")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/tibor/Documents/RINS/a-tech-titan/build/gtest/cmake_install.cmake")
+  include("/home/tibor/Documents/RINS/a-tech-titan/build/dn1/cmake_install.cmake")
   include("/home/tibor/Documents/RINS/a-tech-titan/build/exercise1/cmake_install.cmake")
 
 endif()

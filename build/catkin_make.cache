@@ -1,2 +1,2 @@
-exercise1
+dn1:exercise1
 -DCATKIN_DEVEL_PREFIX=/home/tibor/Documents/RINS/a-tech-titan/devel -DCMAKE_INSTALL_PREFIX=/home/tibor/Documents/RINS/a-tech-titan/install -G Unix Makefiles

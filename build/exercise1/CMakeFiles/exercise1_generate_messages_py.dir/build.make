@@ -66,38 +66,38 @@ include exercise1/CMakeFiles/exercise1_generate_messages_py.dir/compiler_depend.
 # Include the progress variables for this target.
 include exercise1/CMakeFiles/exercise1_generate_messages_py.dir/progress.make
 
-exercise1/CMakeFiles/exercise1_generate_messages_py: devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py
-exercise1/CMakeFiles/exercise1_generate_messages_py: devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py
-exercise1/CMakeFiles/exercise1_generate_messages_py: devel/lib/python3.10/site-packages/exercise1/msg/__init__.py
-exercise1/CMakeFiles/exercise1_generate_messages_py: devel/lib/python3.10/site-packages/exercise1/srv/__init__.py
+exercise1/CMakeFiles/exercise1_generate_messages_py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py
+exercise1/CMakeFiles/exercise1_generate_messages_py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py
+exercise1/CMakeFiles/exercise1_generate_messages_py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/__init__.py
+exercise1/CMakeFiles/exercise1_generate_messages_py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/__init__.py
 
-devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
-devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py: /home/tibor/Documents/RINS/a-tech-titan/src/exercise1/msg/Greeting.msg
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py: /home/tibor/Documents/RINS/a-tech-titan/src/exercise1/msg/Greeting.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Python from MSG exercise1/Greeting"
-	cd /home/tibor/Documents/RINS/a-tech-titan/build/exercise1 && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/tibor/Documents/RINS/a-tech-titan/src/exercise1/msg/Greeting.msg -Iexercise1:/home/tibor/Documents/RINS/a-tech-titan/src/exercise1/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p exercise1 -o /home/tibor/Documents/RINS/a-tech-titan/build/devel/lib/python3.10/site-packages/exercise1/msg
+	cd /home/tibor/Documents/RINS/a-tech-titan/build/exercise1 && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/tibor/Documents/RINS/a-tech-titan/src/exercise1/msg/Greeting.msg -Iexercise1:/home/tibor/Documents/RINS/a-tech-titan/src/exercise1/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p exercise1 -o /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg
 
-devel/lib/python3.10/site-packages/exercise1/msg/__init__.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
-devel/lib/python3.10/site-packages/exercise1/msg/__init__.py: devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py
-devel/lib/python3.10/site-packages/exercise1/msg/__init__.py: devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/__init__.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/__init__.py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/__init__.py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Python msg __init__.py for exercise1"
-	cd /home/tibor/Documents/RINS/a-tech-titan/build/exercise1 && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/tibor/Documents/RINS/a-tech-titan/build/devel/lib/python3.10/site-packages/exercise1/msg --initpy
+	cd /home/tibor/Documents/RINS/a-tech-titan/build/exercise1 && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg --initpy
 
-devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py: /opt/ros/noetic/lib/genpy/gensrv_py.py
-devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py: /home/tibor/Documents/RINS/a-tech-titan/src/exercise1/srv/Reverse.srv
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py: /opt/ros/noetic/lib/genpy/gensrv_py.py
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py: /home/tibor/Documents/RINS/a-tech-titan/src/exercise1/srv/Reverse.srv
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Python code from SRV exercise1/Reverse"
-	cd /home/tibor/Documents/RINS/a-tech-titan/build/exercise1 && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/gensrv_py.py /home/tibor/Documents/RINS/a-tech-titan/src/exercise1/srv/Reverse.srv -Iexercise1:/home/tibor/Documents/RINS/a-tech-titan/src/exercise1/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p exercise1 -o /home/tibor/Documents/RINS/a-tech-titan/build/devel/lib/python3.10/site-packages/exercise1/srv
+	cd /home/tibor/Documents/RINS/a-tech-titan/build/exercise1 && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/gensrv_py.py /home/tibor/Documents/RINS/a-tech-titan/src/exercise1/srv/Reverse.srv -Iexercise1:/home/tibor/Documents/RINS/a-tech-titan/src/exercise1/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -p exercise1 -o /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv
 
-devel/lib/python3.10/site-packages/exercise1/srv/__init__.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
-devel/lib/python3.10/site-packages/exercise1/srv/__init__.py: devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py
-devel/lib/python3.10/site-packages/exercise1/srv/__init__.py: devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/__init__.py: /opt/ros/noetic/lib/genpy/genmsg_py.py
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/__init__.py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py
+/home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/__init__.py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating Python srv __init__.py for exercise1"
-	cd /home/tibor/Documents/RINS/a-tech-titan/build/exercise1 && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/tibor/Documents/RINS/a-tech-titan/build/devel/lib/python3.10/site-packages/exercise1/srv --initpy
+	cd /home/tibor/Documents/RINS/a-tech-titan/build/exercise1 && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv --initpy
 
-exercise1_generate_messages_py: devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py
-exercise1_generate_messages_py: devel/lib/python3.10/site-packages/exercise1/msg/__init__.py
-exercise1_generate_messages_py: devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py
-exercise1_generate_messages_py: devel/lib/python3.10/site-packages/exercise1/srv/__init__.py
 exercise1_generate_messages_py: exercise1/CMakeFiles/exercise1_generate_messages_py
+exercise1_generate_messages_py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/_Greeting.py
+exercise1_generate_messages_py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/msg/__init__.py
+exercise1_generate_messages_py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/_Reverse.py
+exercise1_generate_messages_py: /home/tibor/Documents/RINS/a-tech-titan/devel/lib/python3.10/site-packages/exercise1/srv/__init__.py
 exercise1_generate_messages_py: exercise1/CMakeFiles/exercise1_generate_messages_py.dir/build.make
 .PHONY : exercise1_generate_messages_py
 

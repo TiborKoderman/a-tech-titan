@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "../devel/lib/exercise1/publish_custom"
-  "../devel/lib/exercise1/publish_custom.pdb"
+  "/home/tibor/Documents/RINS/a-tech-titan/devel/lib/exercise1/publish_custom"
+  "/home/tibor/Documents/RINS/a-tech-titan/devel/lib/exercise1/publish_custom.pdb"
   "CMakeFiles/publish_custom.dir/src/publish_custom_msg_node.cpp.o"
   "CMakeFiles/publish_custom.dir/src/publish_custom_msg_node.cpp.o.d"
 )

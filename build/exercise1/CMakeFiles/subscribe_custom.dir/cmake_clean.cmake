@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "../devel/lib/exercise1/subscribe_custom"
-  "../devel/lib/exercise1/subscribe_custom.pdb"
+  "/home/tibor/Documents/RINS/a-tech-titan/devel/lib/exercise1/subscribe_custom"
+  "/home/tibor/Documents/RINS/a-tech-titan/devel/lib/exercise1/subscribe_custom.pdb"
   "CMakeFiles/subscribe_custom.dir/src/subscribe_custom_msg_node.cpp.o"
   "CMakeFiles/subscribe_custom.dir/src/subscribe_custom_msg_node.cpp.o.d"
 )

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\"exercise1\"
 
-CXX_INCLUDES = -I/home/tibor/Documents/RINS/a-tech-titan/build/devel/include -I/home/tibor/Documents/RINS/a-tech-titan/src/exercise1/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp
+CXX_INCLUDES = -I/home/tibor/Documents/RINS/a-tech-titan/devel/include -I/home/tibor/Documents/RINS/a-tech-titan/src/exercise1/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp
 
 CXX_FLAGS = 
 

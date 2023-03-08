@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "../devel/share/gennodejs/ros/exercise1/msg/Greeting.js"
-  "../devel/share/gennodejs/ros/exercise1/srv/Reverse.js"
+  "/home/tibor/Documents/RINS/a-tech-titan/devel/share/gennodejs/ros/exercise1/msg/Greeting.js"
+  "/home/tibor/Documents/RINS/a-tech-titan/devel/share/gennodejs/ros/exercise1/srv/Reverse.js"
   "CMakeFiles/exercise1_generate_messages_nodejs"
 )
 

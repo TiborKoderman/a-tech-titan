@@ -1153,5 +1153,5 @@ exercise1/CMakeFiles/publish_custom.dir/src/publish_custom_msg_node.cpp.o: \
  /opt/ros/noetic/include/ros/this_node.h \
  /opt/ros/noetic/include/ros/param.h /opt/ros/noetic/include/ros/topic.h \
  /opt/ros/noetic/include/ros/node_handle.h \
- /home/tibor/Documents/RINS/a-tech-titan/build/devel/include/exercise1/Greeting.h \
+ /home/tibor/Documents/RINS/a-tech-titan/devel/include/exercise1/Greeting.h \
  /opt/ros/noetic/include/ros/message_operations.h

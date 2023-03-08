@@ -1,8 +1,0 @@
-prefix=/home/tibor/Documents/RINS/a-tech-titan/build/devel
-
-Name: exercise1
-Description: Description of exercise1
-Version: 0.0.0
-Cflags: -I/home/tibor/Documents/RINS/a-tech-titan/build/devel/include
-Libs: -L${prefix}/lib 
-Requires: message_runtime
