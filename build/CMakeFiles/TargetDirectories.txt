@@ -56,7 +56,8 @@
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/dn1_gennodejs.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/dn1_generate_messages_py.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/dn1_genpy.dir
-/home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/publisher_node.dir
+/home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/publisher.dir
+/home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/subscriber.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/test.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/edit_cache.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/rebuild_cache.dir

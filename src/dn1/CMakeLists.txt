@@ -131,7 +131,8 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/dn1_node.cpp)
-add_executable(publisher_node src/publisher_node.cpp)
+add_executable(publisher src/publisher_node.cpp)
+add_executable(subscriber src/subscriber_node.cpp)
 
 
 ## Rename C++ executable without prefix
@@ -143,13 +144,15 @@ add_executable(publisher_node src/publisher_node.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(publisher_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(publisher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(subscriber ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(publisher_node ${catkin_LIBRARIES})
+target_link_libraries(publisher ${catkin_LIBRARIES})
+target_link_libraries(subscriber ${catkin_LIBRARIES})
 
 
 #############

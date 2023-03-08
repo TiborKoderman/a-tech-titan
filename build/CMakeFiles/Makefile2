@@ -90,7 +90,8 @@ clean: exercise1/clean
 
 # Recursive "all" directory target.
 dn1/all: dn1/CMakeFiles/dn1_generate_messages.dir/all
-dn1/all: dn1/CMakeFiles/publisher_node.dir/all
+dn1/all: dn1/CMakeFiles/publisher.dir/all
+dn1/all: dn1/CMakeFiles/subscriber.dir/all
 .PHONY : dn1/all
 
 # Recursive "preinstall" directory target.
@@ -126,7 +127,8 @@ dn1/clean: dn1/CMakeFiles/dn1_generate_messages_nodejs.dir/clean
 dn1/clean: dn1/CMakeFiles/dn1_gennodejs.dir/clean
 dn1/clean: dn1/CMakeFiles/dn1_generate_messages_py.dir/clean
 dn1/clean: dn1/CMakeFiles/dn1_genpy.dir/clean
-dn1/clean: dn1/CMakeFiles/publisher_node.dir/clean
+dn1/clean: dn1/CMakeFiles/publisher.dir/clean
+dn1/clean: dn1/CMakeFiles/subscriber.dir/clean
 .PHONY : dn1/clean
 
 #=============================================================================
@@ -1176,50 +1178,96 @@ dn1/CMakeFiles/dn1_genpy.dir/clean:
 .PHONY : dn1/CMakeFiles/dn1_genpy.dir/clean
 
 #=============================================================================
-# Target rules for target dn1/CMakeFiles/publisher_node.dir
+# Target rules for target dn1/CMakeFiles/publisher.dir
 
 # All Build rule for target.
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/_catkin_empty_exported_target.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/roscpp_generate_messages_cpp.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/roscpp_generate_messages_eus.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/roscpp_generate_messages_lisp.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/roscpp_generate_messages_py.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_eus.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_py.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/dn1_generate_messages_cpp.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/dn1_generate_messages_eus.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/dn1_generate_messages_lisp.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/dn1_generate_messages_nodejs.dir/all
-dn1/CMakeFiles/publisher_node.dir/all: dn1/CMakeFiles/dn1_generate_messages_py.dir/all
-	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher_node.dir/build.make dn1/CMakeFiles/publisher_node.dir/depend
-	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher_node.dir/build.make dn1/CMakeFiles/publisher_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=37,38 "Built target publisher_node"
-.PHONY : dn1/CMakeFiles/publisher_node.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/_catkin_empty_exported_target.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/roscpp_generate_messages_eus.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/roscpp_generate_messages_py.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_py.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/dn1_generate_messages_cpp.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/dn1_generate_messages_eus.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/dn1_generate_messages_lisp.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/dn1_generate_messages_nodejs.dir/all
+dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/dn1_generate_messages_py.dir/all
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher.dir/build.make dn1/CMakeFiles/publisher.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher.dir/build.make dn1/CMakeFiles/publisher.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=37,38 "Built target publisher"
+.PHONY : dn1/CMakeFiles/publisher.dir/all
 
 # Build rule for subdir invocation for target.
-dn1/CMakeFiles/publisher_node.dir/rule: cmake_check_build_system
+dn1/CMakeFiles/publisher.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 9
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn1/CMakeFiles/publisher_node.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn1/CMakeFiles/publisher.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
-.PHONY : dn1/CMakeFiles/publisher_node.dir/rule
+.PHONY : dn1/CMakeFiles/publisher.dir/rule
 
 # Convenience name for target.
-publisher_node: dn1/CMakeFiles/publisher_node.dir/rule
-.PHONY : publisher_node
+publisher: dn1/CMakeFiles/publisher.dir/rule
+.PHONY : publisher
 
 # clean rule for target.
-dn1/CMakeFiles/publisher_node.dir/clean:
-	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher_node.dir/build.make dn1/CMakeFiles/publisher_node.dir/clean
-.PHONY : dn1/CMakeFiles/publisher_node.dir/clean
+dn1/CMakeFiles/publisher.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher.dir/build.make dn1/CMakeFiles/publisher.dir/clean
+.PHONY : dn1/CMakeFiles/publisher.dir/clean
+
+#=============================================================================
+# Target rules for target dn1/CMakeFiles/subscriber.dir
+
+# All Build rule for target.
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/_catkin_empty_exported_target.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/roscpp_generate_messages_eus.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/roscpp_generate_messages_py.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_py.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/dn1_generate_messages_cpp.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/dn1_generate_messages_eus.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/dn1_generate_messages_lisp.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/dn1_generate_messages_nodejs.dir/all
+dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/dn1_generate_messages_py.dir/all
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/subscriber.dir/build.make dn1/CMakeFiles/subscriber.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/subscriber.dir/build.make dn1/CMakeFiles/subscriber.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=45,46 "Built target subscriber"
+.PHONY : dn1/CMakeFiles/subscriber.dir/all
+
+# Build rule for subdir invocation for target.
+dn1/CMakeFiles/subscriber.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 9
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn1/CMakeFiles/subscriber.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn1/CMakeFiles/subscriber.dir/rule
+
+# Convenience name for target.
+subscriber: dn1/CMakeFiles/subscriber.dir/rule
+.PHONY : subscriber
+
+# clean rule for target.
+dn1/CMakeFiles/subscriber.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/subscriber.dir/build.make dn1/CMakeFiles/subscriber.dir/clean
+.PHONY : dn1/CMakeFiles/subscriber.dir/clean
 
 #=============================================================================
 # Target rules for target exercise1/CMakeFiles/exercise1_generate_messages.dir

@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-	ros::init(argc,argv,"dn1_custom_publisher"); //Initialize the ROS system, give the node the name "publish_velocity"
+	ros::init(argc,argv,"dn1_publisher"); //Initialize the ROS system, give the node the name "publish_velocity"
 	ros::NodeHandle nh;	//Register the node with the ROS system
 
 	//create a publisher object.
@@ -21,16 +21,14 @@ int main(int argc, char *argv[])
 		//Create the message.
 		dn1::Message1 msg;
 
-		std::string ss = "custom message";
-
-		msg.content = ss;
+		msg.content="hello world";
 		msg.seq=count++;
 
 		//Publish the message
 		pub.publish(msg);
 
 		//Send a message to rosout
-		ROS_INFO("[%d] %s",msg.seq, msg.content);
+		ROS_INFO("[%d] %s", msg.seq, msg.content.c_str());
 
 		//Wait untilit's time for another iteration.
 		rate.sleep();

@@ -653,17 +653,30 @@ dn1_genpy/fast:
 .PHONY : dn1_genpy/fast
 
 #=============================================================================
-# Target rules for targets named publisher_node
+# Target rules for targets named publisher
 
 # Build rule for target.
-publisher_node: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 publisher_node
-.PHONY : publisher_node
+publisher: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 publisher
+.PHONY : publisher
 
 # fast build rule for target.
-publisher_node/fast:
-	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher_node.dir/build.make dn1/CMakeFiles/publisher_node.dir/build
-.PHONY : publisher_node/fast
+publisher/fast:
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher.dir/build.make dn1/CMakeFiles/publisher.dir/build
+.PHONY : publisher/fast
+
+#=============================================================================
+# Target rules for targets named subscriber
+
+# Build rule for target.
+subscriber: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 subscriber
+.PHONY : subscriber
+
+# fast build rule for target.
+subscriber/fast:
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/subscriber.dir/build.make dn1/CMakeFiles/subscriber.dir/build
+.PHONY : subscriber/fast
 
 #=============================================================================
 # Target rules for targets named exercise1_generate_messages
@@ -992,10 +1005,11 @@ help:
 	@echo "... hello_world"
 	@echo "... publish_custom"
 	@echo "... publish_string"
-	@echo "... publisher_node"
+	@echo "... publisher"
 	@echo "... service_node"
 	@echo "... subscribe_custom"
 	@echo "... subscribe_string"
+	@echo "... subscriber"
 .PHONY : help
 
 
