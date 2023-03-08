@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"ros.distro": "noetic",
+		"python.autoComplete.extraPaths": [
+			"/opt/ros/noetic/lib/python3.10/site-packages"
+		]
+	}
+}
