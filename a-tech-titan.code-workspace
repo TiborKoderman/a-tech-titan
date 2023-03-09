@@ -18,7 +18,14 @@
 			"hash_set": "cpp",
 			"bitset": "cpp",
 			"algorithm": "cpp",
-			"chrono": "cpp"
+			"chrono": "cpp",
+			"array": "cpp",
+			"deque": "cpp",
+			"list": "cpp",
+			"unordered_map": "cpp",
+			"vector": "cpp",
+			"initializer_list": "cpp",
+			"string_view": "cpp"
 		}
 	}
 }
