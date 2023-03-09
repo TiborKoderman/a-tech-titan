@@ -46,6 +46,7 @@
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/std_msgs_generate_messages_py.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/dn1_generate_messages.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/_dn1_generate_messages_check_deps_Message1.dir
+/home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/_dn1_generate_messages_check_deps_Sum.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/dn1_generate_messages_cpp.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/dn1_gencpp.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/dn1_generate_messages_eus.dir
@@ -58,6 +59,8 @@
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/dn1_genpy.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/publisher.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/subscriber.dir
+/home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/sum_service.dir
+/home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/sum_client.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/test.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/edit_cache.dir
 /home/tibor/Documents/RINS/a-tech-titan/build/dn1/CMakeFiles/rebuild_cache.dir

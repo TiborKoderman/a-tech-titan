@@ -1,19 +1,20 @@
 #include "ros/ros.h"
+#include "dn1/Sum.h"
 
 #include <string>
 #include <iostream>
 #include <algorithm>
 #include <vector>
 
-bool manipulate(Vector<int>& req, int res)
+bool manipulate(dn1::Sum::Request& req, dn1::Sum::Response& res)
 {
-  res = 0;
-  for (int i : req.content)
+  res.sum = 0;
+  for (int i : req.arr)
   {
-    res += i;
+    res.sum += i;
   }
 
-  ROS_INFO("response: %d", req, res);
+  ROS_INFO("response: %d", res.sum);
   return true;
 }
 

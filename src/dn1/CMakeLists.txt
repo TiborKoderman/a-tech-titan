@@ -54,10 +54,10 @@ add_message_files(
 )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-# )
+add_service_files(
+  FILES
+  Sum.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -133,6 +133,8 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 # add_executable(${PROJECT_NAME}_node src/dn1_node.cpp)
 add_executable(publisher src/publisher_node.cpp)
 add_executable(subscriber src/subscriber_node.cpp)
+add_executable(sum_service src/sum_service_node.cpp)
+add_executable(sum_client src/sum_client_node.cpp)
 
 
 ## Rename C++ executable without prefix
@@ -146,6 +148,8 @@ add_executable(subscriber src/subscriber_node.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(publisher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(subscriber ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(sum_service ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(sum_client ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
@@ -153,6 +157,8 @@ add_dependencies(subscriber ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTE
 # )
 target_link_libraries(publisher ${catkin_LIBRARIES})
 target_link_libraries(subscriber ${catkin_LIBRARIES})
+target_link_libraries(sum_service ${catkin_LIBRARIES})
+target_link_libraries(sum_client ${catkin_LIBRARIES})
 
 
 #############

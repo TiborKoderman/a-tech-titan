@@ -523,6 +523,19 @@ _dn1_generate_messages_check_deps_Message1/fast:
 .PHONY : _dn1_generate_messages_check_deps_Message1/fast
 
 #=============================================================================
+# Target rules for targets named _dn1_generate_messages_check_deps_Sum
+
+# Build rule for target.
+_dn1_generate_messages_check_deps_Sum: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _dn1_generate_messages_check_deps_Sum
+.PHONY : _dn1_generate_messages_check_deps_Sum
+
+# fast build rule for target.
+_dn1_generate_messages_check_deps_Sum/fast:
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/_dn1_generate_messages_check_deps_Sum.dir/build.make dn1/CMakeFiles/_dn1_generate_messages_check_deps_Sum.dir/build
+.PHONY : _dn1_generate_messages_check_deps_Sum/fast
+
+#=============================================================================
 # Target rules for targets named dn1_generate_messages_cpp
 
 # Build rule for target.
@@ -677,6 +690,32 @@ subscriber: cmake_check_build_system
 subscriber/fast:
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/subscriber.dir/build.make dn1/CMakeFiles/subscriber.dir/build
 .PHONY : subscriber/fast
+
+#=============================================================================
+# Target rules for targets named sum_service
+
+# Build rule for target.
+sum_service: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sum_service
+.PHONY : sum_service
+
+# fast build rule for target.
+sum_service/fast:
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/sum_service.dir/build.make dn1/CMakeFiles/sum_service.dir/build
+.PHONY : sum_service/fast
+
+#=============================================================================
+# Target rules for targets named sum_client
+
+# Build rule for target.
+sum_client: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sum_client
+.PHONY : sum_client
+
+# fast build rule for target.
+sum_client/fast:
+	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/sum_client.dir/build.make dn1/CMakeFiles/sum_client.dir/build
+.PHONY : sum_client/fast
 
 #=============================================================================
 # Target rules for targets named exercise1_generate_messages
@@ -953,6 +992,7 @@ help:
 	@echo "... test"
 	@echo "... _catkin_empty_exported_target"
 	@echo "... _dn1_generate_messages_check_deps_Message1"
+	@echo "... _dn1_generate_messages_check_deps_Sum"
 	@echo "... _exercise1_generate_messages_check_deps_Greeting"
 	@echo "... _exercise1_generate_messages_check_deps_Reverse"
 	@echo "... clean_test_results"
@@ -1010,6 +1050,8 @@ help:
 	@echo "... subscribe_custom"
 	@echo "... subscribe_string"
 	@echo "... subscriber"
+	@echo "... sum_client"
+	@echo "... sum_service"
 .PHONY : help
 
 
