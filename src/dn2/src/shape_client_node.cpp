@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 
   if (client.call(srv))
   {
-    ROS_INFO("the request was successful");
+    ROS_INFO("the request was successful, executed: %s", srv.response.lastMovementType.c_str());
   }
   else
   {
