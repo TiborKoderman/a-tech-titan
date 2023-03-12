@@ -137,7 +137,9 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/tibor/Documents/RINS/a-tech-titan/build/gtest/cmake_install.cmake")
   include("/home/tibor/Documents/RINS/a-tech-titan/build/dn1/cmake_install.cmake")
+  include("/home/tibor/Documents/RINS/a-tech-titan/build/dn2/cmake_install.cmake")
   include("/home/tibor/Documents/RINS/a-tech-titan/build/exercise1/cmake_install.cmake")
+  include("/home/tibor/Documents/RINS/a-tech-titan/build/exercise2/cmake_install.cmake")
 
 endif()
 

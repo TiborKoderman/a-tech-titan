@@ -56,7 +56,7 @@ CMAKE_BUILD_TYPE:STRING=
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 //CXX compiler
-CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/c++
+CMAKE_CXX_COMPILER:STRING=/usr/bin/c++
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -82,7 +82,7 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
 //C compiler
-CMAKE_C_COMPILER:FILEPATH=/usr/bin/cc
+CMAKE_C_COMPILER:STRING=/usr/bin/cc
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -340,6 +340,15 @@ dn1_IS_TOP_LEVEL:STATIC=OFF
 dn1_SOURCE_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/src/dn1
 
 //Value Computed by CMake
+dn2_BINARY_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/build/dn2
+
+//Value Computed by CMake
+dn2_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+dn2_SOURCE_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/src/dn2
+
+//Value Computed by CMake
 exercise1_BINARY_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/build/exercise1
 
 //Value Computed by CMake
@@ -347,6 +356,15 @@ exercise1_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 exercise1_SOURCE_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/src/exercise1
+
+//Value Computed by CMake
+exercise2_BINARY_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/build/exercise2
+
+//Value Computed by CMake
+exercise2_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+exercise2_SOURCE_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/src/exercise2
 
 //The directory containing a CMake configuration file for gencpp.
 gencpp_DIR:PATH=/opt/ros/noetic/share/gencpp/cmake
@@ -365,6 +383,9 @@ gennodejs_DIR:PATH=/opt/ros/noetic/share/gennodejs/cmake
 
 //The directory containing a CMake configuration file for genpy.
 genpy_DIR:PATH=/opt/ros/noetic/share/genpy/cmake
+
+//The directory containing a CMake configuration file for geometry_msgs.
+geometry_msgs_DIR:PATH=/opt/ros/noetic/share/geometry_msgs/cmake
 
 //Value Computed by CMake
 gmock_BINARY_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/build/gtest
@@ -467,7 +488,7 @@ CMAKE_CACHE_MAJOR_VERSION:INTERNAL=3
 //Minor version of cmake used to create the current loaded cache
 CMAKE_CACHE_MINOR_VERSION:INTERNAL=25
 //Patch version of cmake used to create the current loaded cache
-CMAKE_CACHE_PATCH_VERSION:INTERNAL=2
+CMAKE_CACHE_PATCH_VERSION:INTERNAL=3
 //ADVANCED property for variable: CMAKE_COLOR_MAKEFILE
 CMAKE_COLOR_MAKEFILE-ADVANCED:INTERNAL=1
 //Path to CMake executable.
@@ -560,7 +581,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=5
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=7
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

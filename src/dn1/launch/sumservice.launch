@@ -1,0 +1,7 @@
+<launch>
+
+    <node name="sum_client" pkg="dn1" type="sum_client" output="screen"/>
+  
+    <node name="sum_service" pkg="dn1" type="sum_service" output="screen"/>
+  
+</launch>

@@ -65,13 +65,17 @@ CMAKE_BINARY_DIR = /home/tibor/Documents/RINS/a-tech-titan/build
 # The main recursive "all" target.
 all: gtest/all
 all: dn1/all
+all: dn2/all
 all: exercise1/all
+all: exercise2/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
 preinstall: gtest/preinstall
 preinstall: dn1/preinstall
+preinstall: dn2/preinstall
 preinstall: exercise1/preinstall
+preinstall: exercise2/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
@@ -82,7 +86,9 @@ clean: CMakeFiles/clean_test_results.dir/clean
 clean: CMakeFiles/doxygen.dir/clean
 clean: gtest/clean
 clean: dn1/clean
+clean: dn2/clean
 clean: exercise1/clean
+clean: exercise2/clean
 .PHONY : clean
 
 #=============================================================================
@@ -137,6 +143,36 @@ dn1/clean: dn1/CMakeFiles/sum_client.dir/clean
 .PHONY : dn1/clean
 
 #=============================================================================
+# Directory level rules for directory dn2
+
+# Recursive "all" directory target.
+dn2/all: dn2/CMakeFiles/dn2_generate_messages.dir/all
+dn2/all: dn2/CMakeFiles/shape_service.dir/all
+dn2/all: dn2/CMakeFiles/shape_client.dir/all
+.PHONY : dn2/all
+
+# Recursive "preinstall" directory target.
+dn2/preinstall:
+.PHONY : dn2/preinstall
+
+# Recursive "clean" directory target.
+dn2/clean: dn2/CMakeFiles/dn2_generate_messages.dir/clean
+dn2/clean: dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_generate_messages_cpp.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_gencpp.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_generate_messages_eus.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_geneus.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_generate_messages_lisp.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_genlisp.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_gennodejs.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_generate_messages_py.dir/clean
+dn2/clean: dn2/CMakeFiles/dn2_genpy.dir/clean
+dn2/clean: dn2/CMakeFiles/shape_service.dir/clean
+dn2/clean: dn2/CMakeFiles/shape_client.dir/clean
+.PHONY : dn2/clean
+
+#=============================================================================
 # Directory level rules for directory exercise1
 
 # Recursive "all" directory target.
@@ -176,6 +212,26 @@ exercise1/clean: exercise1/CMakeFiles/subscribe_custom.dir/clean
 exercise1/clean: exercise1/CMakeFiles/service_node.dir/clean
 exercise1/clean: exercise1/CMakeFiles/client_node.dir/clean
 .PHONY : exercise1/clean
+
+#=============================================================================
+# Directory level rules for directory exercise2
+
+# Recursive "all" directory target.
+exercise2/all: exercise2/CMakeFiles/pubvel.dir/all
+.PHONY : exercise2/all
+
+# Recursive "preinstall" directory target.
+exercise2/preinstall:
+.PHONY : exercise2/preinstall
+
+# Recursive "clean" directory target.
+exercise2/clean: exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/clean
+exercise2/clean: exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/clean
+exercise2/clean: exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/clean
+exercise2/clean: exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/clean
+exercise2/clean: exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/clean
+exercise2/clean: exercise2/CMakeFiles/pubvel.dir/clean
+.PHONY : exercise2/clean
 
 #=============================================================================
 # Directory level rules for directory googletest
@@ -347,7 +403,7 @@ CMakeFiles/doxygen.dir/clean:
 gtest/CMakeFiles/gmock.dir/all: googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f gtest/CMakeFiles/gmock.dir/build.make gtest/CMakeFiles/gmock.dir/depend
 	$(MAKE) $(MAKESILENT) -f gtest/CMakeFiles/gmock.dir/build.make gtest/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=29,30 "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=36,37 "Built target gmock"
 .PHONY : gtest/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
@@ -374,7 +430,7 @@ gtest/CMakeFiles/gmock_main.dir/all: gtest/CMakeFiles/gmock.dir/all
 gtest/CMakeFiles/gmock_main.dir/all: googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f gtest/CMakeFiles/gmock_main.dir/build.make gtest/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) $(MAKESILENT) -f gtest/CMakeFiles/gmock_main.dir/build.make gtest/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=31,32 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=38,39 "Built target gmock_main"
 .PHONY : gtest/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -400,7 +456,7 @@ gtest/CMakeFiles/gmock_main.dir/clean:
 googletest/CMakeFiles/gtest.dir/all:
 	$(MAKE) $(MAKESILENT) -f googletest/CMakeFiles/gtest.dir/build.make googletest/CMakeFiles/gtest.dir/depend
 	$(MAKE) $(MAKESILENT) -f googletest/CMakeFiles/gtest.dir/build.make googletest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=33,34 "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=40,41 "Built target gtest"
 .PHONY : googletest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -426,7 +482,7 @@ googletest/CMakeFiles/gtest.dir/clean:
 googletest/CMakeFiles/gtest_main.dir/all: googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f googletest/CMakeFiles/gtest_main.dir/build.make googletest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) $(MAKESILENT) -f googletest/CMakeFiles/gtest_main.dir/build.make googletest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=35,36 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=42,43 "Built target gtest_main"
 .PHONY : googletest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1240,7 +1296,7 @@ dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/dn1_generate_messages_nodejs.di
 dn1/CMakeFiles/publisher.dir/all: dn1/CMakeFiles/dn1_generate_messages_py.dir/all
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher.dir/build.make dn1/CMakeFiles/publisher.dir/depend
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/publisher.dir/build.make dn1/CMakeFiles/publisher.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=43,44 "Built target publisher"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=50,51 "Built target publisher"
 .PHONY : dn1/CMakeFiles/publisher.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1286,7 +1342,7 @@ dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/dn1_generate_messages_nodejs.d
 dn1/CMakeFiles/subscriber.dir/all: dn1/CMakeFiles/dn1_generate_messages_py.dir/all
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/subscriber.dir/build.make dn1/CMakeFiles/subscriber.dir/depend
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/subscriber.dir/build.make dn1/CMakeFiles/subscriber.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=51,52 "Built target subscriber"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=64,65 "Built target subscriber"
 .PHONY : dn1/CMakeFiles/subscriber.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1332,7 +1388,7 @@ dn1/CMakeFiles/sum_service.dir/all: dn1/CMakeFiles/dn1_generate_messages_nodejs.
 dn1/CMakeFiles/sum_service.dir/all: dn1/CMakeFiles/dn1_generate_messages_py.dir/all
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/sum_service.dir/build.make dn1/CMakeFiles/sum_service.dir/depend
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/sum_service.dir/build.make dn1/CMakeFiles/sum_service.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=55,56 "Built target sum_service"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=68,69 "Built target sum_service"
 .PHONY : dn1/CMakeFiles/sum_service.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1378,7 +1434,7 @@ dn1/CMakeFiles/sum_client.dir/all: dn1/CMakeFiles/dn1_generate_messages_nodejs.d
 dn1/CMakeFiles/sum_client.dir/all: dn1/CMakeFiles/dn1_generate_messages_py.dir/all
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/sum_client.dir/build.make dn1/CMakeFiles/sum_client.dir/depend
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/sum_client.dir/build.make dn1/CMakeFiles/sum_client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=53,54 "Built target sum_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=66,67 "Built target sum_client"
 .PHONY : dn1/CMakeFiles/sum_client.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1396,6 +1452,419 @@ sum_client: dn1/CMakeFiles/sum_client.dir/rule
 dn1/CMakeFiles/sum_client.dir/clean:
 	$(MAKE) $(MAKESILENT) -f dn1/CMakeFiles/sum_client.dir/build.make dn1/CMakeFiles/sum_client.dir/clean
 .PHONY : dn1/CMakeFiles/sum_client.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_generate_messages.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_generate_messages.dir/all: dn2/CMakeFiles/dn2_generate_messages_cpp.dir/all
+dn2/CMakeFiles/dn2_generate_messages.dir/all: dn2/CMakeFiles/dn2_generate_messages_eus.dir/all
+dn2/CMakeFiles/dn2_generate_messages.dir/all: dn2/CMakeFiles/dn2_generate_messages_lisp.dir/all
+dn2/CMakeFiles/dn2_generate_messages.dir/all: dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/dn2_generate_messages.dir/all: dn2/CMakeFiles/dn2_generate_messages_py.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages.dir/build.make dn2/CMakeFiles/dn2_generate_messages.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages.dir/build.make dn2/CMakeFiles/dn2_generate_messages.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target dn2_generate_messages"
+.PHONY : dn2/CMakeFiles/dn2_generate_messages.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_generate_messages.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 7
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_generate_messages.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_generate_messages.dir/rule
+
+# Convenience name for target.
+dn2_generate_messages: dn2/CMakeFiles/dn2_generate_messages.dir/rule
+.PHONY : dn2_generate_messages
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_generate_messages.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages.dir/build.make dn2/CMakeFiles/dn2_generate_messages.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_generate_messages.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/all:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/build.make dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/build.make dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target _dn2_generate_messages_check_deps_Shape"
+.PHONY : dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/rule
+
+# Convenience name for target.
+_dn2_generate_messages_check_deps_Shape: dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/rule
+.PHONY : _dn2_generate_messages_check_deps_Shape
+
+# clean rule for target.
+dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/build.make dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/clean
+.PHONY : dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_generate_messages_cpp.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_generate_messages_cpp.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+dn2/CMakeFiles/dn2_generate_messages_cpp.dir/all: dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_cpp.dir/build.make dn2/CMakeFiles/dn2_generate_messages_cpp.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_cpp.dir/build.make dn2/CMakeFiles/dn2_generate_messages_cpp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=16 "Built target dn2_generate_messages_cpp"
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_cpp.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_generate_messages_cpp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 1
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_generate_messages_cpp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+dn2_generate_messages_cpp: dn2/CMakeFiles/dn2_generate_messages_cpp.dir/rule
+.PHONY : dn2_generate_messages_cpp
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_generate_messages_cpp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_cpp.dir/build.make dn2/CMakeFiles/dn2_generate_messages_cpp.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_cpp.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_gencpp.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_gencpp.dir/all: dn2/CMakeFiles/dn2_generate_messages_cpp.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_gencpp.dir/build.make dn2/CMakeFiles/dn2_gencpp.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_gencpp.dir/build.make dn2/CMakeFiles/dn2_gencpp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target dn2_gencpp"
+.PHONY : dn2/CMakeFiles/dn2_gencpp.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_gencpp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 1
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_gencpp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_gencpp.dir/rule
+
+# Convenience name for target.
+dn2_gencpp: dn2/CMakeFiles/dn2_gencpp.dir/rule
+.PHONY : dn2_gencpp
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_gencpp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_gencpp.dir/build.make dn2/CMakeFiles/dn2_gencpp.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_gencpp.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_generate_messages_eus.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_generate_messages_eus.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+dn2/CMakeFiles/dn2_generate_messages_eus.dir/all: dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_eus.dir/build.make dn2/CMakeFiles/dn2_generate_messages_eus.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_eus.dir/build.make dn2/CMakeFiles/dn2_generate_messages_eus.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=17,18 "Built target dn2_generate_messages_eus"
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_eus.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_generate_messages_eus.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_generate_messages_eus.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+dn2_generate_messages_eus: dn2/CMakeFiles/dn2_generate_messages_eus.dir/rule
+.PHONY : dn2_generate_messages_eus
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_generate_messages_eus.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_eus.dir/build.make dn2/CMakeFiles/dn2_generate_messages_eus.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_eus.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_geneus.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_geneus.dir/all: dn2/CMakeFiles/dn2_generate_messages_eus.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_geneus.dir/build.make dn2/CMakeFiles/dn2_geneus.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_geneus.dir/build.make dn2/CMakeFiles/dn2_geneus.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target dn2_geneus"
+.PHONY : dn2/CMakeFiles/dn2_geneus.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_geneus.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_geneus.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_geneus.dir/rule
+
+# Convenience name for target.
+dn2_geneus: dn2/CMakeFiles/dn2_geneus.dir/rule
+.PHONY : dn2_geneus
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_geneus.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_geneus.dir/build.make dn2/CMakeFiles/dn2_geneus.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_geneus.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_generate_messages_lisp.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_generate_messages_lisp.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+dn2/CMakeFiles/dn2_generate_messages_lisp.dir/all: dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_lisp.dir/build.make dn2/CMakeFiles/dn2_generate_messages_lisp.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_lisp.dir/build.make dn2/CMakeFiles/dn2_generate_messages_lisp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=19 "Built target dn2_generate_messages_lisp"
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_lisp.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_generate_messages_lisp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 1
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_generate_messages_lisp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+dn2_generate_messages_lisp: dn2/CMakeFiles/dn2_generate_messages_lisp.dir/rule
+.PHONY : dn2_generate_messages_lisp
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_generate_messages_lisp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_lisp.dir/build.make dn2/CMakeFiles/dn2_generate_messages_lisp.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_lisp.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_genlisp.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_genlisp.dir/all: dn2/CMakeFiles/dn2_generate_messages_lisp.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_genlisp.dir/build.make dn2/CMakeFiles/dn2_genlisp.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_genlisp.dir/build.make dn2/CMakeFiles/dn2_genlisp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target dn2_genlisp"
+.PHONY : dn2/CMakeFiles/dn2_genlisp.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_genlisp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 1
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_genlisp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_genlisp.dir/rule
+
+# Convenience name for target.
+dn2_genlisp: dn2/CMakeFiles/dn2_genlisp.dir/rule
+.PHONY : dn2_genlisp
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_genlisp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_genlisp.dir/build.make dn2/CMakeFiles/dn2_genlisp.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_genlisp.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_generate_messages_nodejs.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/all: dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/build.make dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/build.make dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=20 "Built target dn2_generate_messages_nodejs"
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 1
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+dn2_generate_messages_nodejs: dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/rule
+.PHONY : dn2_generate_messages_nodejs
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/build.make dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_gennodejs.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_gennodejs.dir/all: dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_gennodejs.dir/build.make dn2/CMakeFiles/dn2_gennodejs.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_gennodejs.dir/build.make dn2/CMakeFiles/dn2_gennodejs.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target dn2_gennodejs"
+.PHONY : dn2/CMakeFiles/dn2_gennodejs.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_gennodejs.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 1
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_gennodejs.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_gennodejs.dir/rule
+
+# Convenience name for target.
+dn2_gennodejs: dn2/CMakeFiles/dn2_gennodejs.dir/rule
+.PHONY : dn2_gennodejs
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_gennodejs.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_gennodejs.dir/build.make dn2/CMakeFiles/dn2_gennodejs.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_gennodejs.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_generate_messages_py.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_generate_messages_py.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_py.dir/all
+dn2/CMakeFiles/dn2_generate_messages_py.dir/all: dn2/CMakeFiles/_dn2_generate_messages_check_deps_Shape.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_py.dir/build.make dn2/CMakeFiles/dn2_generate_messages_py.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_py.dir/build.make dn2/CMakeFiles/dn2_generate_messages_py.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=21,22 "Built target dn2_generate_messages_py"
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_py.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_generate_messages_py.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_generate_messages_py.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_py.dir/rule
+
+# Convenience name for target.
+dn2_generate_messages_py: dn2/CMakeFiles/dn2_generate_messages_py.dir/rule
+.PHONY : dn2_generate_messages_py
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_generate_messages_py.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_generate_messages_py.dir/build.make dn2/CMakeFiles/dn2_generate_messages_py.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_generate_messages_py.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/dn2_genpy.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/dn2_genpy.dir/all: dn2/CMakeFiles/dn2_generate_messages_py.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_genpy.dir/build.make dn2/CMakeFiles/dn2_genpy.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_genpy.dir/build.make dn2/CMakeFiles/dn2_genpy.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target dn2_genpy"
+.PHONY : dn2/CMakeFiles/dn2_genpy.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/dn2_genpy.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/dn2_genpy.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/dn2_genpy.dir/rule
+
+# Convenience name for target.
+dn2_genpy: dn2/CMakeFiles/dn2_genpy.dir/rule
+.PHONY : dn2_genpy
+
+# clean rule for target.
+dn2/CMakeFiles/dn2_genpy.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/dn2_genpy.dir/build.make dn2/CMakeFiles/dn2_genpy.dir/clean
+.PHONY : dn2/CMakeFiles/dn2_genpy.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/shape_service.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/_catkin_empty_exported_target.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/roscpp_generate_messages_eus.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/roscpp_generate_messages_py.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_py.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn2/CMakeFiles/dn2_generate_messages_cpp.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn2/CMakeFiles/dn2_generate_messages_eus.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn2/CMakeFiles/dn2_generate_messages_lisp.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/shape_service.dir/all: dn2/CMakeFiles/dn2_generate_messages_py.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/shape_service.dir/build.make dn2/CMakeFiles/shape_service.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/shape_service.dir/build.make dn2/CMakeFiles/shape_service.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=58,59 "Built target shape_service"
+.PHONY : dn2/CMakeFiles/shape_service.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/shape_service.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 9
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/shape_service.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/shape_service.dir/rule
+
+# Convenience name for target.
+shape_service: dn2/CMakeFiles/shape_service.dir/rule
+.PHONY : shape_service
+
+# clean rule for target.
+dn2/CMakeFiles/shape_service.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/shape_service.dir/build.make dn2/CMakeFiles/shape_service.dir/clean
+.PHONY : dn2/CMakeFiles/shape_service.dir/clean
+
+#=============================================================================
+# Target rules for target dn2/CMakeFiles/shape_client.dir
+
+# All Build rule for target.
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/_catkin_empty_exported_target.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/roscpp_generate_messages_eus.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/roscpp_generate_messages_py.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn1/CMakeFiles/std_msgs_generate_messages_py.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn2/CMakeFiles/dn2_generate_messages_cpp.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn2/CMakeFiles/dn2_generate_messages_eus.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn2/CMakeFiles/dn2_generate_messages_lisp.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn2/CMakeFiles/dn2_generate_messages_nodejs.dir/all
+dn2/CMakeFiles/shape_client.dir/all: dn2/CMakeFiles/dn2_generate_messages_py.dir/all
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/shape_client.dir/build.make dn2/CMakeFiles/shape_client.dir/depend
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/shape_client.dir/build.make dn2/CMakeFiles/shape_client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=56,57 "Built target shape_client"
+.PHONY : dn2/CMakeFiles/shape_client.dir/all
+
+# Build rule for subdir invocation for target.
+dn2/CMakeFiles/shape_client.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 9
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dn2/CMakeFiles/shape_client.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : dn2/CMakeFiles/shape_client.dir/rule
+
+# Convenience name for target.
+shape_client: dn2/CMakeFiles/shape_client.dir/rule
+.PHONY : shape_client
+
+# clean rule for target.
+dn2/CMakeFiles/shape_client.dir/clean:
+	$(MAKE) $(MAKESILENT) -f dn2/CMakeFiles/shape_client.dir/build.make dn2/CMakeFiles/shape_client.dir/clean
+.PHONY : dn2/CMakeFiles/shape_client.dir/clean
 
 #=============================================================================
 # Target rules for target exercise1/CMakeFiles/exercise1_generate_messages.dir
@@ -1488,7 +1957,7 @@ exercise1/CMakeFiles/exercise1_generate_messages_cpp.dir/all: exercise1/CMakeFil
 exercise1/CMakeFiles/exercise1_generate_messages_cpp.dir/all: exercise1/CMakeFiles/_exercise1_generate_messages_check_deps_Reverse.dir/all
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_cpp.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_cpp.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_cpp.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=16,17 "Built target exercise1_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=23,24 "Built target exercise1_generate_messages_cpp"
 .PHONY : exercise1/CMakeFiles/exercise1_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1542,7 +2011,7 @@ exercise1/CMakeFiles/exercise1_generate_messages_eus.dir/all: exercise1/CMakeFil
 exercise1/CMakeFiles/exercise1_generate_messages_eus.dir/all: exercise1/CMakeFiles/_exercise1_generate_messages_check_deps_Reverse.dir/all
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_eus.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_eus.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_eus.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=18,19,20 "Built target exercise1_generate_messages_eus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=25,26,27 "Built target exercise1_generate_messages_eus"
 .PHONY : exercise1/CMakeFiles/exercise1_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1596,7 +2065,7 @@ exercise1/CMakeFiles/exercise1_generate_messages_lisp.dir/all: exercise1/CMakeFi
 exercise1/CMakeFiles/exercise1_generate_messages_lisp.dir/all: exercise1/CMakeFiles/_exercise1_generate_messages_check_deps_Reverse.dir/all
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_lisp.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_lisp.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_lisp.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=21,22 "Built target exercise1_generate_messages_lisp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=28,29 "Built target exercise1_generate_messages_lisp"
 .PHONY : exercise1/CMakeFiles/exercise1_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1650,7 +2119,7 @@ exercise1/CMakeFiles/exercise1_generate_messages_nodejs.dir/all: exercise1/CMake
 exercise1/CMakeFiles/exercise1_generate_messages_nodejs.dir/all: exercise1/CMakeFiles/_exercise1_generate_messages_check_deps_Reverse.dir/all
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_nodejs.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_nodejs.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_nodejs.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=23,24 "Built target exercise1_generate_messages_nodejs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=30,31 "Built target exercise1_generate_messages_nodejs"
 .PHONY : exercise1/CMakeFiles/exercise1_generate_messages_nodejs.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1704,7 +2173,7 @@ exercise1/CMakeFiles/exercise1_generate_messages_py.dir/all: exercise1/CMakeFile
 exercise1/CMakeFiles/exercise1_generate_messages_py.dir/all: exercise1/CMakeFiles/_exercise1_generate_messages_check_deps_Reverse.dir/all
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_py.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_py.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/exercise1_generate_messages_py.dir/build.make exercise1/CMakeFiles/exercise1_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=25,26,27,28 "Built target exercise1_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=32,33,34,35 "Built target exercise1_generate_messages_py"
 .PHONY : exercise1/CMakeFiles/exercise1_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1756,7 +2225,7 @@ exercise1/CMakeFiles/exercise1_genpy.dir/clean:
 exercise1/CMakeFiles/hello_world.dir/all:
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/hello_world.dir/build.make exercise1/CMakeFiles/hello_world.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/hello_world.dir/build.make exercise1/CMakeFiles/hello_world.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=37,38 "Built target hello_world"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=44,45 "Built target hello_world"
 .PHONY : exercise1/CMakeFiles/hello_world.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1782,7 +2251,7 @@ exercise1/CMakeFiles/hello_world.dir/clean:
 exercise1/CMakeFiles/publish_string.dir/all:
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/publish_string.dir/build.make exercise1/CMakeFiles/publish_string.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/publish_string.dir/build.make exercise1/CMakeFiles/publish_string.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=41,42 "Built target publish_string"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=48,49 "Built target publish_string"
 .PHONY : exercise1/CMakeFiles/publish_string.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1808,7 +2277,7 @@ exercise1/CMakeFiles/publish_string.dir/clean:
 exercise1/CMakeFiles/subscribe_string.dir/all:
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/subscribe_string.dir/build.make exercise1/CMakeFiles/subscribe_string.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/subscribe_string.dir/build.make exercise1/CMakeFiles/subscribe_string.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=49,50 "Built target subscribe_string"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=62,63 "Built target subscribe_string"
 .PHONY : exercise1/CMakeFiles/subscribe_string.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1838,7 +2307,7 @@ exercise1/CMakeFiles/publish_custom.dir/all: exercise1/CMakeFiles/exercise1_gene
 exercise1/CMakeFiles/publish_custom.dir/all: exercise1/CMakeFiles/exercise1_generate_messages_py.dir/all
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/publish_custom.dir/build.make exercise1/CMakeFiles/publish_custom.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/publish_custom.dir/build.make exercise1/CMakeFiles/publish_custom.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=39,40 "Built target publish_custom"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=46,47 "Built target publish_custom"
 .PHONY : exercise1/CMakeFiles/publish_custom.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1868,7 +2337,7 @@ exercise1/CMakeFiles/subscribe_custom.dir/all: exercise1/CMakeFiles/exercise1_ge
 exercise1/CMakeFiles/subscribe_custom.dir/all: exercise1/CMakeFiles/exercise1_generate_messages_py.dir/all
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/subscribe_custom.dir/build.make exercise1/CMakeFiles/subscribe_custom.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/subscribe_custom.dir/build.make exercise1/CMakeFiles/subscribe_custom.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=47,48 "Built target subscribe_custom"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=60,61 "Built target subscribe_custom"
 .PHONY : exercise1/CMakeFiles/subscribe_custom.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1898,7 +2367,7 @@ exercise1/CMakeFiles/service_node.dir/all: exercise1/CMakeFiles/exercise1_genera
 exercise1/CMakeFiles/service_node.dir/all: exercise1/CMakeFiles/exercise1_generate_messages_py.dir/all
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/service_node.dir/build.make exercise1/CMakeFiles/service_node.dir/depend
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/service_node.dir/build.make exercise1/CMakeFiles/service_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=45,46 "Built target service_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=54,55 "Built target service_node"
 .PHONY : exercise1/CMakeFiles/service_node.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1946,6 +2415,162 @@ client_node: exercise1/CMakeFiles/client_node.dir/rule
 exercise1/CMakeFiles/client_node.dir/clean:
 	$(MAKE) $(MAKESILENT) -f exercise1/CMakeFiles/client_node.dir/build.make exercise1/CMakeFiles/client_node.dir/clean
 .PHONY : exercise1/CMakeFiles/client_node.dir/clean
+
+#=============================================================================
+# Target rules for target exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir
+
+# All Build rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/depend
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target geometry_msgs_generate_messages_cpp"
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all
+
+# Build rule for subdir invocation for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+geometry_msgs_generate_messages_cpp: exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
+.PHONY : geometry_msgs_generate_messages_cpp
+
+# clean rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/clean
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/clean
+
+#=============================================================================
+# Target rules for target exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir
+
+# All Build rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/all:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/depend
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target geometry_msgs_generate_messages_eus"
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/all
+
+# Build rule for subdir invocation for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+geometry_msgs_generate_messages_eus: exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
+.PHONY : geometry_msgs_generate_messages_eus
+
+# clean rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/clean:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/clean
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_eus.dir/clean
+
+#=============================================================================
+# Target rules for target exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir
+
+# All Build rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/depend
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target geometry_msgs_generate_messages_lisp"
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all
+
+# Build rule for subdir invocation for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+geometry_msgs_generate_messages_lisp: exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
+.PHONY : geometry_msgs_generate_messages_lisp
+
+# clean rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/clean
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/clean
+
+#=============================================================================
+# Target rules for target exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir
+
+# All Build rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/all:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/depend
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target geometry_msgs_generate_messages_nodejs"
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/all
+
+# Build rule for subdir invocation for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+geometry_msgs_generate_messages_nodejs: exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
+.PHONY : geometry_msgs_generate_messages_nodejs
+
+# clean rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/clean:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/clean
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/clean
+
+#=============================================================================
+# Target rules for target exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir
+
+# All Build rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/all:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/depend
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num= "Built target geometry_msgs_generate_messages_py"
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/all
+
+# Build rule for subdir invocation for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+geometry_msgs_generate_messages_py: exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
+.PHONY : geometry_msgs_generate_messages_py
+
+# clean rule for target.
+exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/clean:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/clean
+.PHONY : exercise2/CMakeFiles/geometry_msgs_generate_messages_py.dir/clean
+
+#=============================================================================
+# Target rules for target exercise2/CMakeFiles/pubvel.dir
+
+# All Build rule for target.
+exercise2/CMakeFiles/pubvel.dir/all:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/pubvel.dir/build.make exercise2/CMakeFiles/pubvel.dir/depend
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/pubvel.dir/build.make exercise2/CMakeFiles/pubvel.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles --progress-num=52,53 "Built target pubvel"
+.PHONY : exercise2/CMakeFiles/pubvel.dir/all
+
+# Build rule for subdir invocation for target.
+exercise2/CMakeFiles/pubvel.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 exercise2/CMakeFiles/pubvel.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/Documents/RINS/a-tech-titan/build/CMakeFiles 0
+.PHONY : exercise2/CMakeFiles/pubvel.dir/rule
+
+# Convenience name for target.
+pubvel: exercise2/CMakeFiles/pubvel.dir/rule
+.PHONY : pubvel
+
+# clean rule for target.
+exercise2/CMakeFiles/pubvel.dir/clean:
+	$(MAKE) $(MAKESILENT) -f exercise2/CMakeFiles/pubvel.dir/build.make exercise2/CMakeFiles/pubvel.dir/clean
+.PHONY : exercise2/CMakeFiles/pubvel.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

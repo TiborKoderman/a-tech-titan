@@ -33,6 +33,5 @@ int main(int argc, char *argv[])
 		//Wait untilit's time for another iteration.
 		rate.sleep();
 	}
-
 	return 0;
 }

@@ -1,0 +1,4 @@
+<launch>
+    <node name="shape_service" pkg="dn2" type="shape_service" output="screen" />
+    <node name="turtlesim_node" pkg="turtlesim" type="turtlesim_node" output="screen" />
+</launch>

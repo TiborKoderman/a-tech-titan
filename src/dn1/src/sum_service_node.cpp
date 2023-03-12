@@ -8,14 +8,7 @@
 
 bool manipulate(dn1::Sum::Request& req, dn1::Sum::Response& res)
 {
-  res.sum = 0;
-  for (int i : req.arr)
-  {
-    res.sum += i;
-  }
-
-  ROS_INFO("response: %d", res.sum);
-  return true;
+  
 }
 
 int main(int argc, char** argv)

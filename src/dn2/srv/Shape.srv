@@ -1,0 +1,6 @@
+int32 duration
+string shape
+
+---
+
+string lastMovementType
