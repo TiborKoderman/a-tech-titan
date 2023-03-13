@@ -433,6 +433,9 @@ gtest_hide_internal_symbols:BOOL=OFF
 //Dependencies for the target
 gtest_main_LIB_DEPENDS:STATIC=general;gtest;
 
+//The directory containing a CMake configuration file for joy.
+joy_DIR:PATH=joy_DIR-NOTFOUND
+
 //Path to a library.
 lib:FILEPATH=/opt/ros/noetic/lib/libxmlrpcpp.so
 
@@ -441,6 +444,18 @@ message_generation_DIR:PATH=/opt/ros/noetic/share/message_generation/cmake
 
 //The directory containing a CMake configuration file for message_runtime.
 message_runtime_DIR:PATH=/opt/ros/noetic/share/message_runtime/cmake
+
+//The directory containing a CMake configuration file for opencv.
+opencv_DIR:PATH=opencv_DIR-NOTFOUND
+
+//Value Computed by CMake
+opencvtest_BINARY_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/build/opencvtest
+
+//Value Computed by CMake
+opencvtest_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+opencvtest_SOURCE_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/src/opencvtest
 
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/noetic/share/rosconsole/cmake
@@ -465,6 +480,15 @@ rostime_DIR:PATH=/opt/ros/noetic/share/rostime/cmake
 
 //The directory containing a CMake configuration file for std_msgs.
 std_msgs_DIR:PATH=/opt/ros/noetic/share/std_msgs/cmake
+
+//Value Computed by CMake
+turtlebot_teleop_BINARY_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/build/turtlebot_teleop
+
+//Value Computed by CMake
+turtlebot_teleop_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+turtlebot_teleop_SOURCE_DIR:STATIC=/home/tibor/Documents/RINS/a-tech-titan/src/turtlebot_teleop
 
 //The directory containing a CMake configuration file for xmlrpcpp.
 xmlrpcpp_DIR:PATH=/opt/ros/noetic/share/xmlrpcpp/cmake
@@ -581,7 +605,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=7
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=8
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

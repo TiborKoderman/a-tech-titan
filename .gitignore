@@ -4,5 +4,5 @@ devel
 ./devel
 /devel
 /build
-src/dn1.tar.gz
-src/dn1.zip
+src/dn*.tar.gz
+src/dn*.zip
