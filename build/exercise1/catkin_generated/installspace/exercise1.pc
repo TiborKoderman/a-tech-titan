@@ -1,4 +1,4 @@
-prefix=/home/tibor/Documents/RINS/a-tech-titan/install
+prefix=/home/tibor/repos/a-tech-titan/install
 
 Name: exercise1
 Description: Description of exercise1

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/tibor/Documents/RINS/a-tech-titan/devel/share/common-lisp/ros/exercise1/msg/Greeting.lisp"
-  "/home/tibor/Documents/RINS/a-tech-titan/devel/share/common-lisp/ros/exercise1/srv/Reverse.lisp"
+  "/home/tibor/repos/a-tech-titan/devel/share/common-lisp/ros/exercise1/msg/Greeting.lisp"
+  "/home/tibor/repos/a-tech-titan/devel/share/common-lisp/ros/exercise1/srv/Reverse.lisp"
   "CMakeFiles/exercise1_generate_messages_lisp"
 )
 

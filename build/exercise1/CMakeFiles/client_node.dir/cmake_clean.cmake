@@ -1,8 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/tibor/Documents/RINS/a-tech-titan/devel/lib/exercise1/client_node"
-  "/home/tibor/Documents/RINS/a-tech-titan/devel/lib/exercise1/client_node.pdb"
+  "/home/tibor/repos/a-tech-titan/devel/lib/exercise1/client_node"
+  "/home/tibor/repos/a-tech-titan/devel/lib/exercise1/client_node.pdb"
   "CMakeFiles/client_node.dir/src/client_node.cpp.o"
-  "CMakeFiles/client_node.dir/src/client_node.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.
