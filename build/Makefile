@@ -2781,6 +2781,19 @@ kobuki_bumper2pc_nodelet/fast:
 .PHONY : kobuki_bumper2pc_nodelet/fast
 
 #=============================================================================
+# Target rules for targets named map_goals
+
+# Build rule for target.
+map_goals: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 map_goals
+.PHONY : map_goals
+
+# fast build rule for target.
+map_goals/fast:
+	$(MAKE) -f exercise3/CMakeFiles/map_goals.dir/build.make exercise3/CMakeFiles/map_goals.dir/build
+.PHONY : map_goals/fast
+
+#=============================================================================
 # Target rules for targets named turtlebot_marker_server
 
 # Build rule for target.
@@ -4788,6 +4801,7 @@ help:
 	@echo "... dynamic_reconfigure_generate_messages_cpp"
 	@echo "... run_tests_depthimage_to_laserscan_gtest_libtest"
 	@echo "... kobuki_bumper2pc_nodelet"
+	@echo "... map_goals"
 	@echo "... turtlebot_marker_server"
 	@echo "... visualization_msgs_generate_messages_py"
 	@echo "... visualization_msgs_generate_messages_nodejs"

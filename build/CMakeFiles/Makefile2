@@ -80,7 +80,9 @@ all: kobuki/kobuki_keyop/all
 all: kobuki/kobuki_auto_docking/all
 all: depthimage_to_laserscan/all
 all: kobuki/kobuki_bumper2pc/all
+all: exercise3/all
 all: kobuki_desktop/kobuki_dashboard/all
+all: dn3/all
 all: turtlebot_interactions/turtlebot_interactive_markers/all
 all: turtlebot_navigation/all
 all: turtlebot/turtlebot_teleop/all
@@ -140,7 +142,9 @@ preinstall: kobuki/kobuki_keyop/preinstall
 preinstall: kobuki/kobuki_auto_docking/preinstall
 preinstall: depthimage_to_laserscan/preinstall
 preinstall: kobuki/kobuki_bumper2pc/preinstall
+preinstall: exercise3/preinstall
 preinstall: kobuki_desktop/kobuki_dashboard/preinstall
+preinstall: dn3/preinstall
 preinstall: turtlebot_interactions/turtlebot_interactive_markers/preinstall
 preinstall: turtlebot_navigation/preinstall
 preinstall: turtlebot/turtlebot_teleop/preinstall
@@ -205,7 +209,9 @@ clean: kobuki/kobuki_keyop/clean
 clean: kobuki/kobuki_auto_docking/clean
 clean: depthimage_to_laserscan/clean
 clean: kobuki/kobuki_bumper2pc/clean
+clean: exercise3/clean
 clean: kobuki_desktop/kobuki_dashboard/clean
+clean: dn3/clean
 clean: turtlebot_interactions/turtlebot_interactive_markers/clean
 clean: turtlebot_navigation/clean
 clean: turtlebot/turtlebot_teleop/clean
@@ -365,6 +371,24 @@ dn2/clean: dn2/CMakeFiles/shape_service.dir/clean
 .PHONY : dn2/clean
 
 #=============================================================================
+# Directory level rules for directory dn3
+
+# Recursive "all" directory target.
+dn3/all:
+
+.PHONY : dn3/all
+
+# Recursive "preinstall" directory target.
+dn3/preinstall:
+
+.PHONY : dn3/preinstall
+
+# Recursive "clean" directory target.
+dn3/clean:
+
+.PHONY : dn3/clean
+
+#=============================================================================
 # Directory level rules for directory exercise1
 
 # Recursive "all" directory target.
@@ -425,6 +449,24 @@ exercise2/preinstall:
 exercise2/clean: exercise2/CMakeFiles/pubvel.dir/clean
 
 .PHONY : exercise2/clean
+
+#=============================================================================
+# Directory level rules for directory exercise3
+
+# Recursive "all" directory target.
+exercise3/all: exercise3/CMakeFiles/map_goals.dir/all
+
+.PHONY : exercise3/all
+
+# Recursive "preinstall" directory target.
+exercise3/preinstall:
+
+.PHONY : exercise3/preinstall
+
+# Recursive "clean" directory target.
+exercise3/clean: exercise3/CMakeFiles/map_goals.dir/clean
+
+.PHONY : exercise3/clean
 
 #=============================================================================
 # Directory level rules for directory gtest
@@ -1888,7 +1930,7 @@ CMakeFiles/run_tests.dir/all: turtlebot/turtlebot_description/CMakeFiles/_run_te
 
 # Build rule for subdir invocation for target.
 CMakeFiles/run_tests.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/run_tests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : CMakeFiles/run_tests.dir/rule
@@ -1968,7 +2010,7 @@ CMakeFiles/tests.dir/all: turtlebot/turtlebot_description/CMakeFiles/turtlebot_d
 
 # Build rule for subdir invocation for target.
 CMakeFiles/tests.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : CMakeFiles/tests.dir/rule
@@ -2158,7 +2200,7 @@ kobuki_msgs/CMakeFiles/kobuki_msgs_genpy.dir/all: kobuki_msgs/CMakeFiles/kobuki_
 
 # Build rule for subdir invocation for target.
 kobuki_msgs/CMakeFiles/kobuki_msgs_genpy.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki_msgs/CMakeFiles/kobuki_msgs_genpy.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki_msgs/CMakeFiles/kobuki_msgs_genpy.dir/rule
@@ -2529,12 +2571,12 @@ kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/all: kobuki_msgs/CMa
 kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/all: kobuki_msgs/CMakeFiles/_kobuki_msgs_generate_messages_check_deps_ScanAngle.dir/all
 	$(MAKE) -f kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/build.make kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/depend
 	$(MAKE) -f kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/build.make kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=35,36,37,38,39,40 "Built target kobuki_msgs_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=35,36,37,38,39 "Built target kobuki_msgs_generate_messages_py"
 .PHONY : kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
 kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages_py.dir/rule
@@ -2645,7 +2687,7 @@ kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages.dir/all: kobuki_msgs/CMakeF
 
 # Build rule for subdir invocation for target.
 kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 26
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 25
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki_msgs/CMakeFiles/kobuki_msgs_generate_messages.dir/rule
@@ -3534,7 +3576,7 @@ tf2/CMakeFiles/run_tests_tf2.dir/all: tf2/CMakeFiles/run_tests_tf2_gtest.dir/all
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/run_tests_tf2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/run_tests_tf2.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/run_tests_tf2.dir/rule
@@ -3793,7 +3835,7 @@ tf2/CMakeFiles/_run_tests_tf2_gtest.dir/all: tf2/CMakeFiles/_run_tests_tf2_gtest
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/_run_tests_tf2_gtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/_run_tests_tf2_gtest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/_run_tests_tf2_gtest.dir/rule
@@ -3944,12 +3986,12 @@ tf2/CMakeFiles/test_cache_unittest.dir/all: tf2/CMakeFiles/tf2_msgs_generate_mes
 tf2/CMakeFiles/test_cache_unittest.dir/all: tf2/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/all
 	$(MAKE) -f tf2/CMakeFiles/test_cache_unittest.dir/build.make tf2/CMakeFiles/test_cache_unittest.dir/depend
 	$(MAKE) -f tf2/CMakeFiles/test_cache_unittest.dir/build.make tf2/CMakeFiles/test_cache_unittest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target test_cache_unittest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=49 "Built target test_cache_unittest"
 .PHONY : tf2/CMakeFiles/test_cache_unittest.dir/all
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/test_cache_unittest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/test_cache_unittest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/test_cache_unittest.dir/rule
@@ -3978,7 +4020,7 @@ tf2/CMakeFiles/_run_tests_tf2_gtest_test_transform_datatypes.dir/all: tf2/CMakeF
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/_run_tests_tf2_gtest_test_transform_datatypes.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/_run_tests_tf2_gtest_test_transform_datatypes.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/_run_tests_tf2_gtest_test_transform_datatypes.dir/rule
@@ -4035,7 +4077,7 @@ tf2/CMakeFiles/run_tests_tf2_gtest.dir/all: tf2/CMakeFiles/run_tests_tf2_gtest_t
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/run_tests_tf2_gtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/run_tests_tf2_gtest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/run_tests_tf2_gtest.dir/rule
@@ -4062,7 +4104,7 @@ tf2/CMakeFiles/_run_tests_tf2.dir/all: tf2/CMakeFiles/_run_tests_tf2_gtest.dir/a
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/_run_tests_tf2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/_run_tests_tf2.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/_run_tests_tf2.dir/rule
@@ -4091,7 +4133,7 @@ tf2/CMakeFiles/_run_tests_tf2_gtest_test_cache_unittest.dir/all: tf2/CMakeFiles/
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/_run_tests_tf2_gtest_test_cache_unittest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/_run_tests_tf2_gtest_test_cache_unittest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/_run_tests_tf2_gtest_test_cache_unittest.dir/rule
@@ -4147,7 +4189,7 @@ tf2/CMakeFiles/_run_tests_tf2_gtest_test_static_cache_unittest.dir/all: tf2/CMak
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/_run_tests_tf2_gtest_test_static_cache_unittest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/_run_tests_tf2_gtest_test_static_cache_unittest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/_run_tests_tf2_gtest_test_static_cache_unittest.dir/rule
@@ -4190,12 +4232,12 @@ tf2/CMakeFiles/test_static_cache_unittest.dir/all: tf2/CMakeFiles/tf2_msgs_gener
 tf2/CMakeFiles/test_static_cache_unittest.dir/all: tf2/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/all
 	$(MAKE) -f tf2/CMakeFiles/test_static_cache_unittest.dir/build.make tf2/CMakeFiles/test_static_cache_unittest.dir/depend
 	$(MAKE) -f tf2/CMakeFiles/test_static_cache_unittest.dir/build.make tf2/CMakeFiles/test_static_cache_unittest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=50 "Built target test_static_cache_unittest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target test_static_cache_unittest"
 .PHONY : tf2/CMakeFiles/test_static_cache_unittest.dir/all
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/test_static_cache_unittest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/test_static_cache_unittest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/test_static_cache_unittest.dir/rule
@@ -4249,7 +4291,7 @@ tf2/CMakeFiles/run_tests_tf2_gtest_test_static_cache_unittest.dir/all: tf2/CMake
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/run_tests_tf2_gtest_test_static_cache_unittest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/run_tests_tf2_gtest_test_static_cache_unittest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/run_tests_tf2_gtest_test_static_cache_unittest.dir/rule
@@ -4292,12 +4334,12 @@ tf2/CMakeFiles/test_simple.dir/all: tf2/CMakeFiles/tf2_msgs_generate_messages_eu
 tf2/CMakeFiles/test_simple.dir/all: tf2/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/all
 	$(MAKE) -f tf2/CMakeFiles/test_simple.dir/build.make tf2/CMakeFiles/test_simple.dir/depend
 	$(MAKE) -f tf2/CMakeFiles/test_simple.dir/build.make tf2/CMakeFiles/test_simple.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target test_simple"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=50 "Built target test_simple"
 .PHONY : tf2/CMakeFiles/test_simple.dir/all
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/test_simple.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/test_simple.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/test_simple.dir/rule
@@ -4324,7 +4366,7 @@ tf2/CMakeFiles/run_tests_tf2_gtest_test_cache_unittest.dir/all: tf2/CMakeFiles/t
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/run_tests_tf2_gtest_test_cache_unittest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/run_tests_tf2_gtest_test_cache_unittest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/run_tests_tf2_gtest_test_cache_unittest.dir/rule
@@ -4351,7 +4393,7 @@ tf2/CMakeFiles/run_tests_tf2_gtest_test_simple.dir/all: tf2/CMakeFiles/test_simp
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/run_tests_tf2_gtest_test_simple.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/run_tests_tf2_gtest_test_simple.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/run_tests_tf2_gtest_test_simple.dir/rule
@@ -4380,7 +4422,7 @@ tf2/CMakeFiles/_run_tests_tf2_gtest_test_simple.dir/all: tf2/CMakeFiles/test_sim
 
 # Build rule for subdir invocation for target.
 tf2/CMakeFiles/_run_tests_tf2_gtest_test_simple.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 tf2/CMakeFiles/_run_tests_tf2_gtest_test_simple.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : tf2/CMakeFiles/_run_tests_tf2_gtest_test_simple.dir/rule
@@ -5714,12 +5756,12 @@ exercise1/CMakeFiles/service_node.dir/all: exercise1/CMakeFiles/exercise1_genera
 exercise1/CMakeFiles/service_node.dir/all: exercise1/CMakeFiles/exercise1_generate_messages_py.dir/all
 	$(MAKE) -f exercise1/CMakeFiles/service_node.dir/build.make exercise1/CMakeFiles/service_node.dir/depend
 	$(MAKE) -f exercise1/CMakeFiles/service_node.dir/build.make exercise1/CMakeFiles/service_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=45 "Built target service_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target service_node"
 .PHONY : exercise1/CMakeFiles/service_node.dir/all
 
 # Build rule for subdir invocation for target.
 exercise1/CMakeFiles/service_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 exercise1/CMakeFiles/service_node.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : exercise1/CMakeFiles/service_node.dir/rule
@@ -5772,12 +5814,12 @@ exercise1/CMakeFiles/publish_custom.dir/clean:
 exercise1/CMakeFiles/subscribe_string.dir/all:
 	$(MAKE) -f exercise1/CMakeFiles/subscribe_string.dir/build.make exercise1/CMakeFiles/subscribe_string.dir/depend
 	$(MAKE) -f exercise1/CMakeFiles/subscribe_string.dir/build.make exercise1/CMakeFiles/subscribe_string.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=47 "Built target subscribe_string"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target subscribe_string"
 .PHONY : exercise1/CMakeFiles/subscribe_string.dir/all
 
 # Build rule for subdir invocation for target.
 exercise1/CMakeFiles/subscribe_string.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 exercise1/CMakeFiles/subscribe_string.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : exercise1/CMakeFiles/subscribe_string.dir/rule
@@ -6025,12 +6067,12 @@ exercise1/CMakeFiles/subscribe_custom.dir/all: exercise1/CMakeFiles/exercise1_ge
 exercise1/CMakeFiles/subscribe_custom.dir/all: exercise1/CMakeFiles/exercise1_generate_messages_py.dir/all
 	$(MAKE) -f exercise1/CMakeFiles/subscribe_custom.dir/build.make exercise1/CMakeFiles/subscribe_custom.dir/depend
 	$(MAKE) -f exercise1/CMakeFiles/subscribe_custom.dir/build.make exercise1/CMakeFiles/subscribe_custom.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target subscribe_custom"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=47 "Built target subscribe_custom"
 .PHONY : exercise1/CMakeFiles/subscribe_custom.dir/all
 
 # Build rule for subdir invocation for target.
 exercise1/CMakeFiles/subscribe_custom.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 exercise1/CMakeFiles/subscribe_custom.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : exercise1/CMakeFiles/subscribe_custom.dir/rule
@@ -6249,12 +6291,12 @@ exercise1/CMakeFiles/exercise1_generate_messages_py.dir/clean:
 exercise2/CMakeFiles/pubvel.dir/all:
 	$(MAKE) -f exercise2/CMakeFiles/pubvel.dir/build.make exercise2/CMakeFiles/pubvel.dir/depend
 	$(MAKE) -f exercise2/CMakeFiles/pubvel.dir/build.make exercise2/CMakeFiles/pubvel.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target pubvel"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=45 "Built target pubvel"
 .PHONY : exercise2/CMakeFiles/pubvel.dir/all
 
 # Build rule for subdir invocation for target.
 exercise2/CMakeFiles/pubvel.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 exercise2/CMakeFiles/pubvel.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : exercise2/CMakeFiles/pubvel.dir/rule
@@ -6450,7 +6492,7 @@ kobuki/kobuki_keyop/src/CMakeFiles/keyop.dir/all: kobuki/kobuki_keyop/CMakeFiles
 
 # Build rule for subdir invocation for target.
 kobuki/kobuki_keyop/src/CMakeFiles/keyop.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 27
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 26
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki/kobuki_keyop/src/CMakeFiles/keyop.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki/kobuki_keyop/src/CMakeFiles/keyop.dir/rule
@@ -6477,7 +6519,7 @@ kobuki/kobuki_auto_docking/CMakeFiles/kobuki_auto_docking_nodelet.dir/all: kobuk
 
 # Build rule for subdir invocation for target.
 kobuki/kobuki_auto_docking/CMakeFiles/kobuki_auto_docking_nodelet.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 26
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 25
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki/kobuki_auto_docking/CMakeFiles/kobuki_auto_docking_nodelet.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki/kobuki_auto_docking/CMakeFiles/kobuki_auto_docking_nodelet.dir/rule
@@ -6553,7 +6595,7 @@ kobuki/kobuki_auto_docking/CMakeFiles/kobuki_auto_docking_ros.dir/all: kobuki/ko
 
 # Build rule for subdir invocation for target.
 kobuki/kobuki_auto_docking/CMakeFiles/kobuki_auto_docking_ros.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 26
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 25
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki/kobuki_auto_docking/CMakeFiles/kobuki_auto_docking_ros.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki/kobuki_auto_docking/CMakeFiles/kobuki_auto_docking_ros.dir/rule
@@ -7472,7 +7514,7 @@ depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan_gtest.dir/
 
 # Build rule for subdir invocation for target.
 depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan_gtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan_gtest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan_gtest.dir/rule
@@ -7528,7 +7570,7 @@ depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan_gtest_libt
 
 # Build rule for subdir invocation for target.
 depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan_gtest_libtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan_gtest_libtest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan_gtest_libtest.dir/rule
@@ -7666,7 +7708,7 @@ depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan.dir/all: d
 
 # Build rule for subdir invocation for target.
 depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : depthimage_to_laserscan/CMakeFiles/_run_tests_depthimage_to_laserscan.dir/rule
@@ -7715,12 +7757,12 @@ depthimage_to_laserscan/CMakeFiles/run_tests_depthimage_to_laserscan_gtest.dir/c
 depthimage_to_laserscan/CMakeFiles/test_dtl.dir/all:
 	$(MAKE) -f depthimage_to_laserscan/CMakeFiles/test_dtl.dir/build.make depthimage_to_laserscan/CMakeFiles/test_dtl.dir/depend
 	$(MAKE) -f depthimage_to_laserscan/CMakeFiles/test_dtl.dir/build.make depthimage_to_laserscan/CMakeFiles/test_dtl.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=49 "Built target test_dtl"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target test_dtl"
 .PHONY : depthimage_to_laserscan/CMakeFiles/test_dtl.dir/all
 
 # Build rule for subdir invocation for target.
 depthimage_to_laserscan/CMakeFiles/test_dtl.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 depthimage_to_laserscan/CMakeFiles/test_dtl.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : depthimage_to_laserscan/CMakeFiles/test_dtl.dir/rule
@@ -7845,7 +7887,7 @@ kobuki/kobuki_bumper2pc/CMakeFiles/kobuki_bumper2pc_nodelet.dir/all: depthimage_
 
 # Build rule for subdir invocation for target.
 kobuki/kobuki_bumper2pc/CMakeFiles/kobuki_bumper2pc_nodelet.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 27
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 26
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki/kobuki_bumper2pc/CMakeFiles/kobuki_bumper2pc_nodelet.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki/kobuki_bumper2pc/CMakeFiles/kobuki_bumper2pc_nodelet.dir/rule
@@ -7861,18 +7903,45 @@ kobuki/kobuki_bumper2pc/CMakeFiles/kobuki_bumper2pc_nodelet.dir/clean:
 .PHONY : kobuki/kobuki_bumper2pc/CMakeFiles/kobuki_bumper2pc_nodelet.dir/clean
 
 #=============================================================================
+# Target rules for target exercise3/CMakeFiles/map_goals.dir
+
+# All Build rule for target.
+exercise3/CMakeFiles/map_goals.dir/all: tf2/CMakeFiles/tf2.dir/all
+	$(MAKE) -f exercise3/CMakeFiles/map_goals.dir/build.make exercise3/CMakeFiles/map_goals.dir/depend
+	$(MAKE) -f exercise3/CMakeFiles/map_goals.dir/build.make exercise3/CMakeFiles/map_goals.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target map_goals"
+.PHONY : exercise3/CMakeFiles/map_goals.dir/all
+
+# Build rule for subdir invocation for target.
+exercise3/CMakeFiles/map_goals.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 exercise3/CMakeFiles/map_goals.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
+.PHONY : exercise3/CMakeFiles/map_goals.dir/rule
+
+# Convenience name for target.
+map_goals: exercise3/CMakeFiles/map_goals.dir/rule
+
+.PHONY : map_goals
+
+# clean rule for target.
+exercise3/CMakeFiles/map_goals.dir/clean:
+	$(MAKE) -f exercise3/CMakeFiles/map_goals.dir/build.make exercise3/CMakeFiles/map_goals.dir/clean
+.PHONY : exercise3/CMakeFiles/map_goals.dir/clean
+
+#=============================================================================
 # Target rules for target turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir
 
 # All Build rule for target.
 turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/all: tf2/CMakeFiles/tf2.dir/all
 	$(MAKE) -f turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/build.make turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/depend
 	$(MAKE) -f turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/build.make turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=52 "Built target turtlebot_marker_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target turtlebot_marker_server"
 .PHONY : turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/all
 
 # Build rule for subdir invocation for target.
 turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/rule
@@ -8371,7 +8440,7 @@ kobuki_desktop/kobuki_gazebo_plugins/CMakeFiles/gazebo_ros_kobuki.dir/all: kobuk
 
 # Build rule for subdir invocation for target.
 kobuki_desktop/kobuki_gazebo_plugins/CMakeFiles/gazebo_ros_kobuki.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 28
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 27
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki_desktop/kobuki_gazebo_plugins/CMakeFiles/gazebo_ros_kobuki.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki_desktop/kobuki_gazebo_plugins/CMakeFiles/gazebo_ros_kobuki.dir/rule
@@ -8690,12 +8759,12 @@ kobuki/kobuki_description/CMakeFiles/kobuki_description_xacro_generated_to_devel
 turtlebot/turtlebot_description/CMakeFiles/turtlebot_description_test_urdf.dir/all: gtest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f turtlebot/turtlebot_description/CMakeFiles/turtlebot_description_test_urdf.dir/build.make turtlebot/turtlebot_description/CMakeFiles/turtlebot_description_test_urdf.dir/depend
 	$(MAKE) -f turtlebot/turtlebot_description/CMakeFiles/turtlebot_description_test_urdf.dir/build.make turtlebot/turtlebot_description/CMakeFiles/turtlebot_description_test_urdf.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target turtlebot_description_test_urdf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=52 "Built target turtlebot_description_test_urdf"
 .PHONY : turtlebot/turtlebot_description/CMakeFiles/turtlebot_description_test_urdf.dir/all
 
 # Build rule for subdir invocation for target.
 turtlebot/turtlebot_description/CMakeFiles/turtlebot_description_test_urdf.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 turtlebot/turtlebot_description/CMakeFiles/turtlebot_description_test_urdf.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : turtlebot/turtlebot_description/CMakeFiles/turtlebot_description_test_urdf.dir/rule
@@ -8722,7 +8791,7 @@ turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description.dir/a
 
 # Build rule for subdir invocation for target.
 turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description.dir/rule
@@ -8749,7 +8818,7 @@ turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description.dir/
 
 # Build rule for subdir invocation for target.
 turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description.dir/rule
@@ -8776,7 +8845,7 @@ turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description_gtest
 
 # Build rule for subdir invocation for target.
 turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description_gtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description_gtest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description_gtest.dir/rule
@@ -8803,7 +8872,7 @@ turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description_gtes
 
 # Build rule for subdir invocation for target.
 turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description_gtest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description_gtest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description_gtest.dir/rule
@@ -8830,7 +8899,7 @@ turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description_gtest
 
 # Build rule for subdir invocation for target.
 turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description_gtest_turtlebot_description_test_urdf.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description_gtest_turtlebot_description_test_urdf.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : turtlebot/turtlebot_description/CMakeFiles/run_tests_turtlebot_description_gtest_turtlebot_description_test_urdf.dir/rule
@@ -8859,7 +8928,7 @@ turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description_gtes
 
 # Build rule for subdir invocation for target.
 turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description_gtest_turtlebot_description_test_urdf.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description_gtest_turtlebot_description_test_urdf.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : turtlebot/turtlebot_description/CMakeFiles/_run_tests_turtlebot_description_gtest_turtlebot_description_test_urdf.dir/rule
@@ -9028,7 +9097,7 @@ kobuki/kobuki_controller_tutorial/CMakeFiles/bump_blink_controller_nodelet.dir/a
 
 # Build rule for subdir invocation for target.
 kobuki/kobuki_controller_tutorial/CMakeFiles/bump_blink_controller_nodelet.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 26
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 25
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki/kobuki_controller_tutorial/CMakeFiles/bump_blink_controller_nodelet.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki/kobuki_controller_tutorial/CMakeFiles/bump_blink_controller_nodelet.dir/rule
@@ -9094,7 +9163,7 @@ kobuki/kobuki_random_walker/CMakeFiles/kobuki_random_walker_nodelet.dir/all: kob
 
 # Build rule for subdir invocation for target.
 kobuki/kobuki_random_walker/CMakeFiles/kobuki_random_walker_nodelet.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 26
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 25
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki/kobuki_random_walker/CMakeFiles/kobuki_random_walker_nodelet.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki/kobuki_random_walker/CMakeFiles/kobuki_random_walker_nodelet.dir/rule
@@ -9155,7 +9224,7 @@ kobuki/kobuki_safety_controller/CMakeFiles/kobuki_safety_controller_nodelet.dir/
 kobuki/kobuki_safety_controller/CMakeFiles/kobuki_safety_controller_nodelet.dir/all: kobuki/kobuki_auto_docking/CMakeFiles/bond_generate_messages_lisp.dir/all
 	$(MAKE) -f kobuki/kobuki_safety_controller/CMakeFiles/kobuki_safety_controller_nodelet.dir/build.make kobuki/kobuki_safety_controller/CMakeFiles/kobuki_safety_controller_nodelet.dir/depend
 	$(MAKE) -f kobuki/kobuki_safety_controller/CMakeFiles/kobuki_safety_controller_nodelet.dir/build.make kobuki/kobuki_safety_controller/CMakeFiles/kobuki_safety_controller_nodelet.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target kobuki_safety_controller_nodelet"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=42 "Built target kobuki_safety_controller_nodelet"
 .PHONY : kobuki/kobuki_safety_controller/CMakeFiles/kobuki_safety_controller_nodelet.dir/all
 
 # Build rule for subdir invocation for target.
@@ -9182,12 +9251,12 @@ kobuki/kobuki_safety_controller/CMakeFiles/kobuki_safety_controller_nodelet.dir/
 yujin_ocs/yocs_keyop/src/CMakeFiles/yocs_keyop.dir/all:
 	$(MAKE) -f yujin_ocs/yocs_keyop/src/CMakeFiles/yocs_keyop.dir/build.make yujin_ocs/yocs_keyop/src/CMakeFiles/yocs_keyop.dir/depend
 	$(MAKE) -f yujin_ocs/yocs_keyop/src/CMakeFiles/yocs_keyop.dir/build.make yujin_ocs/yocs_keyop/src/CMakeFiles/yocs_keyop.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target yocs_keyop"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=57 "Built target yocs_keyop"
 .PHONY : yujin_ocs/yocs_keyop/src/CMakeFiles/yocs_keyop.dir/all
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_keyop/src/CMakeFiles/yocs_keyop.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_keyop/src/CMakeFiles/yocs_keyop.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_keyop/src/CMakeFiles/yocs_keyop.dir/rule
@@ -9263,12 +9332,12 @@ yujin_ocs/yocs_localization_manager/CMakeFiles/roslint.dir/clean:
 yujin_ocs/yocs_math_toolkit/src/lib/CMakeFiles/yocs_math_toolkit.dir/all: tf2/CMakeFiles/tf2.dir/all
 	$(MAKE) -f yujin_ocs/yocs_math_toolkit/src/lib/CMakeFiles/yocs_math_toolkit.dir/build.make yujin_ocs/yocs_math_toolkit/src/lib/CMakeFiles/yocs_math_toolkit.dir/depend
 	$(MAKE) -f yujin_ocs/yocs_math_toolkit/src/lib/CMakeFiles/yocs_math_toolkit.dir/build.make yujin_ocs/yocs_math_toolkit/src/lib/CMakeFiles/yocs_math_toolkit.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=57 "Built target yocs_math_toolkit"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target yocs_math_toolkit"
 .PHONY : yujin_ocs/yocs_math_toolkit/src/lib/CMakeFiles/yocs_math_toolkit.dir/all
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_math_toolkit/src/lib/CMakeFiles/yocs_math_toolkit.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_math_toolkit/src/lib/CMakeFiles/yocs_math_toolkit.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_math_toolkit/src/lib/CMakeFiles/yocs_math_toolkit.dir/rule
@@ -9297,7 +9366,7 @@ yujin_ocs/yocs_diff_drive_pose_controller/CMakeFiles/yocs_diff_drive_pose_contro
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_diff_drive_pose_controller/CMakeFiles/yocs_diff_drive_pose_controller_nodelet.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_diff_drive_pose_controller/CMakeFiles/yocs_diff_drive_pose_controller_nodelet.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_diff_drive_pose_controller/CMakeFiles/yocs_diff_drive_pose_controller_nodelet.dir/rule
@@ -9325,7 +9394,7 @@ yujin_ocs/yocs_diff_drive_pose_controller/CMakeFiles/yocs_diff_drive_pose_contro
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_diff_drive_pose_controller/CMakeFiles/yocs_diff_drive_pose_controller.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_diff_drive_pose_controller/CMakeFiles/yocs_diff_drive_pose_controller.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_diff_drive_pose_controller/CMakeFiles/yocs_diff_drive_pose_controller.dir/rule
@@ -11476,7 +11545,7 @@ yujin_ocs/yocs_navigator/CMakeFiles/yocs_semantic_navigator.dir/all: yujin_ocs/y
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_navigator/CMakeFiles/yocs_semantic_navigator.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 9
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_navigator/CMakeFiles/yocs_semantic_navigator.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_navigator/CMakeFiles/yocs_semantic_navigator.dir/rule
@@ -11506,7 +11575,7 @@ yujin_ocs/yocs_navigator/CMakeFiles/yocs_semantic_navigator_node.dir/all: yujin_
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_navigator/CMakeFiles/yocs_semantic_navigator_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 10
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_navigator/CMakeFiles/yocs_semantic_navigator_node.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_navigator/CMakeFiles/yocs_semantic_navigator_node.dir/rule
@@ -11557,12 +11626,12 @@ yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/all: yujin_oc
 yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/all: yocs_msgs/CMakeFiles/yocs_msgs_gencpp.dir/all
 	$(MAKE) -f yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/build.make yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/depend
 	$(MAKE) -f yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/build.make yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=54 "Built target yocs_basic_move_controller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target yocs_basic_move_controller"
 .PHONY : yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/all
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 9
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_navigator/CMakeFiles/yocs_basic_move_controller.dir/rule
@@ -11903,12 +11972,12 @@ kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/all: kobuki/kobuki_node
 kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/all: kobuki/kobuki_node/CMakeFiles/diagnostic_msgs_generate_messages_cpp.dir/all
 	$(MAKE) -f kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/build.make kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/depend
 	$(MAKE) -f kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/build.make kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=41,42 "Built target kobuki_ros"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=41 "Built target kobuki_ros"
 .PHONY : kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/all
 
 # Build rule for subdir invocation for target.
 kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 29
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 28
 	$(MAKE) -f CMakeFiles/Makefile2 kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/rule
@@ -11932,7 +12001,7 @@ kobuki/kobuki_node/src/nodelet/CMakeFiles/kobuki_nodelet.dir/all: kobuki/kobuki_
 kobuki/kobuki_node/src/nodelet/CMakeFiles/kobuki_nodelet.dir/all: kobuki/kobuki_node/src/library/CMakeFiles/kobuki_ros.dir/all
 	$(MAKE) -f kobuki/kobuki_node/src/nodelet/CMakeFiles/kobuki_nodelet.dir/build.make kobuki/kobuki_node/src/nodelet/CMakeFiles/kobuki_nodelet.dir/depend
 	$(MAKE) -f kobuki/kobuki_node/src/nodelet/CMakeFiles/kobuki_nodelet.dir/build.make kobuki/kobuki_node/src/nodelet/CMakeFiles/kobuki_nodelet.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target kobuki_nodelet"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=40 "Built target kobuki_nodelet"
 .PHONY : kobuki/kobuki_node/src/nodelet/CMakeFiles/kobuki_nodelet.dir/all
 
 # Build rule for subdir invocation for target.
@@ -11966,7 +12035,7 @@ yujin_ocs/yocs_virtual_sensor/CMakeFiles/yocs_virtual_sensor_node.dir/all: yocs_
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_virtual_sensor/CMakeFiles/yocs_virtual_sensor_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 10
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_virtual_sensor/CMakeFiles/yocs_virtual_sensor_node.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_virtual_sensor/CMakeFiles/yocs_virtual_sensor_node.dir/rule
@@ -11994,7 +12063,7 @@ yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider.dir/all: yujin_ocs
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 10
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider.dir/rule
@@ -12016,12 +12085,12 @@ yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider.dir/clean:
 yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider_yaml_parser_lib.dir/all: yocs_msgs/CMakeFiles/yocs_msgs_gencpp.dir/all
 	$(MAKE) -f yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider_yaml_parser_lib.dir/build.make yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider_yaml_parser_lib.dir/depend
 	$(MAKE) -f yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider_yaml_parser_lib.dir/build.make yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider_yaml_parser_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num= "Built target waypoint_provider_yaml_parser_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tibor/repos/a-tech-titan/build/CMakeFiles --progress-num=54 "Built target waypoint_provider_yaml_parser_lib"
 .PHONY : yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider_yaml_parser_lib.dir/all
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider_yaml_parser_lib.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 9
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider_yaml_parser_lib.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_waypoint_provider/CMakeFiles/waypoint_provider_yaml_parser_lib.dir/rule
@@ -12077,7 +12146,7 @@ yujin_ocs/yocs_waypoints_navi/CMakeFiles/yocs_waypoints_navi_node.dir/all: yocs_
 
 # Build rule for subdir invocation for target.
 yujin_ocs/yocs_waypoints_navi/CMakeFiles/yocs_waypoints_navi_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 10
 	$(MAKE) -f CMakeFiles/Makefile2 yujin_ocs/yocs_waypoints_navi/CMakeFiles/yocs_waypoints_navi_node.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tibor/repos/a-tech-titan/build/CMakeFiles 0
 .PHONY : yujin_ocs/yocs_waypoints_navi/CMakeFiles/yocs_waypoints_navi_node.dir/rule
