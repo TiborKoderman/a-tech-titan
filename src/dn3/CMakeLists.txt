@@ -20,11 +20,13 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf2
   tf2_geometry_msgs
+  jsoncpp
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(JSONCPP jsoncpp)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -127,6 +129,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${JSONCPP_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -163,7 +166,9 @@ add_dependencies(move_to_predetermined_points ${${PROJECT_NAME}_EXPORTED_TARGETS
 
 target_link_libraries(move_to_predetermined_points
   ${catkin_LIBRARIES}
+  ${JSONCPP_LIBRARIES}
 )
+
 
 #############
 ## Install ##
