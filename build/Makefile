@@ -2794,6 +2794,19 @@ map_goals/fast:
 .PHONY : map_goals/fast
 
 #=============================================================================
+# Target rules for targets named move_to_predetermined_points
+
+# Build rule for target.
+move_to_predetermined_points: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 move_to_predetermined_points
+.PHONY : move_to_predetermined_points
+
+# fast build rule for target.
+move_to_predetermined_points/fast:
+	$(MAKE) -f dn3/CMakeFiles/move_to_predetermined_points.dir/build.make dn3/CMakeFiles/move_to_predetermined_points.dir/build
+.PHONY : move_to_predetermined_points/fast
+
+#=============================================================================
 # Target rules for targets named turtlebot_marker_server
 
 # Build rule for target.
@@ -4802,6 +4815,7 @@ help:
 	@echo "... run_tests_depthimage_to_laserscan_gtest_libtest"
 	@echo "... kobuki_bumper2pc_nodelet"
 	@echo "... map_goals"
+	@echo "... move_to_predetermined_points"
 	@echo "... turtlebot_marker_server"
 	@echo "... visualization_msgs_generate_messages_py"
 	@echo "... visualization_msgs_generate_messages_nodejs"

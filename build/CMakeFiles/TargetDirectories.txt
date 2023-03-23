@@ -432,12 +432,13 @@
 /home/tibor/repos/a-tech-titan/build/kobuki_desktop/kobuki_dashboard/CMakeFiles/edit_cache.dir
 /home/tibor/repos/a-tech-titan/build/kobuki_desktop/kobuki_dashboard/CMakeFiles/test.dir
 /home/tibor/repos/a-tech-titan/build/dn3/CMakeFiles/install/strip.dir
-/home/tibor/repos/a-tech-titan/build/dn3/CMakeFiles/install/local.dir
 /home/tibor/repos/a-tech-titan/build/dn3/CMakeFiles/install.dir
 /home/tibor/repos/a-tech-titan/build/dn3/CMakeFiles/list_install_components.dir
 /home/tibor/repos/a-tech-titan/build/dn3/CMakeFiles/rebuild_cache.dir
 /home/tibor/repos/a-tech-titan/build/dn3/CMakeFiles/edit_cache.dir
 /home/tibor/repos/a-tech-titan/build/dn3/CMakeFiles/test.dir
+/home/tibor/repos/a-tech-titan/build/dn3/CMakeFiles/install/local.dir
+/home/tibor/repos/a-tech-titan/build/dn3/CMakeFiles/move_to_predetermined_points.dir
 /home/tibor/repos/a-tech-titan/build/turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/install.dir
 /home/tibor/repos/a-tech-titan/build/turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/list_install_components.dir
 /home/tibor/repos/a-tech-titan/build/turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/rebuild_cache.dir

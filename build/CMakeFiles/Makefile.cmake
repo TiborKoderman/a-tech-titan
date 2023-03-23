@@ -1095,6 +1095,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "depthimage_to_laserscan/CMakeFiles/run_tests_depthimage_to_laserscan_gtest_libtest.dir/DependInfo.cmake"
   "kobuki/kobuki_bumper2pc/CMakeFiles/kobuki_bumper2pc_nodelet.dir/DependInfo.cmake"
   "exercise3/CMakeFiles/map_goals.dir/DependInfo.cmake"
+  "dn3/CMakeFiles/move_to_predetermined_points.dir/DependInfo.cmake"
   "turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/turtlebot_marker_server.dir/DependInfo.cmake"
   "turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/visualization_msgs_generate_messages_py.dir/DependInfo.cmake"
   "turtlebot_interactions/turtlebot_interactive_markers/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/DependInfo.cmake"
