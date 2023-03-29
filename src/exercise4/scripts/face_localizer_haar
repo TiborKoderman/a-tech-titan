@@ -93,7 +93,10 @@ class face_localizer:
 
         return pose
     
+<<<<<<< HEAD
+=======
 
+>>>>>>> 940177cb15fbe4f66aab754909d0d43fe1694664
     def find_faces(self):
         print('I got a new image!')
 
