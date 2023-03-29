@@ -10,7 +10,6 @@ project(dn4)
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   geometry_msgs
-  jsoncpp
   message_generation
   message_runtime
   nav_msgs
@@ -133,7 +132,6 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
-  ${JSONCPP_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -171,8 +169,7 @@ add_dependencies(save_location ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPO
 
 target_link_libraries(save_location
   ${catkin_LIBRARIES}
-  ${JSONCPP_LIBRARIES})
-
+)
 #############
 ## Install ##
 #############
