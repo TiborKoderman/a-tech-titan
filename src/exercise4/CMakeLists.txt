@@ -21,5 +21,5 @@ catkin_package()
 #add_executable(map_goals src/map_goals.cpp)
 #target_link_libraries(map_goals ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
-catkin_install_python(PROGRAMS scripts/face_localizer_with_markers DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+# catkin_install_python(PROGRAMS scripts/face_localizer_with_markers DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
