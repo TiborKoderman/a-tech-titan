@@ -1,0 +1,382 @@
+#!/usr/bin/python3
+
+import sys
+import rospy
+import dlib
+import cv2
+import actionlib
+import numpy as np
+import tf2_geometry_msgs
+import tf2_ros
+import face_recognition
+import copy
+import tf
+import time
+
+from os.path import dirname, join
+
+
+from geometry_msgs.msg import PoseStamped, Quaternion, Point
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal, MoveBaseActionResult
+from sensor_msgs.msg import Image
+from geometry_msgs.msg import PointStamped, Vector3, Pose
+from cv_bridge import CvBridge, CvBridgeError
+from visualization_msgs.msg import Marker, MarkerArray
+from std_msgs.msg import ColorRGBA
+from actionlib_msgs.msg import GoalID
+from nav_msgs.msg import Odometry
+import pickle
+import argparse
+import pyttsx3
+
+
+class face_localizer:
+    def __init__(self):
+
+        self.result_sub = rospy.Subscriber(
+            "/move_base/result", MoveBaseActionResult, self.result_sub_callback
+        )
+        
+        self.cancel_goal_publisher = rospy.Publisher(
+            "/move_base/cancel", GoalID, queue_size=10
+        )
+        
+        #self.odom_sub = rospy.Subscriber("/odom", Odometry, self.callback)
+        
+        rospy.init_node('face_localizer', anonymous=True)
+
+        # An object we use for converting images between ROS format and OpenCV format
+        self.bridge = CvBridge()
+
+        # The function for performin HOG face detection
+        #self.face_detector = dlib.get_frontal_face_detector()
+        protoPath = join(dirname(__file__), "deploy.prototxt.txt")
+        modelPath = join(dirname(__file__), "res10_300x300_ssd_iter_140000.caffemodel")
+
+        self.face_net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
+        
+
+        # A help variable for holding the dimensions of the image
+        self.dims = (0, 0, 0)
+
+        # Marker array object used for showing markers in Rviz
+        self.marker_array = MarkerArray()
+        self.marker_num = 0
+
+        # Subscribe to the image and/or depth topic
+        # self.image_sub = rospy.Subscriber("/camera/rgb/image_raw", Image, self.image_callback)
+        # self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
+
+        # Publisher for the visualization markers
+        self.markers_pub = rospy.Publisher('face_markers', MarkerArray, queue_size=1000)
+        self.processed_image_pub = rospy.Publisher('processed_image', Image, queue_size=1000)
+
+        # Object we use for transforming between coordinate frames
+        self.tf_buf = tf2_ros.Buffer()
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buf)
+        
+        self.state = "get_next_waypoint"
+        self.numb_of_faces = 5
+
+        self.ap = argparse.ArgumentParser()
+        self.ap.add_argument("-e", "--encodings", required=True,
+            help="path to serialized db of facial encodings")
+        self.ap.add_argument("-i", "--image", required=False,
+            help="path to input image")
+        self.ap.add_argument("-d", "--detection-method", type=str, default="hog",
+            help="face detection model to use: either `hog` or `cnn`")
+        self.args = vars(self.ap.parse_args())
+
+        self.data = pickle.loads(open(self.args["encodings"], "rb").read())
+        self.current_num_faces = 0
+        self.faces = set()
+
+    def get_pose(self, coords, dist, stamp):
+        # Calculate the position of the detected face
+
+        fx = 554.2546911911879  # kinect focal length in pixels (taken from camera_info)
+        fy = 554.2546911911879
+        cx = 320.5  # image center
+        cy = 240.5
+
+        x1, x2, y1, y2 = coords
+        face_x = (x1 + x2) / 2
+        face_y = (y1 + y2) / 2
+
+        # Calculate the angle between the camera and the face
+        alpha = np.arctan2(face_x - cx, fx)
+        beta = np.arctan2(face_y - cy, fy)
+
+        # Get the position of the face in the camera coordinate system
+        x = dist * np.cos(beta) * np.sin(alpha)
+        y = dist * np.sin(beta)
+        z = dist * np.cos(beta) * np.cos(alpha)
+
+        # Define a stamped message for transformation - in the "camera_rgb_optical_frame"
+        point_s = PointStamped()
+        point_s.header.frame_id = "camera_rgb_optical_frame"
+        point_s.header.stamp = stamp
+        point_s.point.x = x
+        point_s.point.y = y
+        point_s.point.z = z
+
+        # Get the point in the "map" coordinate system
+        try:
+            point_world = self.tf_buf.transform(point_s, "map")
+
+            # Create a Pose object with the same position
+            pose = Pose()
+            pose.position.x = point_world.point.x
+            pose.position.y = point_world.point.y
+            pose.position.z = point_world.point.z
+        except Exception as e:
+            print(e)
+            pose = None
+
+        return pose
+
+    
+    def find_faces(self):
+        #print('I got a new image!')
+
+        # Get the next rgb and depth images that are posted from the camera
+        try:
+            rgb_image_message = rospy.wait_for_message("/camera/rgb/image_raw", Image)
+        except Exception as e:
+            print(e)
+            return 0
+
+        try:
+            depth_image_message = rospy.wait_for_message("/camera/depth/image_raw", Image)
+        except Exception as e:
+            print(e)
+            return 0
+
+        # Convert the images into a OpenCV (numpy) format
+
+        try:
+            rgb_image = self.bridge.imgmsg_to_cv2(rgb_image_message, "bgr8")
+        except CvBridgeError as e:
+            print(e)
+
+        try:
+            depth_image = self.bridge.imgmsg_to_cv2(depth_image_message, "32FC1")
+        except CvBridgeError as e:
+            print(e)
+
+
+        image = rgb_image
+        boxes = face_recognition.face_locations(image, model=self.args["detection_method"])
+        encodings = face_recognition.face_encodings(image, boxes)
+
+        names = ""
+
+        if len(encodings) > 0:
+            for encoding in encodings:
+                matches = face_recognition.compare_faces(self.data["encodings"], encoding)
+                name = "Unknown"
+                if True in matches:
+                    matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+                    counts = {}
+                    for i in matchedIdxs:
+                        name = self.data["names"][i]
+                        counts[name] = counts.get(name, 0) + 1
+                    name = max(counts, key=counts.get)
+
+                names = name
+
+            if names not in self.faces:
+                self.current_num_faces += 1
+                self.faces.add(names)
+                print("Found new face")
+                for ((top, right, bottom, left), name) in zip(boxes, names):
+                    cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
+                    y = top - 15 if top - 15 > 15 else top + 15
+                
+                pose = self.get_pose((left, right, top, bottom), 1.5, rgb_image_message.header.stamp)
+                if pose is not None:
+                    marker = Marker()
+                    # q = tf.transformations.quaternion_from_euler(0, 0, 0)  # Roll, pitch, yaw in radians
+                    marker.header.stamp = rospy.Time.now()
+                    marker.pose = pose
+                    marker.header.frame_id = "map"
+                    marker.ns = "face_localizer"
+                    marker.type = Marker.SPHERE
+                    marker.action = Marker.ADD
+                    marker.id = self.current_num_faces
+                    marker.scale.x = 0.2
+                    marker.scale.y = 0.2
+                    marker.scale.z = 0.2
+                    marker.color.a = 1.0
+                    marker.color.r = 1.0
+                    marker.color.g = 0.0
+                    marker.color.b = 0.0
+                    self.marker_array.markers.append(marker)
+                    self.markers_pub.publish(self.marker_array)
+
+                cv2.imshow("Image", image)
+                cv2.waitKey(0)
+                time.sleep(2)
+                cv2.destroyAllWindows()
+                self.state = "approach_face"
+    
+    
+    def depth_callback(self,data):
+
+        try:
+            depth_image = self.bridge.imgmsg_to_cv2(data, "32FC1")
+        except CvBridgeError as e:
+            print(e)
+
+        # Do the necessairy conversion so we can visuzalize it in OpenCV
+        
+        image_1 = depth_image / np.nanmax(depth_image)
+        image_1 = image_1*255
+        
+        image_viz = np.array(image_1, dtype=np.uint8)
+
+        #cv2.imshow("Depth window", image_viz)
+        #cv2.waitKey(1)
+
+        #plt.imshow(depth_image)
+        #plt.show()
+
+
+    def result_sub_callback(self, data):
+        res_status = data.status.status
+        print("Res status: ", res_status)
+        print("Self state: ", self.state)
+        
+        if self.state == "moving":
+            if res_status == 3 or res_status == 4:
+                self.state = "get_next_waypoint"
+
+        elif self.state == "face_found":
+            if res_status == 2:
+                self.state = "approach_face"
+                
+        elif self.state == "approach_face":
+            if res_status == 3 or res_status == 4:
+                self.state = "greet_face"
+            
+        elif self.state == "greet_face":
+            if res_status == 3 or res_status == 4:
+                self.state = "get_next_waypoint"
+
+
+    def move_to_next_waypoint(self,x_goal,y_goal, next_state):
+    
+        if next_state == "end":
+            self.state = "end"
+            print("DONE")
+        elif next_state == "moving":
+            self.state = "moving"
+            print("Moving")
+        elif next_state == "approach_face":
+            self.state = "approach_face"
+            print("Approaching face")
+            
+        client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
+        client.wait_for_server()
+        msg = PoseStamped()
+
+        goal = MoveBaseGoal()
+        goal.target_pose.header.frame_id = "map"
+        goal.target_pose.header.stamp = rospy.Time.now()
+        goal.target_pose.pose.position.x = x_goal
+        goal.target_pose.pose.position.y = y_goal
+        goal.target_pose.pose.orientation.w = 1.0
+
+        client.send_goal(goal)
+
+
+    def mover(self):
+        pointsX = [-0.129, -0.376, -1.051, -0.968, -1.321, -0.288, 0.004, 0.879, 2.714, 3.025, 3.288, 1.326, 1.236, 2.055, 2.169, 1.655, 0.912, -0.477, -0.058, 0.071, -1.025]
+        pointsY = [0.865, 0.3750, 0.428, 1.754, 2.044, 0.240, -0.704, -0.937, -0.171, -0.169, -0.142, 1.067, 0.913, 1.072, 2.557, 2.863,  2.721, 2.783, 2.700, 2.851, 1.822]
+        
+        i = 0
+        next_goal = None
+        rate = rospy.Rate(1)
+
+        while not rospy.is_shutdown():
+            print(self.state)
+            
+            #elif(self.state == "get_next_waypoint" and len(self.faces) != numb_of_faces):
+            if(self.state == "get_next_waypoint"):
+                
+                if self.current_num_faces == self.numb_of_faces:
+                    
+                    self.state == "end"
+                    rospy.is_shutdown()
+                
+                else:
+                    if i == len(pointsX):
+                        i = 0
+                    
+                    print(pointsX[i], " ", pointsY[i])
+                    self.move_to_next_waypoint(pointsX[i], pointsY[i], "moving")
+                    i += 1
+
+            
+            elif self.state == "face_found":
+                
+                self.cancel_goal_publisher.publish(GoalID())
+                 
+            elif self.state == "approach_face":
+            
+                self.move_to_next_waypoint(0.0, 0.0, "approach_face")
+                self.state = "greet_face"
+            
+            elif self.state == "greet_face":
+
+                engine = pyttsx3.init()
+                engine.setProperty("rate", 160)
+                engine.say(f"Hello face number {self.current_num_faces}")
+                engine.runAndWait()
+
+                rospy.sleep(2)
+                self.state = "get_next_waypoint"
+                
+            self.find_faces()        
+            rate.sleep()
+
+        cv2.destroyAllWindows()
+
+
+class Face:
+
+    def __init__(self, pose, enc, mId):
+        self.pose = pose
+        self.enc = copy.deepcopy(enc)
+        self.id = mId
+
+    def to_marker(self):
+        marker = Marker()
+        marker.header.frame_id = "map"
+        marker.type = Marker.CUBE
+        marker.action = Marker.ADD
+        marker.frame_locked = False
+        marker.scale = Vector3(0.1, 0.1, 0.1)
+        marker.pose = self.pose
+        marker.color = ColorRGBA(0, 1, 0, 1)
+        marker.id = self.id
+        return marker
+
+
+def main():
+
+    face_finder = face_localizer()
+
+    rate = rospy.Rate(1)
+    
+    face_finder.mover()
+    #while not rospy.is_shutdown():
+    #    face_finder.find_faces() 
+    #    rate.sleep()
+
+    cv2.destroyAllWindows()
+
+
+
+if __name__ == '__main__':
+    main()
