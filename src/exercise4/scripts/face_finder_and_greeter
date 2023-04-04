@@ -12,6 +12,7 @@ import face_recognition
 import copy
 import tf
 import time
+import copy
 
 from os.path import dirname, join
 
@@ -192,8 +193,11 @@ class face_localizer:
                 for ((top, right, bottom, left), name) in zip(boxes, names):
                     cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
                     y = top - 15 if top - 15 > 15 else top + 15
+                    
+                #calculate distance to the center of the face
+                dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
                 
-                pose = self.get_pose((left, right, top, bottom), 1.5, rgb_image_message.header.stamp)
+                pose = self.get_pose((left, right, top, bottom), dist, rgb_image_message.header.stamp)
                 if pose is not None:
                     marker = Marker()
                     # q = tf.transformations.quaternion_from_euler(0, 0, 0)  # Roll, pitch, yaw in radians
@@ -211,15 +215,23 @@ class face_localizer:
                     marker.color.r = 1.0
                     marker.color.g = 0.0
                     marker.color.b = 0.0
+                    text_marker = copy.deepcopy(marker)
+                    text_marker.text = "face_" + str(self.current_num_faces)
+                    text_marker.id = self.current_num_faces+1000
+                    text_marker.type = Marker.TEXT_VIEW_FACING
+                    text_marker.color.g = 1.0
+                    text_marker.color.b = 1.0
+                    text_marker.pose.position.z = 1.0
                     self.marker_array.markers.append(marker)
+                    self.marker_array.markers.append(text_marker)
                     self.markers_pub.publish(self.marker_array)
 
+                self.state = "approach_face"
                 # cv2.imshow("Image", image)
                 # cv2.waitKey(0)
                 # time.sleep(2)
                 # cv2.destroyAllWindows()
-                self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
-                self.state = "approach_face"
+            self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
     
     
     def depth_callback(self,data):
