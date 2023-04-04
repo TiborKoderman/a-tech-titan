@@ -62,6 +62,7 @@ class face_localizer:
 
         # Marker array object used for showing markers in Rviz
         self.marker_array = MarkerArray()
+        self.text_marker_array = MarkerArray()
         self.marker_num = 0
 
         # Subscribe to the image and/or depth topic
@@ -69,15 +70,16 @@ class face_localizer:
         # self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
 
         # Publisher for the visualization markers
-        self.markers_pub = rospy.Publisher('face_markers', MarkerArray, queue_size=1000)
         self.processed_image_pub = rospy.Publisher('processed_image', Image, queue_size=1000)
+        self.markers_pub = rospy.Publisher('face_markers', MarkerArray, queue_size=1000)
+        self.text_markers_pub = rospy.Publisher('text_face_markers', MarkerArray, queue_size=1000)
 
         # Object we use for transforming between coordinate frames
         self.tf_buf = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buf)
         
         self.state = "get_next_waypoint"
-        self.numb_of_faces = 5
+        self.numb_of_faces = 7
 
         self.ap = argparse.ArgumentParser()
         self.ap.add_argument("-e", "--encodings", required=True,
@@ -199,40 +201,40 @@ class face_localizer:
                 
                 pose = self.get_pose((left, right, top, bottom), dist, rgb_image_message.header.stamp)
                 if pose is not None:
-                    marker = Marker()
-                    # q = tf.transformations.quaternion_from_euler(0, 0, 0)  # Roll, pitch, yaw in radians
-                    marker.header.stamp = rospy.Time.now()
-                    marker.pose = pose
-                    marker.header.frame_id = "map"
-                    marker.ns = "face_localizer"
-                    marker.type = Marker.SPHERE
-                    marker.action = Marker.ADD
-                    marker.id = self.current_num_faces
-                    marker.scale.x = 0.2
-                    marker.scale.y = 0.2
-                    marker.scale.z = 0.2
-                    marker.color.a = 1.0
-                    marker.color.r = 1.0
-                    marker.color.g = 0.0
-                    marker.color.b = 0.0
-                    text_marker = copy.deepcopy(marker)
-                    text_marker.text = "face_" + str(self.current_num_faces)
-                    text_marker.id = self.current_num_faces+1000
-                    text_marker.type = Marker.TEXT_VIEW_FACING
-                    text_marker.color.g = 1.0
-                    text_marker.color.b = 1.0
-                    text_marker.pose.position.z = 1.0
-                    self.marker_array.markers.append(marker)
-                    self.marker_array.markers.append(text_marker)
-                    self.markers_pub.publish(self.marker_array)
-
+                    self.addFaceMarker(pose)
+                    
                 self.state = "approach_face"
-                # cv2.imshow("Image", image)
-                # cv2.waitKey(0)
-                # time.sleep(2)
-                # cv2.destroyAllWindows()
             self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
     
+    def addFaceMarker(self, pose):
+        marker = Marker()
+        # q = tf.transformations.quaternion_from_euler(0, 0, 0)  # Roll, pitch, yaw in radians
+        marker.header.stamp = rospy.Time.now()
+        marker.pose = pose
+        marker.header.frame_id = "map"
+        marker.ns = "face_localizer"
+        marker.type = Marker.SPHERE
+        marker.action = Marker.ADD
+        marker.id = self.current_num_faces
+        marker.scale.x = 0.2
+        marker.scale.y = 0.2
+        marker.scale.z = 0.2
+        marker.color.a = 1.0
+        marker.color.r = 1.0
+        marker.color.g = 0.0
+        marker.color.b = 0.0
+        text_marker = copy.deepcopy(marker)
+        text_marker.text = "face_" + str(self.current_num_faces)
+        text_marker.id = self.current_num_faces+1000
+        text_marker.type = Marker.TEXT_VIEW_FACING
+        text_marker.color.g = 1.0
+        text_marker.color.b = 1.0
+        text_marker.pose.position.z = 1.0
+        self.marker_array.markers.append(marker)
+        self.text_marker_array.markers.append(text_marker)
+        self.markers_pub.publish(self.marker_array)
+        self.text_markers_pub.publish(self.text_marker_array)
+        
     
     def depth_callback(self,data):
 
@@ -247,12 +249,6 @@ class face_localizer:
         image_1 = image_1*255
         
         image_viz = np.array(image_1, dtype=np.uint8)
-
-        #cv2.imshow("Depth window", image_viz)
-        #cv2.waitKey(1)
-
-        #plt.imshow(depth_image)
-        #plt.show()
 
 
     def result_sub_callback(self, data):
