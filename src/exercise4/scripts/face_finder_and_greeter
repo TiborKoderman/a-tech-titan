@@ -214,10 +214,11 @@ class face_localizer:
                     self.marker_array.markers.append(marker)
                     self.markers_pub.publish(self.marker_array)
 
-                cv2.imshow("Image", image)
-                cv2.waitKey(0)
-                time.sleep(2)
-                cv2.destroyAllWindows()
+                # cv2.imshow("Image", image)
+                # cv2.waitKey(0)
+                # time.sleep(2)
+                # cv2.destroyAllWindows()
+                self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
                 self.state = "approach_face"
     
     
