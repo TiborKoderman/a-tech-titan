@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import math
 import sys
 import rospy
 import dlib
@@ -17,7 +18,7 @@ import copy
 from os.path import dirname, join
 
 
-from geometry_msgs.msg import PoseStamped, Quaternion, Point
+from geometry_msgs.msg import PoseStamped, Quaternion, Point, PoseWithCovarianceStamped
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal, MoveBaseActionResult
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import PointStamped, Vector3, Pose
@@ -41,6 +42,8 @@ class face_localizer:
         self.cancel_goal_publisher = rospy.Publisher(
             "/move_base/cancel", GoalID, queue_size=10
         )
+        
+        self.odom_sub = rospy.Subscriber("/odom", Odometry, self.odom_callback)
         
         #self.odom_sub = rospy.Subscriber("/odom", Odometry, self.callback)
         
@@ -73,7 +76,6 @@ class face_localizer:
         self.processed_image_pub = rospy.Publisher('processed_image', Image, queue_size=1000)
         self.markers_pub = rospy.Publisher('face_markers', MarkerArray, queue_size=1000)
         self.text_markers_pub = rospy.Publisher('text_face_markers', MarkerArray, queue_size=1000)
-
         # Object we use for transforming between coordinate frames
         self.tf_buf = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buf)
@@ -93,6 +95,9 @@ class face_localizer:
         self.data = pickle.loads(open(self.args["encodings"], "rb").read())
         self.current_num_faces = 0
         self.faces = set()
+        
+    def odom_callback(self, odom):
+        return odom
 
     def get_pose(self, coords, dist, stamp):
         # Calculate the position of the detected face
@@ -137,7 +142,7 @@ class face_localizer:
             pose = None
 
         return pose
-
+    
     
     def find_faces(self):
         #print('I got a new image!')
@@ -200,16 +205,18 @@ class face_localizer:
                 dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
                 
                 pose = self.get_pose((left, right, top, bottom), dist, rgb_image_message.header.stamp)
+                print(pose)
                 if pose is not None:
                     self.addFaceMarker(pose)
                     
-                self.state = "approach_face"
+                    self.state = "approach_face"
             self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
     
     def addFaceMarker(self, pose):
         marker = Marker()
-        # q = tf.transformations.quaternion_from_euler(0, 0, 0)  # Roll, pitch, yaw in radians
+        q = tf.transformations.quaternion_from_euler(0, 0, 0)  # Roll, pitch, yaw in radians
         marker.header.stamp = rospy.Time.now()
+        marker.pose.orientation = Quaternion(*q)
         marker.pose = pose
         marker.header.frame_id = "map"
         marker.ns = "face_localizer"
@@ -332,9 +339,26 @@ class face_localizer:
                 self.cancel_goal_publisher.publish(GoalID())
                  
             elif self.state == "approach_face":
-            
-                self.move_to_next_waypoint(0.0, 0.0, "approach_face")
-                self.state = "greet_face"
+                # get position of current marker
+                marker_pos = self.marker_array.markers[-1].pose.position
+                robot_pos = rospy.wait_for_message("/amcl_pose", PoseWithCovarianceStamped).pose.pose.position
+                                
+                # calculate distance between robot and marker
+                x_diff = marker_pos.x - robot_pos.x
+                y_diff = marker_pos.y - robot_pos.y
+                
+                distance = math.sqrt(x_diff**2 + y_diff**2)
+
+                # if robot is close enough, greet marker
+                if distance < 1.0:
+                    self.state = "greet_face"
+                # if robot is not close enough, move closer to marker
+                else:
+                    x_goal = marker_pos.x - 0.5*x_diff
+                    y_goal = marker_pos.y - 0.5*y_diff
+                    self.move_to_next_waypoint(x_goal, y_goal, "approach_face")
+
+
             
             elif self.state == "greet_face":
 
