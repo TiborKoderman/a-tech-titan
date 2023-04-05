@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import math
 import sys
 import rospy
 import dlib
@@ -10,11 +11,14 @@ import tf2_geometry_msgs
 import tf2_ros
 import face_recognition
 import copy
+import tf
+import time
+import copy
 
 from os.path import dirname, join
 
 
-from geometry_msgs.msg import PoseStamped, Quaternion, Point
+from geometry_msgs.msg import PoseStamped, Quaternion, Point, PoseWithCovarianceStamped
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal, MoveBaseActionResult
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import PointStamped, Vector3, Pose
@@ -39,6 +43,8 @@ class face_localizer:
             "/move_base/cancel", GoalID, queue_size=10
         )
         
+        self.odom_sub = rospy.Subscriber("/odom", Odometry, self.odom_callback)
+        
         #self.odom_sub = rospy.Subscriber("/odom", Odometry, self.callback)
         
         rospy.init_node('face_localizer', anonymous=True)
@@ -52,27 +58,37 @@ class face_localizer:
         modelPath = join(dirname(__file__), "res10_300x300_ssd_iter_140000.caffemodel")
 
         self.face_net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
+        
 
         # A help variable for holding the dimensions of the image
         self.dims = (0, 0, 0)
 
         # Marker array object used for showing markers in Rviz
         self.marker_array = MarkerArray()
+        self.text_marker_array = MarkerArray()
+        self.marker_array_est = MarkerArray()
         self.marker_num = 0
-
+        self.est_count = 0
+        
+        # self.grid = []
         # Subscribe to the image and/or depth topic
         # self.image_sub = rospy.Subscriber("/camera/rgb/image_raw", Image, self.image_callback)
         # self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
 
         # Publisher for the visualization markers
+        self.processed_image_pub = rospy.Publisher('processed_image', Image, queue_size=1000)
         self.markers_pub = rospy.Publisher('face_markers', MarkerArray, queue_size=1000)
-
+        self.text_markers_pub = rospy.Publisher('text_face_markers', MarkerArray, queue_size=1000)
+        self.face_markers_est_pub = rospy.Publisher('face_markers_est', MarkerArray, queue_size=1000)
+        self.markers_pub.publish(self.marker_array)
+        self.text_markers_pub.publish(self.text_marker_array)
+        self.face_markers_est_pub.publish(self.marker_array_est)
         # Object we use for transforming between coordinate frames
         self.tf_buf = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buf)
         
         self.state = "get_next_waypoint"
-        self.numb_of_faces = 5
+        self.numb_of_faces = 7
 
         self.ap = argparse.ArgumentParser()
         self.ap.add_argument("-e", "--encodings", required=True,
@@ -86,37 +102,38 @@ class face_localizer:
         self.data = pickle.loads(open(self.args["encodings"], "rb").read())
         self.current_num_faces = 0
         self.faces = set()
+        
+    def odom_callback(self, odom):
+        return odom
 
-    def get_pose(self,coords,dist,stamp):
+    def get_pose(self, coords, dist, stamp):
         # Calculate the position of the detected face
 
-        k_f = 554 # kinect focal length in pixels
+        fx = 554.2546911911879  # kinect focal length in pixels (taken from camera_info)
+        fy = 554.2546911911879
+        cx = 320.5  # image center
+        cy = 240.5
 
         x1, x2, y1, y2 = coords
+        face_x = (x1 + x2) / 2
+        face_y = (y1 + y2) / 2
 
-        face_x = self.dims[1] / 2 - (x1+x2)/2.
-        face_y = self.dims[0] / 2 - (y1+y2)/2.
+        # Calculate the angle between the camera and the face
+        alpha = np.arctan2(face_x - cx, fx)
+        beta = np.arctan2(face_y - cy, fy)
 
-        angle_to_target = np.arctan2(face_x,k_f)
+        # Get the position of the face in the camera coordinate system
+        x = dist * np.cos(beta) * np.sin(alpha)
+        y = dist * np.sin(beta)
+        z = dist * np.cos(beta) * np.cos(alpha)
 
-        # Get the angles in the base_link relative coordinate system
-        x, y = dist*np.cos(angle_to_target), dist*np.sin(angle_to_target)
-
-        ### Define a stamped message for transformation - directly in "base_link"
-        #point_s = PointStamped()
-        #point_s.point.x = x
-        #point_s.point.y = y
-        #point_s.point.z = 0.3
-        #point_s.header.frame_id = "base_link"
-        #point_s.header.stamp = rospy.Time(0)
-
-        # Define a stamped message for transformation - in the "camera rgb frame"
+        # Define a stamped message for transformation - in the "camera_rgb_optical_frame"
         point_s = PointStamped()
-        point_s.point.x = -y
-        point_s.point.y = 0
-        point_s.point.z = x
         point_s.header.frame_id = "camera_rgb_optical_frame"
         point_s.header.stamp = stamp
+        point_s.point.x = x
+        point_s.point.y = y
+        point_s.point.z = z
 
         # Get the point in the "map" coordinate system
         try:
@@ -133,7 +150,7 @@ class face_localizer:
 
         return pose
     
-
+    
     def find_faces(self):
         #print('I got a new image!')
 
@@ -162,16 +179,16 @@ class face_localizer:
         except CvBridgeError as e:
             print(e)
 
-        
+
         image = rgb_image
-        boxes = face_recognition.face_locations(image,model=self.args["detection_method"])
+        boxes = face_recognition.face_locations(image, model=self.args["detection_method"])
         encodings = face_recognition.face_encodings(image, boxes)
 
         names = ""
-        
+
         if len(encodings) > 0:
             for encoding in encodings:
-                matches = face_recognition.compare_faces(self.data["encodings"],encoding)
+                matches = face_recognition.compare_faces(self.data["encodings"], encoding)
                 name = "Unknown"
                 if True in matches:
                     matchedIdxs = [i for (i, b) in enumerate(matches) if b]
@@ -180,26 +197,96 @@ class face_localizer:
                         name = self.data["names"][i]
                         counts[name] = counts.get(name, 0) + 1
                     name = max(counts, key=counts.get)
-                
+
                 names = name
-            
+                
+                for ((top, right, bottom, left), name) in zip(boxes, names):
+                    cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
+                    y = top - 15 if top - 15 > 15 else top + 15
+                dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
+                
+                try:
+                    pose = self.get_pose((left, right, top, bottom), dist , rgb_image_message.header.stamp)
+                    self.addFaceMarkerEstimation(pose)
+                except:
+                    pass
+        
             if names not in self.faces:
-                self.current_num_faces += 1
-                self.faces.add(names)
+                self.faces.add(names) # add face anyway, so it doesn't get added again
                 print("Found new face")
                 for ((top, right, bottom, left), name) in zip(boxes, names):
                     cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
                     y = top - 15 if top - 15 > 15 else top + 15
-                import time
-                cv2.imshow("Image", image)
-                cv2.waitKey(0)
-                time.sleep(2)
-                cv2.destroyAllWindows()
-                self.state = "approach_face"
+                    
+                #calculate distance to the center of the face
+                dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
+                
+                pose = self.get_pose((left, right, top, bottom), dist, rgb_image_message.header.stamp)
+                print(pose)
+                if pose is not None and not self.faceMarkerIsNearAnotherMarker(pose, 1): #if the face is not too close to another face don't create a marker
+                    self.current_num_faces += 1
+                    self.addFaceMarker(pose)
+                    self.state = "approach_face"
+            self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
+    
+    def faceMarkerIsNearAnotherMarker(self, pose, range):
+        for marker in self.marker_array.markers:
+            if abs(pose.position.x - marker.pose.position.x) < range and abs(pose.position.y - marker.pose.position.y) < range:
+                return True
+        return False
+    
+    def addFaceMarker(self, pose):
+        marker = Marker()
+        q = tf.transformations.quaternion_from_euler(0, 0, 0)  # Roll, pitch, yaw in radians
+        marker.header.stamp = rospy.Time.now()
+        marker.pose.orientation = Quaternion(*q)
+        marker.pose = pose
+        marker.header.frame_id = "map"
+        marker.ns = "face_localizer"
+        marker.type = Marker.SPHERE
+        marker.action = Marker.ADD
+        marker.id = self.current_num_faces
+        marker.scale.x = 0.2
+        marker.scale.y = 0.2
+        marker.scale.z = 0.2
+        marker.color.a = 1.0
+        marker.color.r = 1.0
+        marker.color.g = 0.0
+        marker.color.b = 0.0
+        text_marker = copy.deepcopy(marker)
+        text_marker.text = "face_" + str(self.current_num_faces)
+        text_marker.id = self.current_num_faces+1000
+        text_marker.type = Marker.TEXT_VIEW_FACING
+        text_marker.color.g = 1.0
+        text_marker.color.b = 1.0
+        text_marker.pose.position.z = 1.0
+        self.marker_array.markers.append(marker)
+        self.text_marker_array.markers.append(text_marker)
+        self.markers_pub.publish(self.marker_array)
+        self.text_markers_pub.publish(self.text_marker_array)
         
-            
-        self.markers_pub.publish(self.marker_array)            
-
+    def addFaceMarkerEstimation(self, pose):
+        marker = Marker()
+        q = tf.transformations.quaternion_from_euler(0, 0, 0)  # Roll, pitch, yaw in radians
+        marker.header.stamp = rospy.Time.now()
+        marker.pose.orientation = Quaternion(*q)
+        marker.pose = pose
+        marker.header.frame_id = "map"
+        marker.ns = "face_localizer"
+        marker.type = Marker.SPHERE
+        marker.action = Marker.ADD
+        marker.id = self.est_count
+        marker.scale.x = 0.1
+        marker.scale.y = 0.1
+        marker.scale.z = 0.1
+        marker.color.a = 1.0
+        marker.color.r = 1.0
+        marker.color.g = 0.0
+        marker.color.b = 1.0
+        self.marker_array_est.markers.append(marker)
+        self.face_markers_est_pub.publish(self.marker_array_est)
+        self.est_count += 1
+        
     
     def depth_callback(self,data):
 
@@ -214,12 +301,6 @@ class face_localizer:
         image_1 = image_1*255
         
         image_viz = np.array(image_1, dtype=np.uint8)
-
-        #cv2.imshow("Depth window", image_viz)
-        #cv2.waitKey(1)
-
-        #plt.imshow(depth_image)
-        #plt.show()
 
 
     def result_sub_callback(self, data):
@@ -268,11 +349,15 @@ class face_localizer:
         goal.target_pose.pose.orientation.w = 1.0
 
         client.send_goal(goal)
+        
+
+        # if self.state == "approach_face":
+       #     client.wait_for_result()
 
 
     def mover(self):
-        pointsX = [-0.638, 0, -0.046, 3.203, 1.209, -0.130]
-        pointsY = [0.941, 0, -0.887, -0.263, 1.026, 2.687]
+        pointsX = [-0.129, -0.376, -0.968, -1.321, -0.288, 0.004, 0.879, 0.507, 2.714, 3.025, 3.288, 1.326, 1.236, 2.055, 2.169, 1.655, 0.912, -0.477, -0.058, 0.071, -1.025]
+        pointsY = [0.865, 0.3750, 1.754, 2.044, 0.240, -0.704, -0.937, -0.947,-0.171, -0.169, -0.142, 1.067, 0.913, 1.072, 2.557, 2.863,  2.721, 2.783, 2.700, 2.851, 1.822]
         
         i = 0
         next_goal = None
@@ -295,17 +380,32 @@ class face_localizer:
                     
                     print(pointsX[i], " ", pointsY[i])
                     self.move_to_next_waypoint(pointsX[i], pointsY[i], "moving")
+                    print(i)
                     i += 1
 
             
             elif self.state == "face_found":
                 
                 self.cancel_goal_publisher.publish(GoalID())
-                 
+                            
             elif self.state == "approach_face":
-            
-                self.move_to_next_waypoint(0.0, 0.0, "approach_face")
-                self.state = "greet_face"
+                # get position of current marker
+                marker_pos = self.marker_array.markers[-1].pose.position
+                robot_pos = rospy.wait_for_message("/amcl_pose", PoseWithCovarianceStamped).pose.pose.position
+                
+                # calculate distance between robot and marker
+                x_diff = marker_pos.x - robot_pos.x
+                y_diff = marker_pos.y - robot_pos.y
+                
+                distance = math.sqrt(x_diff**2 + y_diff**2)
+
+                if distance < 1.0:
+                    self.state = "greet_face"
+                else:
+                    x_goal = marker_pos.x - 0.5*x_diff
+                    y_goal = marker_pos.y - 0.5*y_diff
+                    self.move_to_next_waypoint(x_goal, y_goal, "approach_face")
+
             
             elif self.state == "greet_face":
 
@@ -321,7 +421,7 @@ class face_localizer:
             rate.sleep()
 
         cv2.destroyAllWindows()
-
+        
 
 class Face:
 
