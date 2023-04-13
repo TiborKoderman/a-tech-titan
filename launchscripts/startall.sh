@@ -2,7 +2,7 @@
 
 cd ..
 
-gnome-terminal -- roslaunch exercise3 rins_world.launch
+# gnome-terminal -- roslaunch exercise3 rins_world.launch
 
 sleep 10
 
