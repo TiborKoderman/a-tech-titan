@@ -25,7 +25,6 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(JSONCPP jsoncpp)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -128,7 +127,6 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
-  ${JSONCPP_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -145,7 +143,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/dn3_node.cpp)
-add_executable(move_to_predetermined_points src/move_to_predetermined_points.cpp)
+
+# add_executable(move_to_predetermined_points src/move_to_predetermined_points.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -156,17 +155,17 @@ add_executable(move_to_predetermined_points src/move_to_predetermined_points.cpp
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(move_to_predetermined_points ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+# add_dependencies(move_to_predetermined_points ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(move_to_predetermined_points
-  ${catkin_LIBRARIES}
-  ${JSONCPP_LIBRARIES}
-)
+# target_link_libraries(move_to_predetermined_points
+#   ${catkin_LIBRARIES}
+# )
 
 
 #############
