@@ -57,20 +57,26 @@ class Movement:
         )
         """
         
+        #move arm into position
+        self.arm_user_command_pub = rospy.Publisher(
+            "/arm_command", String, queue_size=10
+        )
+
+        
         self.pose_pub = rospy.Publisher(
             "/move_base_simple/goal", PoseStamped, queue_size=10
         )
         
-        #set infalation radius to 0.1m
-        self.costmap_inflation_pub = rospy.Publisher(
-            "/move_base/local_costmap/inflation_layer/inflation_radius", Float32, queue_size=10
-        )
-        self.costmap_inflation_pub.publish(0.1)
+        # #set infalation radius to 0.1m
+        # self.costmap_inflation_pub = rospy.Publisher(
+        #     "/move_base/local_costmap/inflation_layer/inflation_radius", Float32, queue_size=10
+        # )
+        # self.costmap_inflation_pub.publish(0.1)
         
-        self.costmap_inflation_scale_pub = rospy.Publisher(
-            "/move_base/local_costmap/inflation_layer/inflation_radius", Float32, queue_size=10
-        )
-        self.costmap_inflation_scale_pub.publish(5)
+        # self.costmap_inflation_scale_pub = rospy.Publisher(
+        #     "/move_base/local_costmap/inflation_layer/inflation_radius", Float32, queue_size=10
+        # )
+        # self.costmap_inflation_scale_pub.publish(5)
         
         self.tf_buf = tf2_ros.Buffer()
         self.tf2_listener = tf2_ros.TransformListener(self.tf_buf)
@@ -104,6 +110,11 @@ class Movement:
         
         self.objectLocationX = 0.0
         self.objectLocationY = 0.0
+        
+        #wait, than publish all initial values
+        rospy.sleep(1)
+        print("moving arm into position")
+        self.arm_user_command_pub.publish(String("extend"))
 
     
     def mover(self):
