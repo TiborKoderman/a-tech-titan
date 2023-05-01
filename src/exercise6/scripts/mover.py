@@ -125,11 +125,15 @@ class Movement:
                 self.state = "park"
                 self.cancel_goal_publisher.publish(GoalID())
                 rospy.sleep(1)
-                
-                parkingX = 2.886
-                parkingY = -0.190
-                
-                self.move_to_next(parkingX, parkingY, "parking")
+
+                for ring in self.rings:
+                    if ring.color == "green":
+                        print(ring.pose.pose)
+                        parkingX = ring.pose.position[0]
+                        parkingY = ring.pose.position[1]
+                        
+                        #self.move_to_next(parkingX, parkingY, "parking")
+         
                
             elif self.state == "get_next_waypoint":
                    
@@ -233,7 +237,65 @@ class Movement:
             print("Moving")
         elif next_state == "parking":
             self.state = "parking"
-            print("Parking")
+            msg = PoseStamped()
+            msg.header.frame_id = "map"
+            msg.header.seq = self.seq
+            msg.header.stamp = rospy.Time.now()
+            msg.pose.position.x = x_goal
+            msg.pose.position.y = y_goal
+            msg.pose.orientation.w = 1.0
+            self.pose_pub.publish(msg)
+            # Look for a non-green ring within a certain distance of the target coordinates
+            search_radius = 0.5 # Modify this value to fit your specific requirements
+            non_green_ring_found = False
+
+            while not non_green_ring_found:
+                for ring in self.rings:
+                    distance_to_ring = math.sqrt((ring.pose.position.x - x_goal) ** 2 + (ring.pose.position.y - y_goal) ** 2)
+                    if distance_to_ring <= search_radius and ring.color != "green":
+                        non_green_ring_found = True
+                        break
+
+                # If a non-green ring was not found, adjust the search radius and move the robot slightly
+                if not non_green_ring_found:
+                    search_radius += 0.5 # Modify this value to fit your specific requirements
+                    msg = PoseStamped()
+                    msg.header.frame_id = "map"
+                    msg.header.seq = self.seq
+                    msg.header.stamp = rospy.Time.now()
+                    msg.pose.position.x = x_goal + 0.1
+                    msg.pose.position.y = y_goal + 0.1
+                    msg.pose.orientation.w = 1.0
+                    self.pose_pub.publish(msg)
+
+            # Park the robot at the location of the non-green ring
+            parkingX = ring.pose.position.x
+            parkingY = ring.pose.position.y
+
+            # Move the robot to the parking location
+            msg = PoseStamped()
+            msg.header.frame_id = "map"
+            msg.header.seq = self.seq
+            msg.header.stamp = rospy.Time.now()
+            msg.pose.position.x = parkingX
+            msg.pose.position.y = parkingY
+            msg.pose.orientation.w = 1.0
+            
+            self.pose_pub.publish(msg)
+
+            # Align the robot with the circular parking space
+            # You can use computer vision techniques to detect the boundaries of the parking space and align the robot accordingly
+
+            # Wait for the robot to stop moving
+            while self.navigator.is_moving():
+                rospy.sleep(0.1)
+
+            # Update the state of the robot
+            if next_state == "parking":
+                self.state = "parked"
+            else:
+                self.state = "end"
+                print("Parking")
             
                     
         msg = PoseStamped()
