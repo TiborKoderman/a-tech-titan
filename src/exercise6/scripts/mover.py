@@ -90,7 +90,7 @@ class Movement:
         self.rings = list()
         self.cylinders = list()
         
-        self.number_of_rings = 3
+        self.number_of_rings = 4
         self.number_of_cylinders = 4
         
         self.state = "get_next_waypoint"
@@ -373,7 +373,7 @@ class Cylindy:
         marker.type = Marker.CYLINDER
         marker.action = Marker.ADD
         marker.frame_locked = False
-        marker.scale = Vector3(0.1, 0.1, 0.1)
+        marker.scale = Vector3(0.25, 0.25, 0.25)
         marker.pose.position.x = self.pose.point.x
         marker.pose.position.y = self.pose.point.y
         marker.pose.position.z = self.pose.point.z
