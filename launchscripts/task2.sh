@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ..
+# cd ..
 gnome-terminal -- roslaunch exercise6 rins_world.launch
 
 sleep 10

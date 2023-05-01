@@ -13,6 +13,7 @@ import tf
 import copy
 import math
 from matplotlib import pyplot as plt
+from std_msgs.msg import String, Float32, Float64, Int32, Bool, ColorRGBA
 
 from os.path import dirname, join
 
@@ -59,6 +60,17 @@ class Movement:
         self.pose_pub = rospy.Publisher(
             "/move_base_simple/goal", PoseStamped, queue_size=10
         )
+        
+        #set infalation radius to 0.1m
+        self.costmap_inflation_pub = rospy.Publisher(
+            "/move_base/local_costmap/inflation_layer/inflation_radius", Float32, queue_size=10
+        )
+        self.costmap_inflation_pub.publish(0.1)
+        
+        self.costmap_inflation_scale_pub = rospy.Publisher(
+            "/move_base/local_costmap/inflation_layer/inflation_radius", Float32, queue_size=10
+        )
+        self.costmap_inflation_scale_pub.publish(5)
         
         self.tf_buf = tf2_ros.Buffer()
         self.tf2_listener = tf2_ros.TransformListener(self.tf_buf)
