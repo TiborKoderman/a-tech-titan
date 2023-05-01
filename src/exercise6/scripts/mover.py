@@ -139,6 +139,10 @@ class Movement:
         self.objectLocationX = 0.0
         self.objectLocationY = 0.0
         
+        self.SpeechEngine = pyttsx3.init()
+        self.SpeechEngine.setProperty("rate", 160)
+        self.SpeechEngine.say("Hello, I am the robot")
+        
         #wait, than publish all initial values
         rospy.sleep(1)
         print("moving arm into position")
@@ -240,6 +244,7 @@ class Movement:
             self.objectLocationX = data.position.pose.position.x
             self.objectLocationY = data.position.pose.position.y
             print("Hello", color, "ring")
+            self.SpeechEngine.say("Hello " + color + " ring")
             self.state = "ring_found"
 
         self.ring_markers_pub.publish(self.ring_marker_array)
@@ -259,6 +264,7 @@ class Movement:
             color = data.color
             cylinder = Cylindy(pose, self.cylinder_marker_num, color)
             print("Hello", color, "cylinder")
+            self.SpeechEngine.say("Hello " + color + " cylinder")
             self.cylinder_marker_num += 1
             self.cylinders.append(cylinder)
             self.cylinder_marker_array.markers.append(cylinder.to_marker())
