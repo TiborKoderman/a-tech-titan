@@ -67,16 +67,6 @@ class Movement:
             "/move_base_simple/goal", PoseStamped, queue_size=10
         )
         
-        # #set infalation radius to 0.1m
-        # self.costmap_inflation_pub = rospy.Publisher(
-        #     "/move_base/local_costmap/inflation_layer/inflation_radius", Float32, queue_size=10
-        # )
-        # self.costmap_inflation_pub.publish(0.1)
-        
-        # self.costmap_inflation_scale_pub = rospy.Publisher(
-        #     "/move_base/local_costmap/inflation_layer/inflation_radius", Float32, queue_size=10
-        # )
-        # self.costmap_inflation_scale_pub.publish(5)
         
         self.tf_buf = tf2_ros.Buffer()
         self.tf2_listener = tf2_ros.TransformListener(self.tf_buf)
@@ -337,7 +327,9 @@ class Ringy:
         #marker.header.stamp = self.pose.header.stamp
         #marker.header.frame_id = self.pose.header.frame_id
         marker.header.frame_id = "map"
-        marker.type = Marker.CUBE
+        # marker.type = Marker.CUBE
+        marker.type = Marker.MESH_RESOURCE;
+        marker.mesh_resource = "package://exercise6/meshes/ring.stl";
         marker.action = Marker.ADD
         marker.frame_locked = False
         marker.scale = Vector3(0.1, 0.1, 0.1)
