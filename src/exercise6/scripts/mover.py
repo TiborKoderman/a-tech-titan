@@ -37,8 +37,13 @@ import pyttsx3
 class Movement:
 
     def __init__(self):
+        
+        printStatusMsgs.info("Initializing Movement")
 
         rospy.init_node('movement', anonymous=True)
+        
+        printStatusMsgs.ok("Node initialized")
+        
 
         self.result_sub = rospy.Subscriber(
             "/move_base/result", MoveBaseActionResult, self.result_sub_callback
@@ -62,25 +67,25 @@ class Movement:
         """
         
         self.odom_sub = rospy.Subscriber("/odom", Odometry, self.odom_callback)
-        
-        
-        #move arm into position
         self.arm_user_command_pub = rospy.Publisher(
             "/arm_command", String, queue_size=10
         )
-
         
+         #move arm into position
         self.pose_pub = rospy.Publisher(
             "/move_base_simple/goal", PoseStamped, queue_size=10
         )
+
+        printStatusMsgs.ok("Topics sucessfully subscribed")
         
         
         self.tf_buf = tf2_ros.Buffer()
         self.tf2_listener = tf2_ros.TransformListener(self.tf_buf)
+        
            
         self.bridge = CvBridge()
         
-        
+         
         protoPath = join(dirname(__file__), "deploy.prototxt.txt")
         modelPath = join(dirname(__file__), "res10_300x300_ssd_iter_140000.caffemodel")
         self.face_net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
@@ -101,18 +106,15 @@ class Movement:
         self.tf_listener = tf2_ros.TransformListener(self.tf_buf)
         self.numb_of_faces = 7
         self.ap = argparse.ArgumentParser()
-        # self.ap.add_argument("-e", "--encodings", required=True,
-        #     help="path to serialized db of facial encodings")
-        # self.ap.add_argument("-i", "--image", required=False,
-        #     help="path to input image")
-        # self.ap.add_argument("-d", "--detection-method", type=str, default="hog",
-        #     help="face detection model to use: either `hog` or `cnn`")
-        # self.args = vars(self.ap.parse_args())
         self.data = pickle.loads(open(join(dirname(__file__), "encodings.pickle"), "rb").read())
         self.current_num_faces = 0
         self.faces = set()
         
         self.seq = 0
+        
+        printStatusMsgs.ok("Face detection initialized")
+        
+        # printStatusMsgs.info("Initializing variables for rings and cylinders")
         
         self.ring_marker_array = MarkerArray()
         self.ring_marker_num = 1
@@ -140,21 +142,24 @@ class Movement:
         self.objectLocationX = 0.0
         self.objectLocationY = 0.0
         
+        # printStatusMsgs.info("initializing speech engine")
+        
         self.SpeechEngine = pyttsx3.init()
         self.SpeechEngine.setProperty("rate", 160)
-        self.SpeechEngine.say("Hello, I am the robot")
+        self.SpeechEngine.say("System online")
         self.SpeechEngine.runAndWait()
+
+        
+        printStatusMsgs.ok("speech engine initialized")
         
         self.wpGenerator = WaypointGenerator()
-                
-        # self.waypoints = self.wpGenerator.get_waypoints()
-        
-        # print(self.waypoints)
         
         #wait, than publish all initial values
         rospy.sleep(1)
-        print("moving arm into position")
+        printStatusMsgs.info("moving arm into extended position")
         self.arm_user_command_pub.publish(String("extend"))
+        
+        printStatusMsgs.ok("Initialization complete")
 
     def odom_callback(self, odom):
         return odom
@@ -163,8 +168,6 @@ class Movement:
         
         pointsX = [-0.129, -0.376, -1.051, -0.968, -1.321, -0.288, 0.004, 0.879, 2.714, 3.025, 3.288, 1.326, 1.236, 2.055, 2.169, 1.655, 0.912, -0.477, -0.058, 0.071, -1.025]
         pointsY = [0.865, 0.3750, 0.428, 1.754, 2.044, 0.240, -0.704, -0.937, -0.171, -0.169, -0.142, 1.067, 0.913, 1.072, 2.557, 2.863,  2.721, 2.783, 2.700, 2.851, 1.822]
-        
-        # pointsX, pointsY = self.waypoints
         
         i = 0
         next_goal = None
@@ -175,7 +178,8 @@ class Movement:
             rate.sleep()
         
         while not rospy.is_shutdown():
-            if self.number_of_rings == len(self.rings)  and self.number_of_cylinders == len(self.cylinders) and self.state != "end":
+        
+            if self.number_of_rings == len(self.rings) and self.number_of_cylinders == len(self.cylinders) and self.state != "end":
                 self.state = "park"
                 self.cancel_goal_publisher.publish(GoalID())
                 rospy.sleep(1)
@@ -186,7 +190,7 @@ class Movement:
                         parkingY = ring.pose.pose.position.y
                         #comes close to the green ring
                         self.move_to_next(parkingX, parkingY, "parking")
-            
+         
                
             elif self.state == "get_next_waypoint":
                    
@@ -202,37 +206,11 @@ class Movement:
                 #rospy.sleep(1)
                 #ringy = self.rings[-1]
                 #print("Hello", ringy.color, "ring")
-                self.state = "get_next_waypoint"    
-                   
-            self.find_faces() 
+                self.state = "get_next_waypoint"       
+                
+            self.find_faces()
             rate.sleep()
-
-    '''def park(self, x_goal, y_goal):
-            # Look for a non-green ring within a certain distance of the target coordinates
-            search_radius = 0.5 # Modify this value to fit your specific requirements
-            non_green_ring_found = False
-
-            while not non_green_ring_found:
-                for ring in self.rings:
-                    distance_to_ring = math.sqrt((ring.pose.pose.position.x - x_goal) ** 2 + (ring.pose.pose.position.y - y_goal) ** 2)
-                    if distance_to_ring <= search_radius and ring.color != "green":
-                        non_green_ring_found = True
-                        break
-
-                # If a non-green ring was not found, adjust the search radius and move the robot slightly
-                if not non_green_ring_found:
-                    search_radius += 0.5 # Modify this value to fit your specific requirements
-                    self.move_to_next(x_goal, y_goal, "to_be_parked")
-
-            # Park the robot at the location of the non-green ring
-            parkingX = ring.pose.pose.position.x
-            parkingY = ring.pose.pose.position.y
-
-            # Move the robot to the parking location
-            self.move_to_next(parkingX, parkingY, "to_be_parked")
-            # Align the robot with the circular parking space
-            # You can use computer vision techniques to detect the boundaries of the parking space and align the robot accordingly
-    '''
+    
     
     def find_rings_callback(self, data):
 
@@ -297,9 +275,6 @@ class Movement:
         elif next_state == "parking":
             self.state = "parking"
             print("Parking")
-            #after parking near the green ring go into the real parking state and look for the ring
-            # on the ground -> place the next waypoint in the center of the circle on the ground
-            # go into the parked state and stay there
             
         client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         client.wait_for_server()
@@ -324,8 +299,65 @@ class Movement:
             print("Moving")
         elif next_state == "parking":
             self.state = "parking"
-            print("Parking")
-            #self.park(x_goal,y_goal)
+            msg = PoseStamped()
+            msg.header.frame_id = "map"
+            msg.header.seq = self.seq
+            msg.header.stamp = rospy.Time.now()
+            msg.pose.position.x = x_goal
+            msg.pose.position.y = y_goal
+            msg.pose.orientation.w = 1.0
+            self.pose_pub.publish(msg)
+            # Look for a non-green ring within a certain distance of the target coordinates
+            search_radius = 0.5 # Modify this value to fit your specific requirements
+            non_green_ring_found = False
+
+            while not non_green_ring_found:
+                for ring in self.rings:
+                    distance_to_ring = math.sqrt((ring.pose.position.x - x_goal) ** 2 + (ring.pose.position.y - y_goal) ** 2)
+                    if distance_to_ring <= search_radius and ring.color != "green":
+                        non_green_ring_found = True
+                        break
+
+                # If a non-green ring was not found, adjust the search radius and move the robot slightly
+                if not non_green_ring_found:
+                    search_radius += 0.5 # Modify this value to fit your specific requirements
+                    msg = PoseStamped()
+                    msg.header.frame_id = "map"
+                    msg.header.seq = self.seq
+                    msg.header.stamp = rospy.Time.now()
+                    msg.pose.position.x = x_goal + 0.1
+                    msg.pose.position.y = y_goal + 0.1
+                    msg.pose.orientation.w = 1.0
+                    self.pose_pub.publish(msg)
+
+            # Park the robot at the location of the non-green ring
+            parkingX = ring.pose.position.x
+            parkingY = ring.pose.position.y
+
+            # Move the robot to the parking location
+            msg = PoseStamped()
+            msg.header.frame_id = "map"
+            msg.header.seq = self.seq
+            msg.header.stamp = rospy.Time.now()
+            msg.pose.position.x = parkingX
+            msg.pose.position.y = parkingY
+            msg.pose.orientation.w = 1.0
+            
+            self.pose_pub.publish(msg)
+
+            # Align the robot with the circular parking space
+            # You can use computer vision techniques to detect the boundaries of the parking space and align the robot accordingly
+
+            # Wait for the robot to stop moving
+            while self.navigator.is_moving():
+                rospy.sleep(0.1)
+
+            # Update the state of the robot
+            if next_state == "parking":
+                self.state = "parked"
+            else:
+                self.state = "end"
+                print("Parking")
             
                     
         msg = PoseStamped()
@@ -357,7 +389,7 @@ class Movement:
         elif self.state == "parking":
             if res_status == 3:
                 self.state = "end"
-                
+
     def depth_callback(self,data):
 
         try:
@@ -415,7 +447,6 @@ class Movement:
             pose = None
 
         return pose
-    
     
     def find_faces(self):
         #print('I got a new image!')
@@ -553,7 +584,6 @@ class Movement:
         self.marker_array_est.markers.append(marker)
         self.face_markers_est_pub.publish(self.marker_array_est)
         self.est_count += 1
-
 class Ringy:
 
     def __init__(self, pose, rId, color):
@@ -582,7 +612,6 @@ class Ringy:
         #marker.header.stamp = self.pose.header.stamp
         #marker.header.frame_id = self.pose.header.frame_id
         marker.header.frame_id = "map"
-        # marker.type = Marker.CUBE
         marker.type = Marker.MESH_RESOURCE;
         marker.mesh_resource = "package://exercise6/meshes/ring.stl";
         marker.action = Marker.ADD
@@ -743,8 +772,6 @@ class WaypointGenerator:
         printStatusMsgs.ok("Waypoints generated")
         print(self.waypoints)
         return self.waypoints
-    
-    
 
 
 def main():
