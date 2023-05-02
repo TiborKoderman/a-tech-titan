@@ -8,5 +8,8 @@
     "cmake.configureOnOpen": false,
     "python.analysis.extraPaths": [
         "/opt/ros/noetic/lib/python3.10/site-packages"
+    ],
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "master"
     ]
 }
