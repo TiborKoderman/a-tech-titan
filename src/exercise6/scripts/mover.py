@@ -263,7 +263,7 @@ class Movement:
             self.state = "moving"
             print("Moving")
         elif next_state == "parking":
-            self.state = "parking"
+            self.state = "park"
             #print("Parking")
             #self.park(x_goal,y_goal)
             
@@ -283,7 +283,7 @@ class Movement:
     def result_sub_callback(self, data):
     
         res_status = data.status.status
-        print("Res status: ", res_status)
+        #print("Res status: ", res_status)
         print("Self state: ", self.state)
         
         if self.state == "moving":
