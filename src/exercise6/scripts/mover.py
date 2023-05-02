@@ -131,7 +131,7 @@ class Movement:
         self.rings = list()
         self.cylinders = list()
         
-        self.number_of_rings = 4
+        self.number_of_rings = 3
         self.number_of_cylinders = 4
         
         self.state = "get_next_waypoint"
@@ -156,8 +156,8 @@ class Movement:
         
         #wait, than publish all initial values
         rospy.sleep(1)
-        printStatusMsgs.info("moving arm into extended position")
-        self.arm_user_command_pub.publish(String("extend"))
+        printStatusMsgs.info("Moving arm to erection position")
+        self.arm_user_command_pub.publish(String("erection"))
         
         printStatusMsgs.ok("Initialization complete")
 
@@ -180,6 +180,8 @@ class Movement:
         while not rospy.is_shutdown():
         
             if self.number_of_rings == len(self.rings) and self.number_of_cylinders == len(self.cylinders) and self.state != "end":
+                printStatusMsgs.info("starting parking procedure")
+                self.arm_user_command_pub.publish(String("extend"))
                 self.state = "park"
                 self.cancel_goal_publisher.publish(GoalID())
                 rospy.sleep(1)
@@ -196,6 +198,19 @@ class Movement:
                    
                 if i == len(pointsX):
                     i = 0
+                    if self.number_of_rings == len(self.rings) and self.number_of_cylinders == len(self.cylinders) and self.state != "end":
+                        printStatusMsgs.info("starting parking procedure")
+                        self.arm_user_command_pub.publish(String("extend"))
+                        self.state = "park"
+                        self.cancel_goal_publisher.publish(GoalID())
+                        rospy.sleep(1)
+
+                        for ring in self.rings:
+                            if ring.color == "green":
+                                parkingX = ring.pose.pose.position.x
+                                parkingY = ring.pose.pose.position.y
+                                #comes close to the green ring
+                                self.move_to_next(parkingX, parkingY, "parking")
                 
                 self.move_to_next(pointsX[i], pointsY[i], "moving")
                 i += 1
@@ -233,7 +248,7 @@ class Movement:
             self.objectLocationY = data.position.pose.position.y
             print("Hello", color, "ring")
             self.SpeechEngine.say("Hello " + color + " ring")
-            self.SpeechEngine.runAndWait()
+            # self.SpeechEngine.runAndWait()
             self.state = "ring_found"
 
         self.ring_markers_pub.publish(self.ring_marker_array)
@@ -254,7 +269,7 @@ class Movement:
             cylinder = Cylindy(pose, self.cylinder_marker_num, color)
             print("Hello", color, "cylinder")
             self.SpeechEngine.say("Hello " + color + " cylinder")
-            self.SpeechEngine.runAndWait()
+
             self.cylinder_marker_num += 1
             self.cylinders.append(cylinder)
             self.cylinder_marker_array.markers.append(cylinder.to_marker())
@@ -275,6 +290,9 @@ class Movement:
         elif next_state == "parking":
             self.state = "parking"
             print("Parking")
+            #after parking near the green ring go into the real parking state and look for the ring
+            # on the ground -> place the next waypoint in the center of the circle on the ground
+            # go into the parked state and stay there
             
         client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
         client.wait_for_server()
@@ -291,73 +309,16 @@ class Movement:
         
     def move_to_next(self, x_goal, y_goal, next_state):
         
-        if next_state == "end":
+        if next_state == "end" or self.state == "end":
             self.state = "end"
             print(" :) ")
         elif next_state == "moving":
             self.state = "moving"
             print("Moving")
         elif next_state == "parking":
-            self.state = "parking"
-            msg = PoseStamped()
-            msg.header.frame_id = "map"
-            msg.header.seq = self.seq
-            msg.header.stamp = rospy.Time.now()
-            msg.pose.position.x = x_goal
-            msg.pose.position.y = y_goal
-            msg.pose.orientation.w = 1.0
-            self.pose_pub.publish(msg)
-            # Look for a non-green ring within a certain distance of the target coordinates
-            search_radius = 0.5 # Modify this value to fit your specific requirements
-            non_green_ring_found = False
-
-            while not non_green_ring_found:
-                for ring in self.rings:
-                    distance_to_ring = math.sqrt((ring.pose.position.x - x_goal) ** 2 + (ring.pose.position.y - y_goal) ** 2)
-                    if distance_to_ring <= search_radius and ring.color != "green":
-                        non_green_ring_found = True
-                        break
-
-                # If a non-green ring was not found, adjust the search radius and move the robot slightly
-                if not non_green_ring_found:
-                    search_radius += 0.5 # Modify this value to fit your specific requirements
-                    msg = PoseStamped()
-                    msg.header.frame_id = "map"
-                    msg.header.seq = self.seq
-                    msg.header.stamp = rospy.Time.now()
-                    msg.pose.position.x = x_goal + 0.1
-                    msg.pose.position.y = y_goal + 0.1
-                    msg.pose.orientation.w = 1.0
-                    self.pose_pub.publish(msg)
-
-            # Park the robot at the location of the non-green ring
-            parkingX = ring.pose.position.x
-            parkingY = ring.pose.position.y
-
-            # Move the robot to the parking location
-            msg = PoseStamped()
-            msg.header.frame_id = "map"
-            msg.header.seq = self.seq
-            msg.header.stamp = rospy.Time.now()
-            msg.pose.position.x = parkingX
-            msg.pose.position.y = parkingY
-            msg.pose.orientation.w = 1.0
-            
-            self.pose_pub.publish(msg)
-
-            # Align the robot with the circular parking space
-            # You can use computer vision techniques to detect the boundaries of the parking space and align the robot accordingly
-
-            # Wait for the robot to stop moving
-            while self.navigator.is_moving():
-                rospy.sleep(0.1)
-
-            # Update the state of the robot
-            if next_state == "parking":
-                self.state = "parked"
-            else:
-                self.state = "end"
-                print("Parking")
+            self.state = "park"
+            #print("Parking")
+            #self.park(x_goal,y_goal)
             
                     
         msg = PoseStamped()
@@ -368,6 +329,7 @@ class Movement:
         msg.pose.position.y = y_goal
         msg.pose.orientation.w = 1.0
         
+        self.SpeechEngine.runAndWait()
         self.pose_pub.publish(msg)
         
         

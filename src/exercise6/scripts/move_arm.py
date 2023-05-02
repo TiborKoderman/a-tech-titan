@@ -36,6 +36,11 @@ class Arm_Mover():
         self.lookdown = JointTrajectory()
         self.lookdown.joint_names = ["arm_shoulder_pan_joint", "arm_shoulder_lift_joint", "arm_elbow_flex_joint", "arm_wrist_flex_joint"]
         self.lookdown.points = [JointTrajectoryPoint(positions=[0,0.3,1,0], time_from_start = rospy.Duration(1))]
+        
+        #completley extend the arm so the camera can see far
+        self.erection = JointTrajectory()
+        self.erection.joint_names = ["arm_shoulder_pan_joint", "arm_shoulder_lift_joint", "arm_elbow_flex_joint", "arm_wrist_flex_joint"]
+        self.erection.points = [JointTrajectoryPoint(positions=[0,0,0,0], time_from_start = rospy.Duration(1))]
 
     def new_user_command(self, data):
         self.user_command = data.data.strip()
@@ -56,6 +61,9 @@ class Arm_Mover():
             elif self.user_command == 'lookdown':
                 self.arm_movement_pub.publish(self.lookdown)
                 print('Looked down arm!')
+            elif self.user_command == 'erection':
+                self.arm_movement_pub.publish(self.erection)
+                print('Erected arm!')
             else:
                 print('Unknown instruction:', self.user_command)
                 return(-1)
