@@ -37,12 +37,15 @@ class The_Ring:
         #self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
         self.image_sub = Subscriber("/camera/rgb/image_raw", Image)
         self.depth_sub = Subscriber("/camera/depth/image_raw", Image)
+        
+        #PI stands for processed image
+        self.visualization_pub = rospy.Publisher("ring_PI", Image, queue_size=1000)
 
         ats = ApproximateTimeSynchronizer([self.image_sub, self.depth_sub], queue_size=5, slop=0.01)
         ats.registerCallback(self.depth_callback)
     
         # Publiser for the visualization markers
-        self.markers_pub = rospy.Publisher('markers', MarkerArray, queue_size=1000)
+        self.markers_pub = rospy.Publisher('ring_markers', MarkerArray, queue_size=1000)
 
         # Object we use for transforming between coordinate frames
         self.tf_buf = tf2_ros.Buffer()
@@ -189,8 +192,9 @@ class The_Ring:
 
         #if len(candidates)>0:
         
-            cv2.imshow("Image window",coloured_img)
-            cv2.waitKey(1)
+            # cv2.imshow("Image window",coloured_img)
+            # cv2.waitKey(1)
+            
             """
             try:
                 coloured_img_msg = rospy.wait_for_message(
