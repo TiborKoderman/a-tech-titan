@@ -142,6 +142,7 @@ class Movement:
         self.SpeechEngine = pyttsx3.init()
         self.SpeechEngine.setProperty("rate", 160)
         self.SpeechEngine.say("Hello, I am the robot")
+        self.SpeechEngine.runAndWait()
         
         #wait, than publish all initial values
         rospy.sleep(1)
@@ -245,6 +246,7 @@ class Movement:
             self.objectLocationY = data.position.pose.position.y
             print("Hello", color, "ring")
             self.SpeechEngine.say("Hello " + color + " ring")
+            self.SpeechEngine.runAndWait()
             self.state = "ring_found"
 
         self.ring_markers_pub.publish(self.ring_marker_array)
@@ -265,6 +267,7 @@ class Movement:
             cylinder = Cylindy(pose, self.cylinder_marker_num, color)
             print("Hello", color, "cylinder")
             self.SpeechEngine.say("Hello " + color + " cylinder")
+            self.SpeechEngine.runAndWait()
             self.cylinder_marker_num += 1
             self.cylinders.append(cylinder)
             self.cylinder_marker_array.markers.append(cylinder.to_marker())
@@ -497,12 +500,13 @@ class Movement:
         marker.pose = pose
         marker.header.frame_id = "map"
         marker.ns = "face_localizer"
-        marker.type = Marker.SPHERE
+        marker.type = Marker.MESH_RESOURCE
+        marker.mesh_resource = "package://exercise6/meshes/face_marker.dae"
         marker.action = Marker.ADD
         marker.id = self.current_num_faces
-        marker.scale.x = 0.2
-        marker.scale.y = 0.2
-        marker.scale.z = 0.2
+        marker.scale.x = 0.15
+        marker.scale.y = 0.15
+        marker.scale.z = 0.15
         marker.color.a = 1.0
         marker.color.r = 1.0
         marker.color.g = 0.0
