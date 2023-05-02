@@ -40,11 +40,17 @@ add_message_files(
    Ring.msg
 )
 
+add_service_files(
+  FILES
+  Waypoints.srv
+)
+
 generate_messages(
    DEPENDENCIES
    std_msgs
    geometry_msgs
 )
+
 
 ## Add link directories
 link_directories(

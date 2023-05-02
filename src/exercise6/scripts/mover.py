@@ -14,6 +14,7 @@ import copy
 import math
 from matplotlib import pyplot as plt
 from std_msgs.msg import String, Float32, Float64, Int32, Bool, ColorRGBA
+from nav_msgs.msg import OccupancyGrid
 
 from os.path import dirname, join
 
@@ -144,6 +145,12 @@ class Movement:
         self.SpeechEngine.say("Hello, I am the robot")
         self.SpeechEngine.runAndWait()
         
+        self.wpGenerator = WaypointGenerator()
+                
+        # self.waypoints = self.wpGenerator.get_waypoints()
+        
+        # print(self.waypoints)
+        
         #wait, than publish all initial values
         rospy.sleep(1)
         print("moving arm into position")
@@ -154,8 +161,10 @@ class Movement:
     
     def mover(self):
         
-        pointsX = [-0.129, -0.376, -1.051, -0.968, -1.321, -0.288, 0.004, 0.879, 2.714, 3.025, 3.288, 1.326, 1.236, 2.055, 2.169, 1.655, 0.912, -0.477, -0.058, 0.071, -1.025]
-        pointsY = [0.865, 0.3750, 0.428, 1.754, 2.044, 0.240, -0.704, -0.937, -0.171, -0.169, -0.142, 1.067, 0.913, 1.072, 2.557, 2.863,  2.721, 2.783, 2.700, 2.851, 1.822]
+        # self.pointsX = [-0.129, -0.376, -1.051, -0.968, -1.321, -0.288, 0.004, 0.879, 2.714, 3.025, 3.288, 1.326, 1.236, 2.055, 2.169, 1.655, 0.912, -0.477, -0.058, 0.071, -1.025]
+        # self.pointsY = [0.865, 0.3750, 0.428, 1.754, 2.044, 0.240, -0.704, -0.937, -0.171, -0.169, -0.142, 1.067, 0.913, 1.072, 2.557, 2.863,  2.721, 2.783, 2.700, 2.851, 1.822]
+        
+        pointsX, pointsY = self.waypoints
         
         i = 0
         next_goal = None
@@ -627,6 +636,113 @@ class Cylindy:
         marker.color = ColorRGBA(self.rgba[0],self.rgba[1],self.rgba[2],self.rgba[3])
         marker.id = self.id
         return marker
+    
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    
+class printStatusMsgs:
+    def info(msg):
+        # print("["+bcolors.OKCYAN +"INFO"+bcolors.ENDC+"] "+msg, end="\r")
+        print("["+bcolors.OKCYAN +"INFO"+bcolors.ENDC+"] "+msg)
+        
+        
+    def ok(msg):
+        sys.stdout.write('\033[2K\033[1G')
+        print("["+bcolors.OKGREEN +"OK"+bcolors.ENDC+"] "+msg)
+    
+    def error(msg):
+        sys.stdout.write('\033[2K\033[1G')
+        print("["+bcolors.FAIL +"ERROR"+bcolors.ENDC+"] "+msg)
+
+class WaypointGenerator:
+    def __init__(self):
+        # Initialize the node
+
+        # Initialize the map and waypoint list
+        self.map_msg = None
+        self.waypoints = []
+        
+        printStatusMsgs.info("Initializing waypoint generator...")
+        # Subscribe to the map topic
+        rospy.Subscriber("/map", OccupancyGrid, self.map_callback)
+
+        # Spin the node
+        # rospy.spin()
+        
+        sys.stdout.write('\033[2K\033[1G')
+        printStatusMsgs.ok("Waypoint generator initialized")
+
+    def map_callback(self, map_msg):
+        self.map_msg = map_msg
+
+    def get_neighbors(self, x, y):
+        neighbors = []
+        for dx in range(-1, 2):
+            for dy in range(-1, 2):
+                nx = x + dx
+                ny = y + dy
+                if nx >= 0 and nx < self.map_msg.info.width and ny >= 0 and ny < self.map_msg.info.height:
+                    index = nx + ny * self.map_msg.info.width
+                    if self.map_msg.data[int(index)] == 0:
+                        neighbors.append((nx, ny))
+        return neighbors
+
+    def dfs(self, x, y, visited, path):
+        visited.add((x, y))
+        path.append((x, y))
+        neighbors = self.get_neighbors(x, y)
+        for nx, ny in neighbors:
+            if (nx, ny) not in visited:
+                self.dfs(nx, ny, visited, path)
+        if len(path) == len(self.waypoints) and (x, y) in self.get_neighbors(*self.waypoints[0]):
+            self.waypoints = path
+
+    def get_waypoints(self):
+        # Wait for the map to be available
+        
+        printStatusMsgs.info("Generating waypoints")        
+        
+        while self.map_msg is None:
+            rospy.sleep(0.1)
+
+        # Get the map resolution and origin
+        resolution = self.map_msg.info.resolution
+        origin_x = self.map_msg.info.origin.position.x
+        origin_y = self.map_msg.info.origin.position.y
+        
+        printStatusMsgs.info("resolution: " + str(resolution) + "\norigin x: " + str(origin_x) +"\norigin y:" +str(origin_y)+"\n")
+        
+
+        # Iterate through the map and add unoccupied cells to the waypoint list
+        self.waypoints = []
+        for i, cell in enumerate(self.map_msg.data):
+            if cell == 0:
+                # Compute the (x,y) coordinates of the current cell
+                x = i % self.map_msg.info.width
+                y = i // self.map_msg.info.width
+                x = x * resolution + origin_x
+                y = y * resolution + origin_y
+                self.waypoints.append((x, y))
+
+        # Perform depth-first search to find a path that visits every waypoint and ends at the starting point
+        visited = set()
+        path = []
+        for x, y in self.waypoints:
+            if (x, y) not in visited:
+                self.dfs(x, y, visited, path)
+
+        # Return the list of waypoints
+        printStatusMsgs.ok("Waypoints generated")
+        print(self.waypoints)
+        return self.waypoints
     
     
 
