@@ -15,6 +15,7 @@ import math
 from matplotlib import pyplot as plt
 from std_msgs.msg import String, Float32, Float64, Int32, Bool, ColorRGBA
 from nav_msgs.msg import OccupancyGrid
+from actionlib import SimpleActionClient
 
 from os.path import dirname, join
 
@@ -132,17 +133,20 @@ class Movement:
         
         self.cylinder_marker_array = MarkerArray()
         self.cylinder_marker_num = 1
+        
+        self.parking_markers_array = MarkerArray()
         """
         self.markers_pub = rospy.Publisher('face_markers', MarkerArray, queue_size=1000)
         ""
         """
         self.ring_markers_pub = rospy.Publisher('ring_markers', MarkerArray, queue_size=1000)
         self.cylinder_markers_pub = rospy.Publisher('cylinder_markers', MarkerArray, queue_size=1000)    
+        self.parking_markers_pub = rospy.Publisher('parking_markers', MarkerArray, queue_size=1000)
         
         self.rings = list()
         self.cylinders = list()
         
-        self.number_of_rings = 3
+        self.number_of_rings = 4
         self.number_of_cylinders = 4
         
         self.state = "get_next_waypoint"
@@ -202,12 +206,12 @@ class Movement:
             
                     # Draw a small circle (of radius 1) to show the center.
                     cv2.circle(img, (a, b), 1, (0, 0, 255), 3)
-                    cv2.imshow("Detected Circle", img)
-                    cv2.waitKey(0)
+                    # cv2.imshow("Detected Circle", img)
+                    # cv2.waitKey(0)
             
             
             
-            self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(cv2_image, "bgr8"))
+            self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(img, "bgr8"))
        
         
             
@@ -220,6 +224,12 @@ class Movement:
 
     def odom_callback(self, odom):
         return odom
+    
+    #move the robot to the nearest point to the marker where it can be moved
+    # def move_to_parking_space(self, posX, posY):
+        
+        
+        
     
     def mover(self):
         
@@ -236,7 +246,7 @@ class Movement:
         
         while not rospy.is_shutdown():
         
-            if self.number_of_rings == len(self.rings) and self.number_of_cylinders == len(self.cylinders) and self.state != "end":
+            if self.number_of_rings == len(self.rings) and self.number_of_cylinders == len(self.cylinders) and self.state != "end" and self.state != "parking":
                 printStatusMsgs.info("starting parking procedure")
                 self.arm_user_command_pub.publish(String("extend"))
                 self.state = "park"
@@ -245,10 +255,11 @@ class Movement:
 
                 for ring in self.rings:
                     if ring.color == "green":
-                        parkingX = ring.pose.pose.position.x
-                        parkingY = ring.pose.pose.position.y
+                        self.parkingX = ring.pose.pose.position.x
+                        self.parkingY = ring.pose.pose.position.y
                         #comes close to the green ring
-                        self.move_to_next(parkingX, parkingY, "parking")
+                        # self.move_to_next(parkingX, parkingY, "parking")
+                        self.state = "parking"
          
                
             elif self.state == "get_next_waypoint":
@@ -263,13 +274,21 @@ class Movement:
 
                     for ring in self.rings:
                         if ring.color == "green":
-                            parkingX = ring.pose.pose.position.x
-                            parkingY = ring.pose.pose.position.y
+                            self.parkingX = ring.pose.pose.position.x
+                            self.parkingY = ring.pose.pose.position.y
                             #comes close to the green ring
-                            self.move_to_next(parkingX, parkingY, "parking")
+                            # self.move_to_next(parkingX, parkingY, "parking")
+                            self.state = "parking"
                 else:
                     self.move_to_next(pointsX[i], pointsY[i], "moving")
                     i += 1
+            
+            elif self.state == "parking":
+                self.move_to_nearest_accessible_point(self.parkingX, self.parkingY)
+            
+            elif self.state == "precise_parking":
+                self.move_to_parking_zone()
+                
             
             elif self.state == "ring_found":
                 #print("Numb of rings: ", len(self.rings))
@@ -602,6 +621,89 @@ class Movement:
         self.marker_array_est.markers.append(marker)
         self.face_markers_est_pub.publish(self.marker_array_est)
         self.est_count += 1
+        
+    def move_to_nearest_accessible_point(self, x, y):
+        map = rospy.wait_for_message("/map", OccupancyGrid)
+        map_info = map.info
+        map_data = map.data
+        
+        # Calculate the cell indices corresponding to the given coordinates
+        resolution = map_info.resolution
+        origin_x = map_info.origin.position.x
+        origin_y = map_info.origin.position.y
+        x_idx = int((x - origin_x) / resolution)
+        y_idx = int((y - origin_y) / resolution)
+        
+        # Define a circular region of interest around the given point
+        roi_radius = 1.0 # meters
+        roi_width = int(roi_radius / resolution)
+        roi_center_idx = y_idx * map_info.width + x_idx
+        roi_indices = set()
+        for i in range(-roi_width, roi_width + 1):
+            for j in range(-roi_width, roi_width + 1):
+                idx = roi_center_idx + j + i * map_info.width #!!! check if this is correct
+                if idx >= 0 and idx<len(map_data) and map_data[idx] < 50: #!!! check if this is correct
+                    roi_indices.add(idx)
+                    
+        # Find the nearest accessible point in the region of interest
+        min_distance = float("inf")
+        nearest_idx = None
+        for idx in roi_indices:
+            x_pos = (idx % map_info.width) * resolution + origin_x
+            y_pos = (idx // map_info.width) * resolution + origin_y
+            distance = math.sqrt((x_pos - x)**2 + (y_pos - y)**2)
+            if distance > 0.65 and distance < min_distance:
+                min_distance = distance
+                nearest_idx = idx
+
+        if nearest_idx is None:
+            rospy.logwarn("No accessible point found within the region of interest")
+            return
+                
+        #Calculate the coordinates of the nearest accessible point to PoseStamped
+        nearest_pose = PoseStamped()
+        nearest_pose.header.frame_id = "map"
+        nearest_pose.pose.position.x = (nearest_idx % map_info.width) * resolution + origin_x
+        nearest_pose.pose.position.y = (nearest_idx // map_info.width) * resolution + origin_y
+        nearest_pose.pose.orientation.w = 1.0
+        
+        # set a marker at the nearest accessible point
+        marker = Marker()
+        marker.header.frame_id = "map"
+        marker.header.stamp = rospy.Time.now()
+        marker.pose = nearest_pose.pose
+        marker.type = Marker.MESH_RESOURCE
+        marker.mesh_resource = "package://exercise6/meshes/flag.dae"
+        marker.color = ColorRGBA(1.0, 0.0, 0.0, 1.0)
+        marker.scale = Vector3(0.25, 0.25, 0.25)
+        marker.id = 0
+        marker.action = Marker.ADD
+        self.parking_markers_array.markers.append(marker)
+        self.parking_markers_pub.publish(self.parking_markers_array)
+        
+        
+        
+        client = SimpleActionClient('move_base', MoveBaseAction)
+        client.wait_for_server()
+        goal = MoveBaseGoal()
+        goal.target_pose = nearest_pose
+        client.send_goal(goal)
+        if client.wait_for_result():
+            printStatusMsgs.ok("moved to nearest accessible point")
+            self.state = "precise_parking"
+        else:
+            printStatusMsgs.error("failed to move to nearest accessible point")
+    
+    #Detect a black circle on the ground and move the robot inside it
+    def move_to_parking_zone():
+        
+        lower_hsv = np.array([0, 0, 0])
+        upper_hsv = np.array([180, 255, 50])
+        
+        bridge = CvBridge()
+        image = rospy.wait_for_message("/arm_camera/rgb/image_raw", Image)
+        
+        
 class Ringy:
 
     def __init__(self, pose, rId, color):

@@ -155,7 +155,7 @@ class The_Ring:
                 e2 = elps[m]
                 dist = np.sqrt(((e1[0][0] - e2[0][0]) ** 2 + (e1[0][1] - e2[0][1]) ** 2))
                 #             print dist
-                if dist < 5:
+                if dist < 6:
                     candidates.append((e1,e2))
 
         #print("Processing is done! found", len(candidates), "candidates for rings")
@@ -291,6 +291,10 @@ class The_Ring:
             #publish the ring
             """
             #print(pose)
+            if color=="blue":
+                self.image_sub = Subscriber("/arm_camera/rgb/image_raw", Image)
+                self.depth_sub = Subscriber("/arm_camera/depth/image_raw", Image)
+            
             ringMsg = Ring()
             ringMsg.position = pose
             ringMsg.color = color
