@@ -35,8 +35,8 @@ class The_Ring:
         # Subscribe to the image and/or depth topic
         #self.image_sub = rospy.Subscriber("/camera/rgb/image_raw", Image, self.image_callback)
         #self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
-        self.image_sub = Subscriber("/arm_camera/rgb/image_raw", Image)
-        self.depth_sub = Subscriber("/arm_camera/depth/image_raw", Image)
+        self.image_sub = Subscriber("/camera/rgb/image_raw", Image)
+        self.depth_sub = Subscriber("/camera/depth/image_raw", Image)
         
         #PI stands for processed image
         self.visualization_pub = rospy.Publisher("ring_PI", Image, queue_size=1000)
@@ -155,7 +155,7 @@ class The_Ring:
                 e2 = elps[m]
                 dist = np.sqrt(((e1[0][0] - e2[0][0]) ** 2 + (e1[0][1] - e2[0][1]) ** 2))
                 #             print dist
-                if dist < 6:
+                if dist < 5:
                     candidates.append((e1,e2))
 
         #print("Processing is done! found", len(candidates), "candidates for rings")

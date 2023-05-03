@@ -24,6 +24,7 @@ from sensor_msgs.msg import Image
 from geometry_msgs.msg import PointStamped, Vector3, Pose, Twist
 from cv_bridge import CvBridge, CvBridgeError
 from visualization_msgs.msg import Marker, MarkerArray
+from message_filters import ApproximateTimeSynchronizer, Subscriber
 from std_msgs.msg import ColorRGBA
 from actionlib_msgs.msg import GoalID
 from nav_msgs.msg import Odometry
@@ -75,6 +76,16 @@ class Movement:
         self.pose_pub = rospy.Publisher(
             "/move_base_simple/goal", PoseStamped, queue_size=10
         )
+        
+        self.arm_camera_sub = Subscriber("/arm_camera/rgb/image_raw", Image)
+        self.arm_depth_sub = Subscriber("/arm_camera/depth/image_raw", Image)
+        
+        self.arm_image_pub = rospy.Publisher(
+            "/arm_camera/vizualisations", Image, queue_size=10
+        );
+        
+        ats = ApproximateTimeSynchronizer([self.arm_camera_sub, self.arm_depth_sub], queue_size=5, slop=0.01)
+        ats.registerCallback(self.arm_depth_callback)
 
         printStatusMsgs.ok("Topics sucessfully subscribed")
         
@@ -160,6 +171,52 @@ class Movement:
         self.arm_user_command_pub.publish(String("erection"))
         
         printStatusMsgs.ok("Initialization complete")
+        
+    def arm_camera_callback(self, data):
+        try:
+            self.arm_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        except CvBridgeError as e:
+            print(e)
+            
+        if(self.state == "park"):
+            # printStatusMsgs.info("parking")
+            #Detect black circle using opencv and start going towards it
+            # printStatusMsgs.info("Detecting black circle")
+            img = self.bridge.imgmsg_to_cv2(data, "bgr8")
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            
+            gray_blurred = cv2.blur(gray, (3, 3))
+            
+            detected_circles = cv2.HoughCircles(gray_blurred, cv2.HOUGH_GRADIENT, 1, 20, param1 = 50, param2 = 30, minRadius = 1, maxRadius = 40)
+            
+            if detected_circles is not None:
+  
+            # Convert the circle parameters a, b and r to integers.
+                detected_circles = np.uint16(np.around(detected_circles))
+            
+                for pt in detected_circles[0, :]:
+                    a, b, r = pt[0], pt[1], pt[2]
+            
+                    # Draw the circumference of the circle.
+                    cv2.circle(img, (a, b), r, (0, 255, 0), 2)
+            
+                    # Draw a small circle (of radius 1) to show the center.
+                    cv2.circle(img, (a, b), 1, (0, 0, 255), 3)
+                    cv2.imshow("Detected Circle", img)
+                    cv2.waitKey(0)
+            
+            
+            
+            self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(cv2_image, "bgr8"))
+       
+        
+            
+            
+    def arm_depth_callback(self, data, depth):
+        try:
+            self.arm_depth_image = self.bridge.imgmsg_to_cv2(data, "passthrough")
+        except CvBridgeError as e:
+            print(e)
 
     def odom_callback(self, odom):
         return odom
@@ -183,7 +240,7 @@ class Movement:
                 printStatusMsgs.info("starting parking procedure")
                 self.arm_user_command_pub.publish(String("extend"))
                 self.state = "park"
-                self.cancel_goal_publisher.publish(GoalID())
+                # self.cancel_goal_publisher.publish(GoalID())
                 rospy.sleep(1)
 
                 for ring in self.rings:
@@ -197,23 +254,22 @@ class Movement:
             elif self.state == "get_next_waypoint":
                    
                 if i == len(pointsX):
-                    i = 0
-                    if self.number_of_rings == len(self.rings) and self.number_of_cylinders == len(self.cylinders) and self.state != "end":
-                        printStatusMsgs.info("starting parking procedure")
-                        self.arm_user_command_pub.publish(String("extend"))
-                        self.state = "park"
-                        self.cancel_goal_publisher.publish(GoalID())
-                        rospy.sleep(1)
+                    # i = 0
+                    printStatusMsgs.info("starting parking procedure")
+                    self.arm_user_command_pub.publish(String("extend"))
+                    self.state = "park"
+                    # self.cancel_goal_publisher.publish(GoalID())
+                    rospy.sleep(1)
 
-                        for ring in self.rings:
-                            if ring.color == "green":
-                                parkingX = ring.pose.pose.position.x
-                                parkingY = ring.pose.pose.position.y
-                                #comes close to the green ring
-                                self.move_to_next(parkingX, parkingY, "parking")
-                
-                self.move_to_next(pointsX[i], pointsY[i], "moving")
-                i += 1
+                    for ring in self.rings:
+                        if ring.color == "green":
+                            parkingX = ring.pose.pose.position.x
+                            parkingY = ring.pose.pose.position.y
+                            #comes close to the green ring
+                            self.move_to_next(parkingX, parkingY, "parking")
+                else:
+                    self.move_to_next(pointsX[i], pointsY[i], "moving")
+                    i += 1
             
             elif self.state == "ring_found":
                 #print("Numb of rings: ", len(self.rings))
