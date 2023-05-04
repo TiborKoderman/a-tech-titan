@@ -170,7 +170,6 @@ class Movement:
         printStatusMsgs.ok("speech engine initialized")
         
         self.wpGenerator = WaypointGenerator()
-        
         #wait, than publish all initial values
         rospy.sleep(1)
         printStatusMsgs.info("Moving arm to erection position")
@@ -240,6 +239,7 @@ class Movement:
                 self.state= "precise_parking"
             
             elif self.state == "precise_parking":
+                printStatusMsgs.info("precise parking")
                 self.move_to_parking_zone()
                 
             
@@ -594,8 +594,10 @@ class Movement:
         x_idx = int((x - origin_x) / resolution)
         y_idx = int((y - origin_y) / resolution)
         
+        detecting = True
+        
         # Define a circular region of interest around the given point
-        roi_radius = 0.65 # meters
+        roi_radius = 1.5 # meters
         roi_width = int(roi_radius / resolution)
         roi_center_idx = y_idx * map_info.width + x_idx
         roi_indices = set()
@@ -605,7 +607,20 @@ class Movement:
                 if idx >= 0 and idx<len(map_data): #!!! check if this is correct
                     cell_value = map_data[idx]
                     if cell_value == 0:
-                        roi_indices.add(idx)
+                        flag = False
+                        #if each adjecent cell in a radius of 5 is free, add it to the set of indices
+                        for k in range(-6, 7):
+                            for l in range(-6, 7):
+                                idx2 = idx + k + l * map_info.width
+                                if idx2 >= 0 and idx2<len(map_data):                                
+                                    if map_data[idx2] != 0:
+                                        flag = True
+                                        break
+                            if flag:
+                                break
+                        if not flag:
+                            roi_indices.add(idx)
+                                
                     
         # Find the nearest accessible point in the region of interest
         min_distance = float("inf")
@@ -614,7 +629,7 @@ class Movement:
             x_pos = (idx % map_info.width) * resolution + origin_x
             y_pos = (idx // map_info.width) * resolution + origin_y
             distance = math.sqrt((x_pos - x)**2 + (y_pos - y)**2)
-            if distance > 0.5 and distance < min_distance:
+            if distance > 0.3 and distance < min_distance:
                 min_distance = distance
                 nearest_idx = idx
 
@@ -643,8 +658,6 @@ class Movement:
         self.parking_markers_array.markers.append(marker)
         self.parking_markers_pub.publish(self.parking_markers_array)
         
-        
-        
         client = SimpleActionClient('move_base', MoveBaseAction)
         client.wait_for_server()
         goal = MoveBaseGoal()
@@ -658,59 +671,82 @@ class Movement:
             printStatusMsgs.error("failed to move to nearest accessible point")
             self.state = "precise_parking"
             
+    
             
+        
     #Detect a black circle on the ground and move the robot inside it
     def move_to_parking_zone(self):
-        printStatusMsgs.info("moving to parking zone")
-        lower_hsv = np.array([0, 0, 0])
-        upper_hsv = np.array([180, 255, 50])
-
-        bridge = CvBridge()
-        image = rospy.wait_for_message("/arm_camera/rgb/image_raw", Image)
-
-        twist = Twist()
-        twist.linear.x = 0.1
-        twist.angular.z = 0.0
+        twist_pub = self.twist_pub
+        image_sub = self.arm_camera_sub
+        bridge = self.bridge
 
         while not rospy.is_shutdown():
-            image = rospy.wait_for_message("/arm_camera/rgb/image_raw", Image)
-            cv_image = bridge.imgmsg_to_cv2(image, "bgr8")
-            hsv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
-            mask = cv2.inRange(hsv_image, lower_hsv, upper_hsv)
-            contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            if contours:
-                largest_contour = max(contours, key=cv2.contourArea)
-                M = cv2.moments(largest_contour)
-                cx = int(M["m10"] / M["m00"])
-                cy = int(M["m01"] / M["m00"])
+            
+            # print("searching for a parking spot")
+            
+            img = rospy.wait_for_message("/arm_camera/rgb/image_raw", Image)
+            
+            frame = bridge.imgmsg_to_cv2(img, desired_encoding="bgr8")
+            hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            
+            lower_black = np.array([0, 0, 0])
+            upper_black = np.array([180, 255, 30])
+            
+            mask = cv2.inRange(hsv, lower_black, upper_black)
+            
+            kernel = np.ones((5,5), np.uint8)
+            mask = cv2.erode(mask, kernel, iterations=1)
+            mask = cv2.dilate(mask, kernel, iterations=1)
+            
 
-                # compute deviation of centroid from the center of the image
-                image_center_x = cv_image.shape[1] / 2
-                deviation = cx - image_center_x
+            contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-                # Move the robot towards the center of circle
-                twist.linear.x = 0.1
-                twist.angular.z = 0.01 * deviation
+            
+            if len(contours) > 0:
+                # Find the contour with the largest area
+                max_contour = max(contours, key=cv2.contourArea)
+                print("found circle", end = "\r")
 
-                # check if the robot is inside the circle
-                if cv2.pointPolygonTest(largest_contour, (cx, cy), False) > 0:
-                    # Stop robot
-                    twist.linear.x = 0
-                    twist.angular.z = 0
-                    self.twist_pub.publish(twist)
-                    rospy.loginfo("Robot has reached parking zone")
-                    self.state = "end"
-                    break
+                # Fit a circle to the contour
+                (center_x, center_y), radius = cv2.minEnclosingCircle(max_contour)
+                center = (int(center_x), int(center_y))
+
+                # Draw a circle at the center of the circle for visualization purposes
+                cv2.circle(frame, center, 5, (0, 0, 255), -1)
+
+                # If the center of the circle is not within a certain range of the center of the image, move the robot to the center of the circle
+                if abs(center_x - frame.shape[1] / 2) > 10:
+                    twist = Twist()
+                    twist.linear.x = 0.1 # replace with your desired linear velocity
+                    twist.angular.z = (center_x - frame.shape[1] / 2) / 100.0 # replace with your desired angular velocity scaling factor
+                    twist_pub.publish(twist)
+                    rospy.sleep(0.1)
                 else:
-                    # Move robot forward
-                    twist.linear.x = 0.1
-                    twist.angular.z = 0
-                    self.twist_pub.publish(twist)
+                    # Stop the robot
+                    twist = Twist()
+                    twist.linear.x = 0.0
+                    twist.angular.z = 0.0
+                    twist_pub.publish(twist)
+                    
+                    self.status = "end"
+
+                    # Save the coordinates of the center of the circle
+                    global circle_center
+                    circle_center = center
             else:
-                # Move robot forward and to the right
+                #spin the robot around
+                twist = Twist()
                 twist.linear.x = 0.1
-                twist.angular.z = -0.1
-                self.twist_pub.publish(twist)
+                twist.angular.z = 0.2
+                twist_pub.publish(twist)
+                
+                
+        rospy.spin()
+
+
+
+                
+            
                 
 
         

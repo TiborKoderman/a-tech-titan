@@ -28,7 +28,7 @@ class The_Ring:
 
         # Marker array object used for visualizations
         self.marker_array = MarkerArray()
-        self.marker_num = 1
+        self.marker_num = 0
         
         self.rings = list()
 
@@ -291,7 +291,9 @@ class The_Ring:
             #publish the ring
             """
             #print(pose)
-            if color=="blue":
+            # self.marker_num += 1
+            # if self.marker_num > 3:
+            if color == "blue":
                 self.image_sub = Subscriber("/arm_camera/rgb/image_raw", Image)
                 self.depth_sub = Subscriber("/arm_camera/depth/image_raw", Image)
             
