@@ -252,6 +252,7 @@ class Movement:
                 self.state = "get_next_waypoint"    
                 
             elif self.state == "end":
+                printStatusMsgs.info("Mission complete")
                 self.SpeechEngine.say("Mission complete")
                 self.SpeechEngine.runAndWait()
                 rospy.signal_shutdown("Mission complete")
@@ -382,9 +383,9 @@ class Movement:
         elif self.state == "ring_found":
             self.state = "get_next_waypoint"
             
-        elif self.state == "parking":
-            if res_status == 3:
-                self.state = "end"
+        # elif self.state == "parking":
+        #     if res_status == 3:
+        #         self.state = "end"
 
     def depth_callback(self,data):
 
@@ -698,7 +699,7 @@ class Movement:
                     twist.angular.z = 0
                     self.twist_pub.publish(twist)
                     rospy.loginfo("Robot has reached parking zone")
-                    # self.state = "end"
+                    self.state = "end"
                     break
                 else:
                     # Move robot forward
@@ -710,82 +711,8 @@ class Movement:
                 twist.linear.x = 0.1
                 twist.angular.z = -0.1
                 self.twist_pub.publish(twist)
-                    
-class CircleDetection:
-def __init__(self):
-    self.bridge = CvBridge()
-    self.image_sub = rospy.Subscriber("/camera/rgb/image_raw", Image, self.image_callback)
-    self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-    self.move_cmd = Twist()
-    self.detected_circle = False
+                
 
-def image_callback(self, data):
-    cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-    hsv = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
-    lower_black = np.array([0, 0, 0])
-    upper_black = np.array([180, 255, 30])
-    mask = cv2.inRange(hsv, lower_black, upper_black)
-
-    contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-    if len(contours) > 0:
-        c = max(contours, key=cv2.contourArea)
-        ((x, y), radius) = cv2.minEnclosingCircle(c)
-
-        if radius > 20:
-            self.detected_circle = True
-            self.move_cmd.linear.x = 0.1
-            self.move_cmd.angular.z = 0.0
-            self.cmd_vel_pub.publish(self.move_cmd)
-        else:
-            self.detected_circle = False
-
-def spin_until_circle_detected(self):
-    self.move_cmd.linear.x = 0.0
-    self.move_cmd.angular.z = 0.5
-    self.cmd_vel_pub.publish(self.move_cmd)
-
-    while not self.detected_circle:
-        rospy.sleep(0.1)
-
-    self.move_cmd.linear.x = 0.0
-    self.move_cmd.angular.z = 0.0
-    self.cmd_vel_pub.publish(self.move_cmd)
-
-def move_to_circle(self):
-    self.move_cmd.linear.x = 0.1
-    self.move_cmd.angular.z = 0.0
-    self.cmd_vel_pub.publish(self.move_cmd)
-
-    while self.detected_circle:
-        rospy.sleep(0.1)
-
-    self.move_cmd.linear.x = 0.0
-    self.move_cmd.angular.z = 0.0
-    self.cmd_vel_pub.publish(self.move_cmd)
-
-def adjust_orientation(self):
-    self.move_cmd.linear.x = 0.0
-    self.move_cmd.angular.z = 0.5
-    self.cmd_vel_pub.publish(self.move_cmd)
-
-    while abs(self.move_cmd.angular.z) > 0.05:
-        rospy.sleep(0.1)
-
-    self.move_cmd.linear.x = 0.0
-    self.move_cmd.angular.z = 0.0
-    self.cmd_vel_pub.publish(self.move_cmd)
-
-def adjust_position(self):
-    self.move_cmd.linear.x = 0.1
-    self.move_cmd.angular.z = 0.0
-    self.cmd_vel_pub.publish(self.move_cmd)
-
-    while not self.detected_circle:
-        rospy.sleep(0.1)
-
-    self.move_cmd.linear.x = 0.
-        
         
 class Ringy:
 
