@@ -28,7 +28,7 @@ class The_Ring:
 
         # Marker array object used for visualizations
         self.marker_array = MarkerArray()
-        self.marker_num = 1
+        self.marker_num = 0
         
         self.rings = list()
 
@@ -37,12 +37,15 @@ class The_Ring:
         #self.depth_sub = rospy.Subscriber("/camera/depth/image_raw", Image, self.depth_callback)
         self.image_sub = Subscriber("/camera/rgb/image_raw", Image)
         self.depth_sub = Subscriber("/camera/depth/image_raw", Image)
+        
+        #PI stands for processed image
+        self.visualization_pub = rospy.Publisher("ring_PI", Image, queue_size=1000)
 
         ats = ApproximateTimeSynchronizer([self.image_sub, self.depth_sub], queue_size=5, slop=0.01)
         ats.registerCallback(self.depth_callback)
     
         # Publiser for the visualization markers
-        self.markers_pub = rospy.Publisher('markers', MarkerArray, queue_size=1000)
+        self.markers_pub = rospy.Publisher('ring_markers', MarkerArray, queue_size=1000)
 
         # Object we use for transforming between coordinate frames
         self.tf_buf = tf2_ros.Buffer()
@@ -152,7 +155,7 @@ class The_Ring:
                 e2 = elps[m]
                 dist = np.sqrt(((e1[0][0] - e2[0][0]) ** 2 + (e1[0][1] - e2[0][1]) ** 2))
                 #             print dist
-                if dist < 5:
+                if dist < 6:
                     candidates.append((e1,e2))
 
         #print("Processing is done! found", len(candidates), "candidates for rings")
@@ -168,7 +171,7 @@ class The_Ring:
             #print("Size: ", size)
             center = (e1[0][1], e1[0][0])
             
-            if size > 70:
+            if size > 100:
                 continue
                 
             # drawing the ellipses on the image
@@ -189,8 +192,9 @@ class The_Ring:
 
         #if len(candidates)>0:
         
-            cv2.imshow("Image window",coloured_img)
-            cv2.waitKey(1)
+            # cv2.imshow("Image window",coloured_img)
+            # cv2.waitKey(1)
+            
             """
             try:
                 coloured_img_msg = rospy.wait_for_message(
@@ -226,17 +230,21 @@ class The_Ring:
             
             color = ""
             
+            print("Hue: ", hue)
+            
             if hue < 15 or hue > 330:
                 color = "red"
             elif 40 < hue < 70:
                 color = "yellow"
             elif 90 < hue < 150:
                 color = "green"
-            elif 160 < hue <= 190:
+            elif 150 < hue <= 190:
                 color = "cyan"
-            elif 190 < hue < 240:
+            elif 190 < hue < 250:
                 color = "blue"
-            
+            else:
+                color = "magenta"
+                        
             if hue == 0 and sat == 0:
                 color = "black"
             
@@ -283,6 +291,12 @@ class The_Ring:
             #publish the ring
             """
             #print(pose)
+            # self.marker_num += 1
+            # if self.marker_num > 3:
+            if color == "blue":
+                self.image_sub = Subscriber("/arm_camera/rgb/image_raw", Image)
+                self.depth_sub = Subscriber("/arm_camera/depth/image_raw", Image)
+            
             ringMsg = Ring()
             ringMsg.position = pose
             ringMsg.color = color
