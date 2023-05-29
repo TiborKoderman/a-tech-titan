@@ -710,21 +710,23 @@ class Movement:
             #if len(contours) > 0:
                 # Find the contour with the largest area
                 #max_contour = max(contours, key=cv2.contourArea)
-                print(max_contour)
                 print("found circle", end = "\r")
 
                 # Fit a circle to the contour
                 (center_x, center_y), radius = cv2.minEnclosingCircle(max_contour)
                 center = (int(center_x), int(center_y))
+                print(center)
 
                 # Draw a circle at the center of the circle for visualization purposes
                 cv2.circle(frame, center, 5, (0, 0, 255), -1)
 
+                print(center_x - frame.shape[1] / 2)
                 # If the center of the circle is not within a certain range of the center of the image, move the robot to the center of the circle
                 if abs(center_x - frame.shape[1] / 2) > 15:
                     twist = Twist()
+                    print("move closer to center")
                     twist.linear.x = 0.1 # replace with your desired linear velocity
-                    twist.angular.z = 0.5 * (center_x - frame.shape[1] / 2) / 100.0 # replace with your desired angular velocity scaling factor
+                    twist.angular.z = ((center_x - frame.shape[1] / 2)/100.0)# replace with your desired angular velocity scaling factor
                     twist_pub.publish(twist)
                     rospy.sleep(0.1)
                 else:
