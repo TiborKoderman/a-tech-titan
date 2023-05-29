@@ -40,7 +40,7 @@ class Movement:
 
     def __init__(self):
         
-        printStatusMsgs.info("Initializing Movement")
+        printStatusMsgs.info("Initializing Movement") # type: ignore
 
         rospy.init_node('movement', anonymous=True)
         
@@ -846,16 +846,16 @@ class bcolors:
 class printStatusMsgs:
     def info(msg):
         # print("["+bcolors.OKCYAN +"INFO"+bcolors.ENDC+"] "+msg, end="\r")
-        print("["+bcolors.OKCYAN +"INFO"+bcolors.ENDC+"] "+msg)
+        print("["+bcolors.OKCYAN +"INFO"+bcolors.ENDC+"] "+msg) # type: ignore
         
         
     def ok(msg):
         sys.stdout.write('\033[2K\033[1G')
-        print("["+bcolors.OKGREEN +"OK"+bcolors.ENDC+"] "+msg)
+        print("["+bcolors.OKGREEN +"OK"+bcolors.ENDC+"] "+msg) # type: ignore
     
     def error(msg):
         sys.stdout.write('\033[2K\033[1G')
-        print("["+bcolors.FAIL +"ERROR"+bcolors.ENDC+"] "+msg)
+        print("["+bcolors.FAIL +"ERROR"+bcolors.ENDC+"] "+msg)  # type: ignore
 
 class WaypointGenerator:
     def __init__(self):
