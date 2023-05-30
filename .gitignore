@@ -6,3 +6,4 @@ devel
 /build
 src/dn*.tar.gz
 src/dn*.zip
+.vscode

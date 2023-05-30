@@ -3,7 +3,7 @@
     "python.autoComplete.extraPaths": [
         "/opt/ros/noetic/lib/python3.10/site-packages"
     ],
-    "cmake.sourceDirectory": "/home/neya/Documents/Project/src/a-tech-titan/src",
+    "cmake.sourceDirectory": "/home/tibor/repos/a-tech-titan/src",
     "C_Cpp.errorSquiggles": "disabled",
     "cmake.configureOnOpen": false,
     "python.analysis.extraPaths": [
