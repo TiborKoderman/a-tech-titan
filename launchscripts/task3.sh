@@ -9,4 +9,5 @@ gnome-terminal -- roslaunch turtlebot_rviz_launchers view_navigation.launch
 gnome-terminal -- rosrun exercise6 detect_rings
 gnome-terminal -- rosrun exercise6 move_arm.py
 gnome-terminal -- rosrun exercise6 waypoint_generator.py
+gnome-terminal -- rosrun exercise6 extract_speech
 gnome-terminal -- roslaunch exercise6 find_cylinder.launch

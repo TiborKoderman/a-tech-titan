@@ -231,7 +231,12 @@ class Movement:
                 else:
                     self.move_to_next(pointsX[i], pointsY[i], "moving")
                     i += 1
-            
+
+            elif self.state == "approach_face":
+                self.move_to_nearest_accessible_point(self.objectLocationX, self.objectLocationY)
+                print("where is he hiding?")
+
+
             elif self.state == "parking":
                 self.move_to_nearest_accessible_point(self.parkingX, self.parkingY)
                 printStatusMsgs.error("failed to park, still attempting precise parking")
@@ -242,6 +247,7 @@ class Movement:
             elif self.state == "precise_parking":
                 printStatusMsgs.info("precise parking")
                 self.move_to_parking_zone()
+
                 
             
             elif self.state == "ring_found":
@@ -521,7 +527,7 @@ class Movement:
                 if pose is not None and not self.faceMarkerIsNearAnotherMarker(pose, 1): #if the face is not too close to another face don't create a marker
                     self.current_num_faces += 1
                     self.addFaceMarker(pose)
-                    # self.state = "approach_face"
+                    self.state = "approach_face"
             self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
     
     def faceMarkerIsNearAnotherMarker(self, pose, range):
