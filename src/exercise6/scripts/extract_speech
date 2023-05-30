@@ -78,11 +78,11 @@ class SpeechTranscriber:
 
 def handleExtractSpeech(req):
     cylinders = []
-    while not rospy.is_shutdown() and (len(cylinders) != 2 or cylinders != ["no"]):
+    while not rospy.is_shutdown() and (len(cylinders) != 2 or cylinders[0] != "no"):
         cylinders = st.recognize_speech()
         if(len(cylinders) == 2):
             print('I recognized these barrels:', cylinders)
-        if cylinders == ["no"]:
+        if cylinders[0] == "no":
             print("no information")
         time.sleep(5)
     return BarrelsResponse(cylinders)

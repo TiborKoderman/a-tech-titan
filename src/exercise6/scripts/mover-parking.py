@@ -13,11 +13,14 @@ import tf
 import copy
 import math
 from matplotlib import pyplot as plt
-from std_msgs.msg import String, Float32, Float64, Int32, Bool, ColorRGBA
+from std_msgs.msg import String, Float32, Float64, Int32, Bool, ColorRGBA, Int8
 from nav_msgs.msg import OccupancyGrid
 from actionlib import SimpleActionClient
-
 from os.path import dirname, join
+
+import speech_recognition as sr
+
+from exercise6.srv import Barrels
 
 from geometry_msgs.msg import PoseStamped, Quaternion, Point, PoseWithCovarianceStamped
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal, MoveBaseActionResult
@@ -35,6 +38,10 @@ from exercise6.msg import Cylinder
 import pickle
 import argparse
 import pyttsx3
+
+import face_recognition
+import getch
+import pytesseract
 
 class Movement:
 
@@ -102,18 +109,29 @@ class Movement:
         modelPath = join(dirname(__file__), "res10_300x300_ssd_iter_140000.caffemodel")
         self.face_net = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
         self.dims = (0, 0, 0)
+
         self.marker_array = MarkerArray()
         self.text_marker_array = MarkerArray()
         self.marker_array_est = MarkerArray()
+        self.annotation_array = MarkerArray()
+
+
         self.marker_num = 0
         self.est_count = 0
+
         self.processed_image_pub = rospy.Publisher('processed_image', Image, queue_size=1000)
         self.markers_pub = rospy.Publisher('face_markers', MarkerArray, queue_size=1000)
         self.text_markers_pub = rospy.Publisher('text_face_markers', MarkerArray, queue_size=1000)
         self.face_markers_est_pub = rospy.Publisher('face_markers_est', MarkerArray, queue_size=1000)
+        self.annotation_markers_pub = rospy.Publisher('annotation_markers', MarkerArray, queue_size=1000)
+
+
         self.markers_pub.publish(self.marker_array)
         self.text_markers_pub.publish(self.text_marker_array)
         self.face_markers_est_pub.publish(self.marker_array_est)
+        self.annotation_markers_pub.publish(self.annotation_array)
+
+
         self.tf_buf = tf2_ros.Buffer()
         self.tf_listener = tf2_ros.TransformListener(self.tf_buf)
         self.numb_of_faces = 7
@@ -147,9 +165,11 @@ class Movement:
         
         self.rings = list()
         self.cylinders = list()
+
+        self.susBarrels = list()
         
-        self.number_of_rings = 3
-        self.number_of_cylinders = 1
+        self.number_of_rings = 4
+        self.number_of_cylinders = 4
         
         self.state = "get_next_waypoint"
         self.botLocationX = 0.0
@@ -165,6 +185,8 @@ class Movement:
         self.SpeechEngine.setProperty("rate", 160)
         self.SpeechEngine.say("System online")
         self.SpeechEngine.runAndWait()
+
+        self.st = SpeechTranscriber()
 
         
         printStatusMsgs.ok("speech engine initialized")
@@ -195,8 +217,8 @@ class Movement:
         
         while not rospy.is_shutdown():
         
-            if self.number_of_rings == len(self.rings) and self.number_of_cylinders >= len(self.cylinders) and self.state != "end" and self.state != "parking" and self.state != "precise_parking":
-                printStatusMsgs.info("starting parking procedure")
+            if len(self.rings) >= self.number_of_rings and len(self.cylinders) >= self.number_of_cylinders and self.state != "end" and self.state != "parking" and self.state != "precise_parking":
+                printStatusMsgs.info("starting parking procedure (all conditions met)")
                 self.arm_user_command_pub.publish(String("extend"))
                 self.state = "park"
                 # self.cancel_goal_publisher.publish(GoalID())
@@ -215,7 +237,7 @@ class Movement:
                    
                 if i == len(pointsX):
                     # i = 0
-                    printStatusMsgs.info("starting parking procedure")
+                    printStatusMsgs.info("starting parking procedure (all points visited)")
                     self.arm_user_command_pub.publish(String("extend"))
                     self.state = "park"
                     # self.cancel_goal_publisher.publish(GoalID())
@@ -233,12 +255,25 @@ class Movement:
                     i += 1
 
             elif self.state == "approach_face":
-                self.move_to_nearest_accessible_point(self.objectLocationX, self.objectLocationY)
-                print("where is he hiding?")
+                self.move_to_nearest_accessible_point(self.objectLocationX, self.objectLocationY, "get_next_waypoint", 0.5)
+                self.SpeechEngine.say("Where are they hiding?")
+                self.SpeechEngine.runAndWait()
+
+                cylinders = []
+                while not rospy.is_shutdown() and (len(cylinders) != 2 or cylinders[0] != "no"):
+                    cylinders = self.st.recognize_speech()
+                    if(len(cylinders) == 2):
+                        print('I recognized these barrels:', cylinders)
+                    if cylinders[0] == "no":
+                        print("no information")
+                    rospy.sleep(5)
+                print(res)
+
+                self.state = "get_next_waypoint"
 
 
             elif self.state == "parking":
-                self.move_to_nearest_accessible_point(self.parkingX, self.parkingY)
+                self.move_to_nearest_accessible_point(self.parkingX, self.parkingY, "precise_parking")
                 printStatusMsgs.error("failed to park, still attempting precise parking")
                 # rospy.sleep(5)
                 self.state= "precise_parking"
@@ -289,7 +324,7 @@ class Movement:
             self.objectLocationX = data.position.pose.position.x
             self.objectLocationY = data.position.pose.position.y
             print("Hello", color, "ring")
-            self.SpeechEngine.say("Hello " + color + " ring")
+            # self.SpeechEngine.say("Hello " + color + " ring")
             # self.SpeechEngine.runAndWait()
             self.state = "ring_found"
 
@@ -310,7 +345,7 @@ class Movement:
             color = data.color
             cylinder = Cylindy(pose, self.cylinder_marker_num, color)
             print("Hello", color, "cylinder")
-            self.SpeechEngine.say("Hello " + color + " cylinder")
+            # self.SpeechEngine.say("Hello " + color + " cylinder")
 
             self.cylinder_marker_num += 1
             self.cylinders.append(cylinder)
@@ -527,6 +562,8 @@ class Movement:
                 if pose is not None and not self.faceMarkerIsNearAnotherMarker(pose, 1): #if the face is not too close to another face don't create a marker
                     self.current_num_faces += 1
                     self.addFaceMarker(pose)
+                    self.objectLocationX = pose.position.x
+                    self.objectLocationY = pose.position.y
                     self.state = "approach_face"
             self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
     
@@ -588,8 +625,9 @@ class Movement:
         self.marker_array_est.markers.append(marker)
         self.face_markers_est_pub.publish(self.marker_array_est)
         self.est_count += 1
-        
-    def move_to_nearest_accessible_point(self, x, y):
+    
+
+    def move_to_nearest_accessible_point(self, x, y, nextState, min_distance=float("inf")):
         map = rospy.wait_for_message("/map", OccupancyGrid)
         map_info = map.info
         map_data = map.data
@@ -630,7 +668,7 @@ class Movement:
                                 
                     
         # Find the nearest accessible point in the region of interest
-        min_distance = float("inf")
+        # min_distance = float("inf")
         nearest_idx = None
         for idx in roi_indices:
             x_pos = (idx % map_info.width) * resolution + origin_x
@@ -673,10 +711,13 @@ class Movement:
         client.wait_for_result()
         if client.get_result():
             printStatusMsgs.ok("moved to nearest accessible point")
-            self.state = "precise_parking"
+            self.state = nextState
         else:
             printStatusMsgs.error("failed to move to nearest accessible point")
-            self.state = "precise_parking"
+            self.state = nextState
+
+        self.parking_markers_array = MarkerArray()
+        self.parking_markers_pub.publish(self.parking_markers_array)
             
     
             
@@ -960,6 +1001,132 @@ class WaypointGenerator:
         printStatusMsgs.ok("Waypoints generated")
         print(self.waypoints)
         return self.waypoints
+
+
+def detect_posters(rgb_image):
+
+    data = pickle.loads(open("encodings_poster.pickle", "rb").read())
+
+    boxes = face_recognition.face_locations(rgb_image, model="hog")
+    encodings = face_recognition.face_encodings(rgb_image, boxes)
+    object_type = ""
+
+    for encoding in encodings:
+        matches = face_recognition.compare_faces(data["encodings"],
+            encoding)
+        name = "Unknown"
+        if True in matches:
+            matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+            counts = {}
+            for i in matchedIdxs:
+                name = data["names"][i]
+                counts[name] = counts.get(name, 0) + 1
+            name = max(counts, key=counts.get)
+        object_type = name
+
+    return object_type
+
+def detect_poster_faces(rgb_image):
+
+    data = pickle.loads(open("encodings_poster_faces.pickle", "rb").read())
+
+    boxes = face_recognition.face_locations(rgb_image, model="hog")
+    encodings = face_recognition.face_encodings(rgb_image, boxes)
+    final_name = ""
+
+    for encoding in encodings:
+        matches = face_recognition.compare_faces(data["encodings"],
+            encoding)
+        name = "Unknown"
+        if True in matches:
+            matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+            counts = {}
+            for i in matchedIdxs:
+                name = data["names"][i]
+                counts[name] = counts.get(name, 0) + 1
+            name = max(counts, key=counts.get)
+        final_name = name
+
+    return final_name
+
+def extract_digits_and_color(rgb_image):
+    gray_img = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+    myResult = cv2.inRange(gray_img, 55, 155)
+    all_image_text = pytesseract.image_to_string(myResult)
+    all_image_text_splitted = all_image_text.split()
+    
+    somelist = [x for x in all_image_text_splitted if x.isdigit()]
+    number = "".join(somelist)
+    
+    color = ""
+
+    if "BLUE" in all_image_text_splitted:
+        color = "BLUE"
+
+    if "GREEN" in all_image_text_splitted:
+        color = "GREEN"
+
+    if "RED" in all_image_text_splitted:
+        color = "RED"
+    
+    if "BLACK" in all_image_text_splitted:
+        color = "BLACK"
+
+    return number, color
+
+def extract_speech_client():
+    rospy.wait_for_service('extract_speech')
+    try:
+        extract_speech = rospy.ServiceProxy('extract_speech', Barrels)
+        resp1 = extract_speech("")
+        return resp1.res
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
+
+
+class SpeechTranscriber:
+    def __init__(self):
+        self.sr = sr.Recognizer()
+
+        # An interface to the default microphone
+        self.mic = sr.Microphone()
+        sr.Microphone.list_microphone_names()
+        
+
+
+    def recognize_speech(self):
+        with self.mic as source:
+            print('Adjusting mic for ambient noise...')
+            self.sr.adjust_for_ambient_noise(source)
+            print('SPEAK NOW!')
+            audio = self.sr.listen(source)
+        
+        detectedColors = []
+        print('I am now processing the sounds you made.')
+        recognized_text = ''
+        try:
+            recognized_text = self.sr.recognize_google(audio)
+            print('I recognized this sentence:', recognized_text)
+            for word in recognized_text.split():
+                if word in ['red', 'green', 'blue', 'yellow']:
+                    detectedColors.append(word);
+                if word == "no":
+                    return ["no"]
+            if len(detectedColors) == 0:
+                print('I did not recognize any colors.')
+            elif len(detectedColors) == 2:
+                return detectedColors
+                print('I recognized these cylinders:', detectedColors)
+            else:
+                print("please say two colors")
+                return ""
+
+        except sr.RequestError as e:
+            print('API is probably unavailable', e)
+        except sr.UnknownValueError:
+            print('Did not manage to recognize anything.')
+        
+        return []
 
 
 def main():
