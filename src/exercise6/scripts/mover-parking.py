@@ -87,6 +87,15 @@ class Movement:
         
         self.arm_camera_sub = Subscriber("/arm_camera/rgb/image_raw", Image)
         self.arm_depth_sub = Subscriber("/arm_camera/depth/image_raw", Image)
+
+        self.camera_sub = Subscriber("/camera/rgb/image_raw", Image)
+        self.depth_sub = Subscriber("/camera/depth/image_raw", Image)
+
+        ats_main = ApproximateTimeSynchronizer([self.camera_sub, self.depth_sub], queue_size=5, slop=0.01)
+        ats_main.registerCallback(self.main_camera_callback)
+
+        ats_arm = ApproximateTimeSynchronizer([self.arm_camera_sub, self.arm_depth_sub], queue_size=5, slop=0.01)
+        ats_arm.registerCallback(self.arm_camera_callback)
         
         self.arm_image_pub = rospy.Publisher(
             "/arm_camera/vizualisations", Image, queue_size=10
@@ -188,6 +197,8 @@ class Movement:
 
         self.st = SpeechTranscriber()
 
+
+
         
         printStatusMsgs.ok("speech engine initialized")
         
@@ -195,10 +206,86 @@ class Movement:
         #wait, than publish all initial values
         rospy.sleep(1)
         printStatusMsgs.info("Moving arm to erection position")
-        self.arm_user_command_pub.publish(String("erection"))
+        # self.arm_user_command_pub.publish(String("erection"))
+        self.arm_user_command_pub.publish(String("barrelsearch"))
         
         printStatusMsgs.ok("Initialization complete")
+
+
+    def arm_camera_callback(self, image, depth):
+        pass
+
+    def main_camera_callback(self, image, depth):
+        try:
+            rgb_image = self.bridge.imgmsg_to_cv2(image, "bgr8")
+        except CvBridgeError as e:
+            print(e)
+        
+        try:
+            depth_image = self.bridge.imgmsg_to_cv2(depth, "32FC1")
+        except CvBridgeError as e:
+            print(e)
+        
+        image = rgb_image
+        boxes = face_recognition.face_locations(image, model="hog")
+        encodings = face_recognition.face_encodings(image, boxes)
+
+        names = ""
+
+        stamp = rospy.Time.now()
+
+        if len(encodings) > 0:
+            for encoding in encodings:
+                matches = face_recognition.compare_faces(self.data["encodings"], encoding)
+                name = "Unknown"
+                if True in matches:
+                    matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+                    counts = {}
+                    for i in matchedIdxs:
+                        name = self.data["names"][i]
+                        counts[name] = counts.get(name, 0) + 1
+                    name = max(counts, key=counts.get)
+
+                names = name
+                
+                for ((top, right, bottom, left), name) in zip(boxes, names):
+                    cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
+                    y = top - 15 if top - 15 > 15 else top + 15
+                dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
+                
+                try:
+                    pose = self.get_pose((left, right, top, bottom), dist, stamp)
+                    self.addFaceMarkerEstimation(pose)
+                except:
+                    pass
+        
+            if names not in self.faces:
+                self.faces.add(names) # add face anyway, so it doesn't get added again
+                print("Found new face")
+                for ((top, right, bottom, left), name) in zip(boxes, names):
+                    cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
+                    y = top - 15 if top - 15 > 15 else top + 15
+                    
+                #calculate distance to the center of the face
+                dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
+                
+                pose = self.get_pose((left, right, top, bottom), dist, stamp)
+                print(pose)
+                if pose is not None : #if the face is not too close to another face don't create a marker and not self.faceMarkerIsNearAnotherMarker(pose, 1)
+                    self.current_num_faces += 1
+                    self.addFaceMarker(pose)
+                    self.objectLocationX = pose.position.x
+                    self.objectLocationY = pose.position.y
+                    self.state = "approach_face"
+            self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
     
+    
+    def faceMarkerIsNearAnotherMarker(self, pose, range):
+        for marker in self.marker_array.markers:
+            if abs(pose.position.x - marker.pose.position.x) < range and abs(pose.position.y - marker.pose.position.y) < range:
+                return True
+        return False
+
     def odom_callback(self, odom):
         return odom
     
@@ -267,15 +354,25 @@ class Movement:
                         self.SpeechEngine.say("thank you for your help")
                         self.SpeechEngine.runAndWait()
                         break
-                    if cylinders[0] == "no":
+                    if len(cylinders)==1 and cylinders[0] == "no":
                         print("no information")
                         self.SpeechEngine.say("Thank you anyway")
                         self.SpeechEngine.runAndWait()
                         break
                     rospy.sleep(5)
-                print(res)
+                self.susBarrels = cylinders
 
                 self.state = "get_next_waypoint"
+
+            elif self.state == "search_barrels":
+                print("searching for criminals in barrels")
+                self.arm_user_command_pub.publish(String("barrelsearch"))
+                while len(self.susBarrels) > 0 and not rospy.is_shutdown():
+                    self.move_to_nearest_accessible_point(self.susBarrels[0].pose.pose.position.x, self.susBarrels[0].pose.pose.position.y, "search_barrels", 0.5)
+                    self.susBarrels.pop(0)
+                    # self.SpeechEngine.say("Stop right there criminal scum")
+                    # self.SpeechEngine.runAndWait()
+                self.state = "parking"
 
 
             elif self.state == "parking":
@@ -306,7 +403,7 @@ class Movement:
                 rospy.signal_shutdown("Mission complete")
                    
                 
-            self.find_faces()
+            # self.find_faces()
             rate.sleep()
     
     
@@ -435,19 +532,7 @@ class Movement:
         #     if res_status == 3:
         #         self.state = "end"
 
-    def depth_callback(self,data):
-
-        try:
-            depth_image = self.bridge.imgmsg_to_cv2(data, "32FC1")
-        except CvBridgeError as e:
-            print(e)
-
-        # Do the necessairy conversion so we can visuzalize it in OpenCV
-        
-        image_1 = depth_image / np.nanmax(depth_image)
-        image_1 = image_1*255
-        
-        image_viz = np.array(image_1, dtype=np.uint8)
+        # image_viz = np.array(image_1, dtype=np.uint8)
     
     def get_pose(self, coords, dist, stamp):
         # Calculate the position of the detected face
@@ -493,91 +578,7 @@ class Movement:
 
         return pose
     
-    def find_faces(self):
-        #print('I got a new image!')
-
-        # Get the next rgb and depth images that are posted from the camera
-        try:
-            rgb_image_message = rospy.wait_for_message("/camera/rgb/image_raw", Image)
-        except Exception as e:
-            print(e)
-            return 0
-
-        try:
-            depth_image_message = rospy.wait_for_message("/camera/depth/image_raw", Image)
-        except Exception as e:
-            print(e)
-            return 0
-
-        # Convert the images into a OpenCV (numpy) format
-
-        try:
-            rgb_image = self.bridge.imgmsg_to_cv2(rgb_image_message, "bgr8")
-        except CvBridgeError as e:
-            print(e)
-
-        try:
-            depth_image = self.bridge.imgmsg_to_cv2(depth_image_message, "32FC1")
-        except CvBridgeError as e:
-            print(e)
-
-
-        image = rgb_image
-        boxes = face_recognition.face_locations(image, model="hog")
-        encodings = face_recognition.face_encodings(image, boxes)
-
-        names = ""
-
-        if len(encodings) > 0:
-            for encoding in encodings:
-                matches = face_recognition.compare_faces(self.data["encodings"], encoding)
-                name = "Unknown"
-                if True in matches:
-                    matchedIdxs = [i for (i, b) in enumerate(matches) if b]
-                    counts = {}
-                    for i in matchedIdxs:
-                        name = self.data["names"][i]
-                        counts[name] = counts.get(name, 0) + 1
-                    name = max(counts, key=counts.get)
-
-                names = name
-                
-                for ((top, right, bottom, left), name) in zip(boxes, names):
-                    cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
-                    y = top - 15 if top - 15 > 15 else top + 15
-                dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
-                
-                try:
-                    pose = self.get_pose((left, right, top, bottom), dist , rgb_image_message.header.stamp)
-                    self.addFaceMarkerEstimation(pose)
-                except:
-                    pass
-        
-            if names not in self.faces:
-                self.faces.add(names) # add face anyway, so it doesn't get added again
-                print("Found new face")
-                for ((top, right, bottom, left), name) in zip(boxes, names):
-                    cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
-                    y = top - 15 if top - 15 > 15 else top + 15
-                    
-                #calculate distance to the center of the face
-                dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
-                
-                pose = self.get_pose((left, right, top, bottom), dist, rgb_image_message.header.stamp)
-                print(pose)
-                if pose is not None and not self.faceMarkerIsNearAnotherMarker(pose, 1): #if the face is not too close to another face don't create a marker
-                    self.current_num_faces += 1
-                    self.addFaceMarker(pose)
-                    self.objectLocationX = pose.position.x
-                    self.objectLocationY = pose.position.y
-                    self.state = "approach_face"
-            self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
     
-    def faceMarkerIsNearAnotherMarker(self, pose, range):
-        for marker in self.marker_array.markers:
-            if abs(pose.position.x - marker.pose.position.x) < range and abs(pose.position.y - marker.pose.position.y) < range:
-                return True
-        return False
     
     def addFaceMarker(self, pose):
         marker = Marker()

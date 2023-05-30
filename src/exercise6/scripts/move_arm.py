@@ -42,6 +42,13 @@ class Arm_Mover():
         self.erection.joint_names = ["arm_shoulder_pan_joint", "arm_shoulder_lift_joint", "arm_elbow_flex_joint", "arm_wrist_flex_joint"]
         self.erection.points = [JointTrajectoryPoint(positions=[0,0,0,0], time_from_start = rospy.Duration(1))]
 
+        #extend the arm forward and look down
+        self.barrelsearch = JointTrajectory()
+        self.barrelsearch.joint_names = ["arm_shoulder_pan_joint", "arm_shoulder_lift_joint", "arm_elbow_flex_joint", "arm_wrist_flex_joint"]
+        self.barrelsearch.points = [JointTrajectoryPoint(positions=[0,0.3,0.5,0], time_from_start = rospy.Duration(1))]
+
+
+
     def new_user_command(self, data):
         self.user_command = data.data.strip()
         self.send_command = True
@@ -64,6 +71,9 @@ class Arm_Mover():
             elif self.user_command == 'erection':
                 self.arm_movement_pub.publish(self.erection)
                 print('Erected arm!')
+            elif self.user_command == 'barrelsearch':
+                self.arm_movement_pub.publish(self.barrelsearch)
+                print('Barrelsearched arm!')
             else:
                 print('Unknown instruction:', self.user_command)
                 return(-1)
