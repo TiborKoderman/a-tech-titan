@@ -264,9 +264,13 @@ class Movement:
                     cylinders = self.st.recognize_speech()
                     if(len(cylinders) == 2):
                         print('I recognized these barrels:', cylinders)
+                        self.SpeechEngine.say("thank you for your help")
+                        self.SpeechEngine.runAndWait()
                         break
                     if cylinders[0] == "no":
                         print("no information")
+                        self.SpeechEngine.say("Thank you anyway")
+                        self.SpeechEngine.runAndWait()
                         break
                     rospy.sleep(5)
                 print(res)
