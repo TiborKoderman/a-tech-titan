@@ -143,7 +143,7 @@ class Movement:
         self.cylinder_markers_pub = rospy.Publisher('cylinder_markers', MarkerArray, queue_size=1000)    
         self.parking_markers_pub = rospy.Publisher('parking_markers', MarkerArray, queue_size=1000)
         
-        self.twist_pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+        self.twist_pub = rospy.Publisher('cmd_vel_mux/input/teleop', Twist, queue_size=10)
         
         self.rings = list()
         self.cylinders = list()
@@ -237,6 +237,7 @@ class Movement:
                 printStatusMsgs.error("failed to park, still attempting precise parking")
                 # rospy.sleep(5)
                 self.state= "precise_parking"
+                self.move_to_parking_zone()
             
             elif self.state == "precise_parking":
                 printStatusMsgs.info("precise parking")
@@ -597,7 +598,7 @@ class Movement:
         detecting = True
         
         # Define a circular region of interest around the given point
-        roi_radius = 1.2 # meters
+        roi_radius = 1.5 # meters
         roi_width = int(roi_radius / resolution)
         roi_center_idx = y_idx * map_info.width + x_idx
         roi_indices = set()
@@ -726,17 +727,24 @@ class Movement:
                     twist = Twist()
                     print("move closer to center")
                     twist.linear.x = 0.1 # replace with your desired linear velocity
-                    twist.angular.z = ((center_x - frame.shape[1] / 2)/100.0)# replace with your desired angular velocity scaling factor
+                    twist.angular.z = -((center_x - frame.shape[1] / 2)/100.0)# replace with your desired angular velocity scaling factor
                     twist_pub.publish(twist)
-                    rospy.sleep(0.1)
+                    rospy.sleep(1)
+                #elif 15 >= abs(center_x - frame.shape[1] / 2) > 10:
+                    # turn the robot
+                    #twist = Twist()
+                    #twist.linear.x = 0.0
+                    #twist.angular.z = 0.5
+                    #twist_pub.publish(twist)
+                    #rospy.sleep(0.5)
                 else:
-                    # Stop the robot
-                    twist = Twist()
                     twist.linear.x = 0.0
                     twist.angular.z = 0.0
                     twist_pub.publish(twist)
-                    
+                    print("I stopped")
+                    self.arm_user_command_pub.publish(String("retract"))
                     self.status = "end"
+                    self.state = "end"
 
                     # Save the coordinates of the center of the circle
                     global circle_center
@@ -744,8 +752,8 @@ class Movement:
             else:
                 #spin the robot around
                 twist = Twist()
-                twist.linear.x = 0.1
-                twist.angular.z = 0.2
+                #twist.linear.x = 0.1
+                twist.angular.z = -1.0
                 twist_pub.publish(twist)
                 
                 
