@@ -260,12 +260,14 @@ class Movement:
                 self.SpeechEngine.runAndWait()
 
                 cylinders = []
-                while not rospy.is_shutdown() and (len(cylinders) != 2 or cylinders[0] != "no"):
+                while not rospy.is_shutdown():
                     cylinders = self.st.recognize_speech()
                     if(len(cylinders) == 2):
                         print('I recognized these barrels:', cylinders)
+                        break
                     if cylinders[0] == "no":
                         print("no information")
+                        break
                     rospy.sleep(5)
                 print(res)
 
