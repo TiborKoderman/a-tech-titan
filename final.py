@@ -17,6 +17,7 @@ import argparse
 import pickle
 import getch
 from std_msgs.msg import Int8
+import pytesseract
 
 def detect_posters(rgb_image):
 
@@ -63,3 +64,28 @@ def detect_poster_faces(rgb_image):
         final_name = name
 
     return final_name
+
+def extract_digits_and_color(rgb_image):
+    gray_img = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
+    myResult = cv2.inRange(gray_img, 55, 155)
+    all_image_text = pytesseract.image_to_string(myResult)
+    all_image_text_splitted = all_image_text.split()
+    
+    somelist = [x for x in all_image_text_splitted if x.isdigit()]
+    number = "".join(somelist)
+    
+    color = ""
+
+    if "BLUE" in all_image_text_splitted:
+        color = "BLUE"
+
+    if "GREEN" in all_image_text_splitted:
+        color = "GREEN"
+
+    if "RED" in all_image_text_splitted:
+        color = "RED"
+    
+    if "BLACK" in all_image_text_splitted:
+        color = "BLACK"
+
+    return number, color
