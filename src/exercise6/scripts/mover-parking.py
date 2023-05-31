@@ -182,9 +182,10 @@ class Movement:
         self.cylinders = list()
 
         self.susBarrels = ["yellow", "green"]
+        self.susBarrelsDefault = True
         
-        self.number_of_rings = 3
-        self.number_of_cylinders = 1
+        self.number_of_rings = 4
+        self.number_of_cylinders = 4
         
         self.state = "get_next_waypoint"
         self.botLocationX = 0.0
@@ -439,6 +440,11 @@ class Movement:
                     print(i)
 
             elif self.state == "approach_face":
+
+                # if(self.susBarrelsDefault == False):
+                #     self.state = "get_next_waypoint"
+                #     return
+
                 self.move_to_nearest_accessible_point(self.objectLocationX, self.objectLocationY, "get_next_waypoint", 0.5)
                 self.SpeechEngine.say("Where are they hiding?")
                 self.SpeechEngine.runAndWait()
@@ -451,6 +457,7 @@ class Movement:
                         self.SpeechEngine.say("thank you for your help")
                         self.SpeechEngine.runAndWait()
                         self.susBarrels = cylinders
+                        self.susBarrelsDefault = False
                         #Add annotation on top of the cylinders of the colors
                         # for cylinder in self.cylinders:
                         #     if cylinder.color in self.susBarrels:
@@ -509,8 +516,10 @@ class Movement:
                     if(target is None):
                         printStatusMsgs.error("I don't know where the barrel is")
                         continue
-                    printStatusMsgs.info("target: "+ target.color + "barrel")
-                    self.move_to_nearest_accessible_point(target.pose.position.x, target.pose.position.y, "approach_face", 0.5)
+                    printStatusMsgs.info("target: "+ target.color + " barrel")
+                    print(target)
+                    self.move_to_nearest_accessible_point(target.pose.point.x, target.pose.point.y, "search_barrels", 0.5)
+                    rospy.sleep(2)
 
                 for ring in self.rings:
                     if ring.color == self.park_location:
