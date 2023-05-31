@@ -84,15 +84,18 @@ class Movement:
         self.pose_pub = rospy.Publisher(
             "/move_base_simple/goal", PoseStamped, queue_size=10
         )
-        
+        self.suspects = list()
+        self.state = "get_next_waypoint"
+
         self.arm_camera_sub = Subscriber("/arm_camera/rgb/image_raw", Image)
         self.arm_depth_sub = Subscriber("/arm_camera/depth/image_raw", Image)
 
         self.camera_sub = Subscriber("/camera/rgb/image_raw", Image)
         self.depth_sub = Subscriber("/camera/depth/image_raw", Image)
 
-        ats_main = ApproximateTimeSynchronizer([self.camera_sub, self.depth_sub], queue_size=5, slop=0.01)
-        ats_main.registerCallback(self.main_camera_callback)
+
+        # ats_main = ApproximateTimeSynchronizer([self.camera_sub, self.depth_sub], queue_size=5, slop=0.01)
+        # ats_main.registerCallback(self.main_camera_callback)
 
         ats_arm = ApproximateTimeSynchronizer([self.arm_camera_sub, self.arm_depth_sub], queue_size=5, slop=0.01)
         ats_arm.registerCallback(self.arm_camera_callback)
@@ -147,9 +150,12 @@ class Movement:
         self.ap = argparse.ArgumentParser()
         self.data = pickle.loads(open(join(dirname(__file__), "encodings.pickle"), "rb").read())
         self.current_num_faces = 0
+        self.current_num_annotations = 0
         self.faces = set()
         
         self.seq = 0
+
+        self.park_location = "green"
         
         printStatusMsgs.ok("Face detection initialized")
         
@@ -175,10 +181,10 @@ class Movement:
         self.rings = list()
         self.cylinders = list()
 
-        self.susBarrels = list()
+        self.susBarrels = ["yellow", "green"]
         
-        self.number_of_rings = 4
-        self.number_of_cylinders = 4
+        self.number_of_rings = 3
+        self.number_of_cylinders = 1
         
         self.state = "get_next_waypoint"
         self.botLocationX = 0.0
@@ -198,7 +204,7 @@ class Movement:
         self.st = SpeechTranscriber()
 
 
-
+        
         
         printStatusMsgs.ok("speech engine initialized")
         
@@ -206,16 +212,15 @@ class Movement:
         #wait, than publish all initial values
         rospy.sleep(1)
         printStatusMsgs.info("Moving arm to erection position")
-        # self.arm_user_command_pub.publish(String("erection"))
-        self.arm_user_command_pub.publish(String("barrelsearch"))
+        self.arm_user_command_pub.publish(String("erection"))
+        # self.arm_user_command_pub.publish(String("barrelsearch"))
         
         printStatusMsgs.ok("Initialization complete")
 
 
     def arm_camera_callback(self, image, depth):
-        pass
-
-    def main_camera_callback(self, image, depth):
+        if self.state != "search_barrels":
+            return
         try:
             rgb_image = self.bridge.imgmsg_to_cv2(image, "bgr8")
         except CvBridgeError as e:
@@ -225,14 +230,97 @@ class Movement:
             depth_image = self.bridge.imgmsg_to_cv2(depth, "32FC1")
         except CvBridgeError as e:
             print(e)
-        
+
+
+        name = detect_poster_faces(rgb_image)
+
+        if name != '':
+            print("Found person!", name)
+
+
+        for sname, poster_face, digits_and_color in self.suspects:
+            if name == sname:
+                self.SpeechEngine.say("Stop right there criminal scum, I'm taking you to jail")
+                self.SpeechEngine.runAndWait()
+                if(digits_and_color[1] != ''):
+                    self.park_location = digits_and_color[1]
+                self.state = "parking"
+
+
+    def find_faces(self):
+        #print('I got a new image!')
+
+        # Get the next rgb and depth images that are posted from the camera
+        try:
+            rgb_image_message = rospy.wait_for_message("/camera/rgb/image_raw", Image)
+        except Exception as e:
+            print(e)
+            return 0
+
+        try:
+            depth_image_message = rospy.wait_for_message("/camera/depth/image_raw", Image)
+        except Exception as e:
+            print(e)
+            return 0
+
+        # Convert the images into a OpenCV (numpy) format
+
+        try:
+            rgb_image = self.bridge.imgmsg_to_cv2(rgb_image_message, "bgr8")
+        except CvBridgeError as e:
+            print(e)
+
+        try:
+            depth_image = self.bridge.imgmsg_to_cv2(depth_image_message, "32FC1")
+        except CvBridgeError as e:
+            print(e)
+
+
+
+
         image = rgb_image
         boxes = face_recognition.face_locations(image, model="hog")
         encodings = face_recognition.face_encodings(image, boxes)
 
         names = ""
 
-        stamp = rospy.Time.now()
+        # poster = detect_posters(rgb_image)
+
+        # if poster != '' and poster != 'Non-poster' and poster != 'Unknown':
+        #     poster_face = detect_poster_faces(rgb_image)
+
+        #     digits_and_color = extract_digits_and_color(rgb_image)
+
+        #     if  (poster, poster_face, digits_and_color) not in self.suspects:
+        #         if poster and poster_face not in ['unknown', ''] and digits_and_color[0] != '':
+        #             self.suspects.append((poster, poster_face, digits_and_color))
+        #             print("Suspect added")
+        #             print(self.suspects)
+        #             self.SpeechEngine.say("Suspect added")
+        #             self.SpeechEngine.runAndWait()
+        #             return
+
+        poster = detect_posters(rgb_image)
+        if poster == 'Poster':
+            poster_face = detect_poster_faces(rgb_image)
+
+            digits_and_color = extract_digits_and_color(rgb_image)
+
+            print(poster, poster_face, digits_and_color)
+
+                
+
+            if  (poster, poster_face, digits_and_color) not in self.suspects:
+                if poster_face not in ['unknown', '']:
+                    self.suspects.append((poster, poster_face, digits_and_color))
+                    print("Suspect added")
+                    print(self.suspects)
+                    self.SpeechEngine.say("Suspect added")
+                    self.SpeechEngine.runAndWait()
+                else:
+                    self.state = "approach_poster"
+            return
+
 
         if len(encodings) > 0:
             for encoding in encodings:
@@ -247,6 +335,9 @@ class Movement:
                     name = max(counts, key=counts.get)
 
                 names = name
+
+
+
                 
                 for ((top, right, bottom, left), name) in zip(boxes, names):
                     cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
@@ -254,7 +345,7 @@ class Movement:
                 dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
                 
                 try:
-                    pose = self.get_pose((left, right, top, bottom), dist, stamp)
+                    pose = self.get_pose((left, right, top, bottom), dist , rgb_image_message.header.stamp)
                     self.addFaceMarkerEstimation(pose)
                 except:
                     pass
@@ -265,19 +356,24 @@ class Movement:
                 for ((top, right, bottom, left), name) in zip(boxes, names):
                     cv2.rectangle(image, (left, top), (right, bottom), (0, 255, 0), 2)
                     y = top - 15 if top - 15 > 15 else top + 15
+
+            
                     
                 #calculate distance to the center of the face
                 dist = depth_image[int((top + bottom) / 2), int((left + right) / 2)]
                 
-                pose = self.get_pose((left, right, top, bottom), dist, stamp)
+                pose = self.get_pose((left, right, top, bottom), dist, rgb_image_message.header.stamp)
                 print(pose)
-                if pose is not None : #if the face is not too close to another face don't create a marker and not self.faceMarkerIsNearAnotherMarker(pose, 1)
+                if pose is not None and not self.faceMarkerIsNearAnotherMarker(pose, 0.25): #if the face is not too close to another face don't create a marker
                     self.current_num_faces += 1
                     self.addFaceMarker(pose)
                     self.objectLocationX = pose.position.x
                     self.objectLocationY = pose.position.y
-                    self.state = "approach_face"
+                    if self.state != "approach_poster":
+                        self.state = "approach_face"
             self.processed_image_pub.publish(self.bridge.cv2_to_imgmsg(image, "bgr8"))
+
+
     
     
     def faceMarkerIsNearAnotherMarker(self, pose, range):
@@ -291,9 +387,9 @@ class Movement:
     
     def mover(self):
         
-        pointsX = [-0.129, -0.376, -1.051, -0.968, -1.321, -0.288, 0.004, 0.879, 2.714, 3.025, 3.288, 1.326, 1.236, 2.055, 2.169, 1.655, 0.912, -0.477, -0.058, 0.071, -1.025]
-        pointsY = [0.865, 0.3750, 0.428, 1.754, 2.044, 0.240, -0.704, -0.937, -0.171, -0.169, -0.142, 1.067, 0.913, 1.072, 2.557, 2.863,  2.721, 2.783, 2.700, 2.851, 1.822]
-        
+        pointsX = [-0.129, -0.376, -1.051,  0.004,  0.879, -0.238, 2.714,  1.957,  3.025,  3.288, 1.326, 1.236, 1.085, 2.055, 2.169, 1.655, 0.912, -0.477, -0.058, 0.071, -1.025]
+        pointsY = [0.865,  0.3750,  0.428, -0.704, -0.937, -0.934,-0.171, -1.084, -0.169, -0.142, 1.067, 0.913, 0.097, 1.072, 2.557, 2.863,  2.721, 2.783, 2.700, 2.851, 1.822]
+        #8, 9, 13
         i = 0
         next_goal = None
         
@@ -304,20 +400,20 @@ class Movement:
         
         while not rospy.is_shutdown():
         
-            if len(self.rings) >= self.number_of_rings and len(self.cylinders) >= self.number_of_cylinders and self.state != "end" and self.state != "parking" and self.state != "precise_parking":
+            if len(self.rings) >= self.number_of_rings and len(self.cylinders) >= self.number_of_cylinders and self.state != "end" and self.state != "parking" and self.state != "precise_parking" and self.state != "search_barrels":
                 printStatusMsgs.info("starting parking procedure (all conditions met)")
-                self.arm_user_command_pub.publish(String("extend"))
-                self.state = "park"
+                # 
+                self.state = "search_barrels"
                 # self.cancel_goal_publisher.publish(GoalID())
-                rospy.sleep(1)
+                # rospy.sleep(1)
 
-                for ring in self.rings:
-                    if ring.color == "green":
-                        self.parkingX = ring.pose.pose.position.x
-                        self.parkingY = ring.pose.pose.position.y
-                        #comes close to the green ring
-                        # self.move_to_next(parkingX, parkingY, "parking")
-                        self.state = "parking"
+                # for ring in self.rings:
+                #     if ring.color == self.park_location:
+                #         self.parkingX = ring.pose.pose.position.x
+                #         self.parkingY = ring.pose.pose.position.y
+                #         #comes close to the green ring
+                #         # self.move_to_next(parkingX, parkingY, "parking")
+                #         self.state = "parking"
          
                
             elif self.state == "get_next_waypoint":
@@ -326,20 +422,21 @@ class Movement:
                     # i = 0
                     printStatusMsgs.info("starting parking procedure (all points visited)")
                     self.arm_user_command_pub.publish(String("extend"))
-                    self.state = "park"
+                    self.state = "search_barrels"
                     # self.cancel_goal_publisher.publish(GoalID())
                     rospy.sleep(1)
 
-                    for ring in self.rings:
-                        if ring.color == "green":
-                            self.parkingX = ring.pose.pose.position.x
-                            self.parkingY = ring.pose.pose.position.y
-                            #comes close to the green ring
-                            # self.move_to_next(parkingX, parkingY, "parking")
-                            self.state = "parking"
+                    # for ring in self.rings:
+                    #     if ring.color == self.park_location:
+                    #         self.parkingX = ring.pose.pose.position.x
+                    #         self.parkingY = ring.pose.pose.position.y
+                    #         #comes close to the green ring
+                    #         # self.move_to_next(parkingX, parkingY, "parking")
+                    #         self.state = "parking"
                 else:
                     self.move_to_next(pointsX[i], pointsY[i], "moving")
                     i += 1
+                    print(i)
 
             elif self.state == "approach_face":
                 self.move_to_nearest_accessible_point(self.objectLocationX, self.objectLocationY, "get_next_waypoint", 0.5)
@@ -353,6 +450,11 @@ class Movement:
                         print('I recognized these barrels:', cylinders)
                         self.SpeechEngine.say("thank you for your help")
                         self.SpeechEngine.runAndWait()
+                        self.susBarrels = cylinders
+                        #Add annotation on top of the cylinders of the colors
+                        # for cylinder in self.cylinders:
+                        #     if cylinder.color in self.susBarrels:
+                        #         self.addAnnotation(cylinder.pose , "SUS")
                         break
                     if len(cylinders)==1 and cylinders[0] == "no":
                         print("no information")
@@ -360,19 +462,15 @@ class Movement:
                         self.SpeechEngine.runAndWait()
                         break
                     rospy.sleep(5)
-                self.susBarrels = cylinders
 
                 self.state = "get_next_waypoint"
 
-            elif self.state == "search_barrels":
-                print("searching for criminals in barrels")
-                self.arm_user_command_pub.publish(String("barrelsearch"))
-                while len(self.susBarrels) > 0 and not rospy.is_shutdown():
-                    self.move_to_nearest_accessible_point(self.susBarrels[0].pose.pose.position.x, self.susBarrels[0].pose.pose.position.y, "search_barrels", 0.5)
-                    self.susBarrels.pop(0)
-                    # self.SpeechEngine.say("Stop right there criminal scum")
-                    # self.SpeechEngine.runAndWait()
-                self.state = "parking"
+            elif self.state == "approach_poster":
+                print("approaching poster")
+                self.move_to_nearest_accessible_point(self.objectLocationX, self.objectLocationY, "get_next_waypoint", 0.5)
+                self.state = "get_next_waypoint"
+
+
 
 
             elif self.state == "parking":
@@ -401,9 +499,30 @@ class Movement:
                 self.SpeechEngine.say("Mission complete")
                 self.SpeechEngine.runAndWait()
                 rospy.signal_shutdown("Mission complete")
-                   
+            
+
+            elif self.state == "search_barrels":
+                printStatusMsgs.info("searching for criminals in barrels")
+                self.arm_user_command_pub.publish(String("barrelsearch"))
+                while len(self.susBarrels) > 0 and not rospy.is_shutdown():
+                    target = self.get_cylinder_from_color(self.susBarrels.pop(0))
+                    if(target is None):
+                        printStatusMsgs.error("I don't know where the barrel is")
+                        continue
+                    printStatusMsgs.info("target: "+ target.color + "barrel")
+                    self.move_to_nearest_accessible_point(target.pose.position.x, target.pose.position.y, "approach_face", 0.5)
+
+                for ring in self.rings:
+                    if ring.color == self.park_location:
+                        self.parkingX = ring.pose.pose.position.x
+                        self.parkingY = ring.pose.pose.position.y
+                        #comes close to the green ring
+                        # self.move_to_next(parkingX, parkingY, "parking")
+                        # self.state = "parking"
+                self.arm_user_command_pub.publish(String("extend"))
+                self.state = "parking"
                 
-            # self.find_faces()
+            self.find_faces()
             rate.sleep()
     
     
@@ -528,11 +647,6 @@ class Movement:
         elif self.state == "ring_found":
             self.state = "get_next_waypoint"
             
-        # elif self.state == "parking":
-        #     if res_status == 3:
-        #         self.state = "end"
-
-        # image_viz = np.array(image_1, dtype=np.uint8)
     
     def get_pose(self, coords, dist, stamp):
         # Calculate the position of the detected face
@@ -578,7 +692,29 @@ class Movement:
 
         return pose
     
-    
+    def addAnnotation(self, pose, text):
+        marker = Marker()
+        q = tf.transformations.quaternion_from_euler(0, 0, 0)
+        marker.header.stamp = rospy.Time.now()
+        marker.pose.orientation = Quaternion(*q)
+        marker.pose.position = pose
+        marker.header.frame_id = "map"
+        marker.ns = "face_localizer"
+        marker.type = Marker.TEXT_VIEW_FACING
+        marker.action = Marker.ADD
+        marker.id = self.current_num_annotations
+        self.current_num_annotations += 1
+        marker.scale.x = 0.2
+        marker.scale.y = 0.2
+        marker.scale.z = 0.2
+        marker.color.a = 1.0
+        marker.color.r = 1.0
+        marker.color.g = 1.0
+        marker.color.b = 1.0
+        marker.text = text
+        self.annotation_array.markers.append(marker)
+        self.annotation_markers_pub.publish(self.annotation_array)
+
     
     def addFaceMarker(self, pose):
         marker = Marker()
@@ -726,6 +862,15 @@ class Movement:
         self.parking_markers_array = MarkerArray()
         self.parking_markers_pub.publish(self.parking_markers_array)
             
+
+    
+    def get_cylinder_from_color(self, color):
+        print(color)
+        for cylinder in self.cylinders:
+            print("cylinder color ", cylinder.color)
+            if cylinder.color == color:
+                return cylinder
+        return None
     
             
         
@@ -1010,9 +1155,11 @@ class WaypointGenerator:
         return self.waypoints
 
 
+
 def detect_posters(rgb_image):
 
-    data = pickle.loads(open("encodings_poster.pickle", "rb").read())
+    # data = pickle.loads(open("encodings_poster.pickle", "rb").read())
+    data = pickle.loads(open(join(dirname(__file__), "encodings_poster.pickle"), "rb").read())
 
     boxes = face_recognition.face_locations(rgb_image, model="hog")
     encodings = face_recognition.face_encodings(rgb_image, boxes)
@@ -1035,7 +1182,8 @@ def detect_posters(rgb_image):
 
 def detect_poster_faces(rgb_image):
 
-    data = pickle.loads(open("encodings_poster_faces.pickle", "rb").read())
+    # data = pickle.loads(open("encodings_poster_faces.pickle", "rb").read())
+    data = pickle.loads(open(join(dirname(__file__), "encodings_poster_faces.pickle"), "rb").read())
 
     boxes = face_recognition.face_locations(rgb_image, model="hog")
     encodings = face_recognition.face_encodings(rgb_image, boxes)
@@ -1059,36 +1207,27 @@ def detect_poster_faces(rgb_image):
 def extract_digits_and_color(rgb_image):
     gray_img = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2GRAY)
     myResult = cv2.inRange(gray_img, 55, 155)
-    all_image_text = pytesseract.image_to_string(myResult)
+    all_image_text = pytesseract.image_to_string(myResult).lower()
     all_image_text_splitted = all_image_text.split()
     
     somelist = [x for x in all_image_text_splitted if x.isdigit()]
     number = "".join(somelist)
-    
     color = ""
+    print("detected text: ", all_image_text_splitted)
 
-    if "BLUE" in all_image_text_splitted:
-        color = "BLUE"
+    if "blue" in all_image_text_splitted:
+        color = "blue"
 
-    if "GREEN" in all_image_text_splitted:
-        color = "GREEN"
+    if "green" in all_image_text_splitted:
+        color = "green"
 
-    if "RED" in all_image_text_splitted:
-        color = "RED"
+    if "red" in all_image_text_splitted:
+        color = "red"
     
-    if "BLACK" in all_image_text_splitted:
-        color = "BLACK"
+    if "black" in all_image_text_splitted:
+        color = "black"
 
     return number, color
-
-def extract_speech_client():
-    rospy.wait_for_service('extract_speech')
-    try:
-        extract_speech = rospy.ServiceProxy('extract_speech', Barrels)
-        resp1 = extract_speech("")
-        return resp1.res
-    except rospy.ServiceException as e:
-        print("Service call failed: %s"%e)
 
 
 class SpeechTranscriber:
@@ -1112,12 +1251,12 @@ class SpeechTranscriber:
         print('I am now processing the sounds you made.')
         recognized_text = ''
         try:
-            recognized_text = self.sr.recognize_google(audio)
+            recognized_text = self.sr.recognize_google(audio).lower()
             print('I recognized this sentence:', recognized_text)
             for word in recognized_text.split():
                 if word in ['red', 'green', 'blue', 'yellow']:
                     detectedColors.append(word);
-                if word == "no":
+                if word in  ["no", "don't", "know", "nothing" ]:
                     return ["no"]
             if len(detectedColors) == 0:
                 print('I did not recognize any colors.')
