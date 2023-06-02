@@ -43,6 +43,7 @@ add_message_files(
 add_service_files(
   FILES
   Waypoints.srv
+  Barrels.srv
 )
 
 generate_messages(

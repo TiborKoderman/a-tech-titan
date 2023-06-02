@@ -73,6 +73,8 @@ def extract_digits_and_color(rgb_image):
     
     somelist = [x for x in all_image_text_splitted if x.isdigit()]
     number = "".join(somelist)
+
+    print("detected text: ", all_image_text_splitted")
     
     color = ""
 
